@@ -3,168 +3,662 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Backerss — Protocolo de Capital Propio</title>
+<title>Backerss — Protocolo de Ejecución</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<style>
+  :root {
+    --bg: #0B0B0A;
+    --bg-raised: #141312;
+    --ink: #F1EDE2;
+    --ink-dim: #A39C8A;
+    --ink-faint: #5C574A;
+    --gold: #D4AF37;
+    --gold-bright: #F0CC5B;
+    --gold-dim: #4A3B14;
+    --green: #3FA66A;
+    --green-dim: #1E4A30;
+    --line: #2A2722;
+    --line-bright: #3D3829;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(212,175,55,0.10), transparent),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 3px);
+    color: var(--ink);
+    font-family: 'Archivo', sans-serif;
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  .mono { font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em; }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--gold);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  a { color: inherit; text-decoration: none; }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+
+  /* ---------- NAV ---------- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: rgba(11,11,10,0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .logo { font-family: 'Archivo Black', sans-serif; font-size: 1.05rem; letter-spacing: -0.01em; color: var(--gold); }
+  .logo .s { color: var(--ink); }
+  .nav-cta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase;
+    border: 1px solid var(--line-bright);
+    padding: 9px 16px; border-radius: 2px;
+    transition: all 0.2s ease;
+  }
+  .nav-cta:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ---------- HERO ---------- */
+  .hero { padding: 168px 0 110px; position: relative; overflow: hidden; }
+
+  #financeCanvas {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 0; pointer-events: none; opacity: 0.55;
+  }
+  .hero .wrap { position: relative; z-index: 1; }
+  .hero::after {
+    content: ''; position: absolute; inset: 0; z-index: 0;
+    background: linear-gradient(180deg, transparent 0%, transparent 60%, var(--bg) 100%);
+    pointer-events: none;
+  }
+
+  .hero-tag { margin-bottom: 28px; }
+
+  h1 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    max-width: 920px;
+    color: var(--ink);
+  }
+  h1 .accent { color: var(--gold); }
+
+  .hero-sub {
+    margin-top: 26px;
+    font-size: 1.15rem;
+    color: var(--ink-dim);
+    max-width: 600px;
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    margin-top: 42px;
+    display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.84rem; letter-spacing: 0.04em; text-transform: uppercase;
+    background: var(--gold);
+    color: #0B0B0A;
+    font-weight: 600;
+    padding: 16px 28px;
+    border-radius: 2px;
+    display: inline-flex; align-items: center; gap: 10px;
+    transition: all 0.2s ease;
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(212,175,55,0.25); }
+  .btn-primary svg { width: 14px; height: 14px; transition: transform 0.2s ease; }
+  .btn-primary:hover svg { transform: translateX(3px); }
+
+  .btn-secondary {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--ink-dim);
+    border-bottom: 1px solid var(--line-bright);
+    padding-bottom: 3px;
+    transition: all 0.2s ease;
+  }
+  .btn-secondary:hover { color: var(--gold); border-color: var(--gold); }
+
+  .hero-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; color: var(--ink-faint); letter-spacing: 0.02em; }
+  .hero-video-note { margin-top: 14px; font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--ink-faint); }
+
+  /* ---------- TICKER ---------- */
+  .ticker-band {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: var(--bg-raised);
+    overflow: hidden; white-space: nowrap; padding: 13px 0;
+  }
+  .ticker-track { display: inline-flex; animation: ticker 32s linear infinite; }
+  .ticker-track span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem; color: var(--ink-faint);
+    letter-spacing: 0.05em; padding: 0 2.2em; text-transform: uppercase;
+  }
+  .ticker-track span.gold-mk { color: var(--gold); }
+  .ticker-track span.green-mk { color: var(--green); }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ---------- SECTION SHARED ---------- */
+  section { padding: 110px 0; }
+  .section-line { border-top: 1px solid var(--line); }
+  .eyebrow-block { margin-bottom: 22px; }
+
+  h2 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+    line-height: 1.12;
+    max-width: 760px;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+  }
+
+  .lede { margin-top: 20px; font-size: 1.05rem; color: var(--ink-dim); max-width: 640px; line-height: 1.7; }
+
+  /* ---------- RIESGO BAJO (stat strip) ---------- */
+  .risk-strip {
+    margin-top: 56px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--line);
+  }
+  .risk-cell {
+    padding: 30px 28px;
+    border-left: 1px solid var(--line);
+  }
+  .risk-cell:first-child { border-left: none; }
+  .risk-num {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 2.3rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .risk-num.green { color: var(--green); }
+  .risk-label {
+    margin-top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.5;
+  }
+
+  /* ---------- MIEDO REAL ---------- */
+  .fear-block {
+    margin-top: 40px;
+    padding: 30px 34px;
+    border: 1px solid var(--line-bright);
+    background: var(--bg-raised);
+    border-left: 3px solid var(--gold);
+  }
+  .fear-block p { font-size: 1.04rem; color: var(--ink); line-height: 1.75; }
+  .fear-block p + p { margin-top: 14px; color: var(--ink-dim); }
+  .fear-block strong { color: var(--gold); }
+
+  /* ---------- BAÑO DE REALIDAD ---------- */
+  .reality {
+    background: var(--bg-raised);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .reality-inner { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 60px; align-items: center; }
+  .reality blockquote {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(1.4rem, 2.4vw, 1.95rem);
+    line-height: 1.34;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+  }
+  .reality blockquote .gold-q { color: var(--gold); }
+  .reality-cap {
+    margin-top: 28px; font-size: 1rem; color: var(--ink-dim); line-height: 1.65;
+    border-left: 2px solid var(--green); padding-left: 18px;
+  }
+  .reality-side {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: var(--ink-faint);
+    border: 1px solid var(--line-bright); padding: 26px; line-height: 1.9;
+  }
+  .reality-side .row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--line); }
+  .reality-side .row:last-child { border-bottom: none; }
+  .reality-side .row span:last-child { color: var(--ink); }
+  .reality-side .row.flag span:last-child { color: var(--gold); }
+
+  /* ---------- CURIOSITY HOOK ---------- */
+  .hook { text-align: center; }
+  .hook h2 { margin: 0 auto; max-width: 720px; }
+  .hook .lede { margin: 20px auto 0; text-align: center; }
+
+  .flow-visual { margin: 70px auto 0; max-width: 760px; position: relative; height: 96px; }
+  .flow-track { position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: var(--line-bright); transform: translateY(-50%); }
+  .flow-fill {
+    position: absolute; top: 50%; left: 0; height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--green));
+    transform: translateY(-50%); width: 0%;
+    animation: fill-flow 3.4s ease-in-out infinite;
+  }
+  @keyframes fill-flow { 0% { width: 0%; } 35% { width: 100%; } 65% { width: 100%; } 100% { width: 0%; } }
+  .flow-node {
+    position: absolute; top: 50%; transform: translate(-50%, -50%);
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--bg); border: 2px solid var(--line-bright); z-index: 2;
+  }
+  .flow-node.n1 { left: 4%; border-color: var(--gold); }
+  .flow-node.n2 { left: 50%; border-color: var(--green); }
+  .flow-node.n3 { left: 96%; border-color: var(--green); }
+  .flow-label {
+    position: absolute; top: calc(50% + 22px); transform: translateX(-50%);
+    font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--ink-faint); white-space: nowrap;
+  }
+  .flow-label.l1 { left: 4%; } .flow-label.l2 { left: 50%; } .flow-label.l3 { left: 96%; }
+
+  .hook-note {
+    margin-top: 56px; font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--ink-faint);
+    max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.8;
+  }
+  .hook-note .reveal-tag {
+    color: var(--gold); border: 1px solid var(--gold-dim); padding: 2px 8px; border-radius: 2px;
+    font-size: 0.72rem; margin-right: 8px;
+  }
+
+  /* ---------- VIDEO CTA BLOCK ---------- */
+  .video-cta {
+    margin-top: 46px;
+    text-align: center;
+  }
+  .video-cta-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    padding: 20px 30px;
+    border: 1px solid var(--line-bright);
+    background: var(--bg-raised);
+    border-radius: 4px;
+  }
+  .video-cta-icon {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .video-cta-icon svg { width: 16px; height: 16px; }
+  .video-cta-text { text-align: left; }
+  .video-cta-text .vt-title { font-weight: 700; color: var(--ink); font-size: 0.98rem; }
+  .video-cta-text .vt-sub { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--ink-faint); margin-top: 2px; }
+
+  /* ---------- CICLOS ---------- */
+  .ciclos-head { text-align: left; }
+  .ciclos { margin-top: 60px; display: flex; flex-direction: column; }
+  .ciclo {
+    display: grid; grid-template-columns: 90px 1fr auto; gap: 32px; align-items: start;
+    padding: 38px 0; border-top: 1px solid var(--line); position: relative;
+  }
+  .ciclo:last-child { border-bottom: 1px solid var(--line); }
+  .ciclo-num { font-family: 'Archivo Black', sans-serif; font-size: 2.6rem; color: var(--line-bright); line-height: 1; }
+  .ciclo.is-active .ciclo-num { color: var(--gold); }
+  .ciclo-body h3 { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 1.32rem; letter-spacing: -0.005em; color: var(--ink); }
+  .ciclo-body p { margin-top: 10px; color: var(--ink-dim); font-size: 0.98rem; line-height: 1.65; max-width: 480px; }
+  .ciclo-status { text-align: right; align-self: center; }
+  .status-pill {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 6px 12px; border-radius: 2px; white-space: nowrap; display: inline-block;
+  }
+  .status-pill.entry { background: rgba(212,175,55,0.12); color: var(--gold); border: 1px solid var(--gold-dim); }
+  .status-pill.locked { background: rgba(63,166,106,0.10); color: var(--green); border: 1px solid var(--green-dim); }
+
+  /* ---------- FINAL CTA ---------- */
+  .final-cta {
+    text-align: center;
+    background: var(--bg-raised);
+    border-top: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+  }
+  .final-cta::before {
+    content: '';
+    position: absolute; top: -50%; left: 50%;
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(212,175,55,0.10), transparent 70%);
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+  .final-cta .wrap { position: relative; z-index: 1; }
+  .final-cta h2 { margin: 0 auto; max-width: 640px; }
+  .final-cta .lede { margin: 18px auto 0; text-align: center; }
+  .final-cta .hero-actions { justify-content: center; margin-top: 40px; }
+
+  /* ---------- FOOTER ---------- */
+  footer { padding: 36px 0; border-top: 1px solid var(--line); }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  footer .mono { font-size: 0.74rem; color: var(--ink-faint); }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 760px) {
+    .risk-strip { grid-template-columns: 1fr; }
+    .risk-cell { border-left: none; border-top: 1px solid var(--line); }
+    .risk-cell:first-child { border-top: none; }
+    .reality-inner { grid-template-columns: 1fr; gap: 40px; }
+    .ciclo { grid-template-columns: 56px 1fr; }
+    .ciclo-status { grid-column: 1 / -1; text-align: left; margin-top: 4px; }
+    .ciclo-num { font-size: 1.9rem; }
+    section { padding: 76px 0; }
+    .hero { padding: 130px 0 70px; }
+    .flow-visual { display: none; }
+    .video-cta-card { flex-direction: column; text-align: center; }
+    .video-cta-text { text-align: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-track, .flow-fill, .eyebrow::before { animation: none !important; }
+    .flow-fill { width: 60%; }
+  }
+
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+</style>
 </head>
 <body>
 
-  <nav>
-    <div class="wrap">
-      <div class="logo">BACKER<span class="s">SS</span></div>
-      <a href="auth.html" class="nav-cta">Acceso Privado</a>
-    </div>
-  </nav>
+<nav>
+  <div class="wrap">
+    <div class="logo">BACKER<span class="s">SS</span></div>
+    <a href="presentacion.html" class="nav-cta">Ver presentación</a>
+  </div>
+</nav>
 
-  <header class="hero">
-    <canvas id="financeCanvas" aria-hidden="true"></canvas>
-    <div class="wrap">
-      <div class="eyebrow hero-tag">Protocolo de financiamiento entre emprendedores</div>
-      <h1>No pidas un préstamo al banco.<br>Genera <span class="accent">tu propio capital</span>.</h1>
-      <p class="hero-sub">Un campo de entrenamiento de ventas de 90 días con un acelerador financiero integrado. Domina la habilidad de vender, reúne a tus propios Backerss y fondea tu proyecto real sin deuda bancaria.</p>
-      <div class="hero-actions">
-        <a href="auth.html" class="btn-primary">
-          Aceptar el reto · Activar Ciclo 1
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </a>
-        <span class="hero-meta mono">90 DÍAS · 3 CICLOS · CERO BANCOS</span>
+<header class="hero">
+  <canvas id="financeCanvas" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="eyebrow hero-tag">Protocolo de Ejecución</div>
+    <h1>Aprende a generar ingresos arriesgando <span class="accent">menos de lo que cuesta una cena</span>.</h1>
+    <p class="hero-sub">Backerss es un campo de entrenamiento de 90 días donde desarrollas las habilidades que producen éxito económico — vendiendo de verdad, a personas reales, con un riesgo de entrada mínimo.</p>
+    <div class="hero-actions">
+      <a href="presentacion.html" class="btn-primary">
+        Ver la presentación
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <span class="hero-meta mono">90 DÍAS · 3 CICLOS · RIESGO MÍNIMO</span>
+    </div>
+    <p class="hero-video-note">8 minutos. Ahí te explicamos exactamente cómo funciona el método.</p>
+  </div>
+</header>
+
+<div class="ticker-band">
+  <div class="ticker-track">
+    <span class="gold-mk">RIESGO MÍNIMO DE ENTRADA</span>
+    <span class="green-mk">HABILIDAD QUE SE QUEDA PARA SIEMPRE</span>
+    <span>90 DÍAS DE PROTOCOLO</span>
+    <span class="gold-mk">PERSONAS REALES, RESULTADOS REALES</span>
+    <span class="green-mk">TUS BACKERSS, TU RESPALDO</span>
+    <span>3 CICLOS DE ENTRENAMIENTO</span>
+    <span class="gold-mk">RIESGO MÍNIMO DE ENTRADA</span>
+    <span class="green-mk">HABILIDAD QUE SE QUEDA PARA SIEMPRE</span>
+    <span>90 DÍAS DE PROTOCOLO</span>
+    <span class="gold-mk">PERSONAS REALES, RESULTADOS REALES</span>
+    <span class="green-mk">TUS BACKERSS, TU RESPALDO</span>
+    <span>3 CICLOS DE ENTRENAMIENTO</span>
+  </div>
+</div>
+
+<section class="section-line">
+  <div class="wrap">
+    <div class="eyebrow eyebrow-block">El miedo real</div>
+    <h2>¿Y si pierdo lo que invierto?</h2>
+    <p class="lede">Casi todo el que quiere emprender se queda atascado en esa misma pregunta. Es válida — y Backerss existe exactamente para responderla, antes de que tengas algo grande en juego.</p>
+
+    <div class="fear-block">
+      <p>Aquí también hay una inversión. Pero es tan baja, que el verdadero riesgo no es el dinero. <strong>Es seguir esperando.</strong></p>
+      <p>90 días de entrenamiento real, con personas reales, para descubrir si tienes lo necesario — antes de arriesgar algo que de verdad duela perder.</p>
+    </div>
+
+    <div class="risk-strip">
+      <div class="risk-cell">
+        <div class="risk-num">90</div>
+        <div class="risk-label">Días de entrenamiento real</div>
       </div>
-    </div>
-  </header>
-
-  <div class="ticker-band">
-    <div class="ticker-track">
-      <span class="hot">SIN PRÉSTAMOS BANCARIOS</span>
-      <span class="gold-mk">CAPITAL ENTRE EMPRENDEDORES</span>
-      <span>90 DÍAS DE PROTOCOLO</span>
-      <span class="hot">CERO COLATERAL</span>
-      <span class="gold-mk">TUS BACKERSS, TU RESPALDO</span>
-      <span>3 CICLOS AUTOFINANCIADOS</span>
-      <span class="hot">SIN PRÉSTAMOS BANCARIOS</span>
-      <span class="gold-mk">CAPITAL ENTRE EMPRENDEDORES</span>
-      <span>90 DÍAS DE PROTOCOLO</span>
-      <span class="hot">CERO COLATERAL</span>
-      <span class="gold-mk">TUS BACKERSS, TU RESPALDO</span>
-      <span>3 CICLOS AUTOFINANCIADOS</span>
+      <div class="risk-cell">
+        <div class="risk-num">3</div>
+        <div class="risk-label">Ciclos de habilidad progresiva</div>
+      </div>
+      <div class="risk-cell">
+        <div class="risk-num green">Mínimo</div>
+        <div class="risk-label">Riesgo de entrada — los detalles, en la presentación</div>
+      </div>
     </div>
   </div>
+</section>
 
-  <section class="section-line">
-    <div class="wrap">
-      <div class="eyebrow eyebrow-block">El manifiesto</div>
-      <h2>La trampa vs. la libertad</h2>
-      <p class="lede">El sistema financiero tradicional te vende una mentira: que para arrancar necesitas amarrarte a una deuda antes de abrir tus puertas. Backerss cambia a quién le pides permiso.</p>
-
-      <div class="manifest-grid">
-        <div class="manifest-col trap">
-          <span class="manifest-label">La trampa</span>
-          <div class="big-num">$50,000</div>
-          <p>Préstamo bancario, intereses ridículos, garantías y un historial de crédito que decide si tu proyecto nace.</p>
-          <p>Si el banco dice que no, tu proyecto se queda en una idea.</p>
-        </div>
-        <div class="manifest-col freedom">
-          <span class="manifest-label">La libertad</span>
-          <p style="font-size:1.4rem; font-weight:800; color:var(--gold); margin-bottom:4px;">Backerss</p>
-          <p>Otros emprendedores te respaldan económicamente mientras tú desarrollas la única habilidad que ningún banco enseña: vender.</p>
-          <p>Sin colateral. Sin historial de crédito. Sin permiso de nadie más que tus resultados.</p>
-        </div>
-      </div>
-
-      <div class="manifest-foot">
-        No buscamos que un banco crea en ti. Buscamos que <strong>otros emprendedores</strong> lo hagan — y que tú te ganes ese respaldo, ciclo por ciclo.
-      </div>
+<section class="reality">
+  <div class="wrap reality-inner">
+    <div>
+      <div class="eyebrow eyebrow-block">El simulador de bajo riesgo</div>
+      <blockquote>Si no puedes generar resultados aquí, con guiones listos y un sistema de copiar y pegar... <span class="gold-q">el mercado real, sin red de protección, te va a costar mucho más caro.</span></blockquote>
+      <p class="reality-cap">Backerss no es un curso. Es tu simulador real — con personas reales, decisiones reales y resultados reales, antes de que arriesgues algo que de verdad duela perder.</p>
     </div>
-  </section>
-
-  <section class="reality">
-    <div class="wrap reality-inner">
-      <div>
-        <div class="eyebrow eyebrow-block">El baño de realidad</div>
-        <div>blockquoteSi hoy, con guiones ya escritos y un sistema de copiar y pegar, <span class="hot-q">no eres capaz de cerrar un grupo selecto de Backerss</span>... ¿cómo pretendes levantar una infraestructura empresarial allá afuera?</blockquote></div>
-        <p class="reality-cap">Esto no es un curso. Es tu simulador real — con dinero real, rechazo real y resultados reales, antes de que arriesgues tu proyecto de vida.</p>
-      </div>
-      <div class="reality-side mono">
-        <div class="row"><span>GUIONES</span><span>Listos</span></div>
-        <div class="row"><span>SISTEMA</span><span>Copiar / Pegar</span></div>
-        <div class="row"><span>CAMPO</span><span>Real</span></div>
-        <div class="row flag"><span>EXCUSAS</span><span>No aplican</span></div>
-      </div>
+    <div class="reality-side mono">
+      <div class="row"><span>GUIONES</span><span>Listos</span></div>
+      <div class="row"><span>SISTEMA</span><span>Copiar / Pegar</span></div>
+      <div class="row"><span>CAMPO</span><span>Real</span></div>
+      <div class="row flag"><span>RIESGO</span><span>Mínimo</span></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="section-line hook">
-    <div class="wrap">
-      <div class="eyebrow eyebrow-block" style="justify-content:center;">La pregunta que importa</div>
-      <h2>¿Cómo se convierte tu primera venta en el capital de tu proyecto?</h2>
-      <p class="lede">Eso te lo mostramos por dentro del protocolo. Lo que sí podemos decirte: cada ciclo se financia con las ganancias del anterior. Nadie vuelve a pedir un préstamo.</p>
+<section class="section-line hook">
+  <div class="wrap">
+    <div class="eyebrow eyebrow-block" style="justify-content:center;">Lo que sales sabiendo</div>
+    <h2>¿Qué te llevas después de 90 días?</h2>
+    <p class="lede">Una habilidad que ya no se puede perder, y un capital que construiste mientras la entrenabas. La presentación completa te muestra exactamente cómo funcionan los 3 ciclos.</p>
 
-      <div class="flow-visual" aria-hidden="true">
-        <div class="flow-track"></div>
-        <div class="flow-fill"></div>
-        <div class="flow-node n1"></div>
-        <div class="flow-node n2"></div>
-        <div class="flow-node n3"></div>
-        <div class="flow-label l1">CICLO 1</div>
-        <div class="flow-label l2">CICLO 2</div>
-        <div class="flow-label l3">CICLO 3</div>
+    <div class="flow-visual" aria-hidden="true">
+      <div class="flow-track"></div>
+      <div class="flow-fill"></div>
+      <div class="flow-node n1"></div>
+      <div class="flow-node n2"></div>
+      <div class="flow-node n3"></div>
+      <div class="flow-label l1">CICLO 1</div>
+      <div class="flow-label l2">CICLO 2</div>
+      <div class="flow-label l3">CICLO 3</div>
+    </div>
+
+    <p class="hook-note"><span class="reveal-tag">DENTRO DE LA PRESENTACIÓN</span>cómo convertir tu primera venta en el capital de tu propio proyecto.</p>
+
+    <div class="video-cta">
+      <a href="presentacion.html" class="video-cta-card">
+        <span class="video-cta-icon">
+          <svg viewBox="0 0 24 24" fill="#0B0B0A"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+        <span class="video-cta-text">
+          <span class="vt-title">Mira cómo funciona el protocolo</span>
+          <span class="vt-sub mono">8 MIN · EXPLICACIÓN COMPLETA DEL MÉTODO</span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="ciclos" class="section-line">
+  <div class="wrap">
+    <div class="eyebrow eyebrow-block">La estructura</div>
+    <h2 class="ciclos-head">Tres ciclos. Una sola entrada de bolsillo.</h2>
+    <p class="lede">Cada ciclo te prepara para desbloquear el siguiente. Tú pones el esfuerzo — el sistema hace el resto. El cómo, te lo mostramos en la presentación.</p>
+
+    <div class="ciclos">
+      <div class="ciclo is-active">
+        <div class="ciclo-num mono">01</div>
+        <div class="ciclo-body">
+          <h3>Prospección y Cierre</h3>
+          <p>El paso que rompe la inercia de tu voluntad. Entrenamiento práctico y libretos llave en mano para curarte del miedo al rechazo en el campo de batalla.</p>
+        </div>
+        <div class="ciclo-status">
+          <span class="status-pill entry">Punto de entrada</span>
+        </div>
       </div>
 
-      <p class="hook-note"><span class="reveal-tag">DENTRO DEL PROTOCOLO</span>el mecanismo completo de cómo tus Backerss financian tu salida del sistema bancario.</p>
-    </div>
-  </section>
-
-  <section id="ciclos" class="section-line">
-    <div class="wrap">
-      <div class="eyebrow eyebrow-block">La estructura</div>
-      <h2 class="ciclos-head">Tres ciclos. Una sola entrada de bolsillo.</h2>
-      <p class="lede">Cada ciclo se desbloquea con las ganancias del anterior. El dinero no sale de tu cuenta — sale de tus cierres.</p>
-
-      <div class="ciclos">
-        <div class="ciclo is-active">
-          <div class="ciclo-num mono">01</div>
-          <div class="ciclo-body">
-            <h3>Prospección y Cierre</h3>
-            <p>El paso que rompe la inercia de tu voluntad. Entrenamiento práctico y libretos llave en mano para curarte del miedo al rechazo en el campo de batalla.</p>
-          </div>
-          <div class="ciclo-status">
-            <span class="status-pill entry">Punto de entrada</span>
-          </div>
+      <div class="ciclo">
+        <div class="ciclo-num mono">02</div>
+        <div class="ciclo-body">
+          <h3>Gestión y Liderazgo</h3>
+          <p>Aprende a elevar los estándares de tus Backerss y auditar flujos de equipos.</p>
         </div>
-
-        <div class="ciclo">
-          <div class="ciclo-num mono">02</div>
-          <div class="ciclo-body">
-            <h3>Gestión y Liderazgo</h3>
-            <p>Se activa usando tus propias ganancias del Ciclo 1. Aprende a elevar los estándares de tus Backerss y auditar flujos de equipos.</p>
-          </div>
-          <div class="ciclo-status">
-            <span class="status-pill locked">Autofinanciado</span>
-          </div>
+        <div class="ciclo-status">
+          <span class="status-pill locked">Siguiente nivel</span>
         </div>
+      </div>
 
-        <div class="ciclo">
-          <div class="ciclo-num mono">03</div>
-          <div class="ciclo-body">
-            <h3>Arquitectura de Sistemas</h3>
-            <p>Maestría en embudos y pensamiento sistémico para redireccionar tu capital acumulado hacia tu proyecto de vida definitivo.</p>
-          </div>
-          <div class="ciclo-status">
-            <span class="status-pill locked">Autofinanciado</span>
-          </div>
+      <div class="ciclo">
+        <div class="ciclo-num mono">03</div>
+        <div class="ciclo-body">
+          <h3>Arquitectura de Sistemas</h3>
+          <p>Maestría en embudos y pensamiento sistémico para redireccionar tu capital acumulado hacia tu proyecto de vida definitivo.</p>
+        </div>
+        <div class="ciclo-status">
+          <span class="status-pill locked">Siguiente nivel</span>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <footer class="section-line">
-    <div class="wrap">
-      <span class="logo" style="font-size:0.85rem;">BACKER<span class="s">SS</span></span>
-      <span class="mono">PROTOCOLO 90 DÍAS · CICLO 1 → 2 → 3</span>
+<section class="final-cta">
+  <div class="wrap">
+    <div class="eyebrow eyebrow-block" style="justify-content:center;">¿Listo para ver cómo funciona?</div>
+    <h2>90 días. Un riesgo mínimo.<br>Una habilidad que te queda para siempre.</h2>
+    <p class="lede">Antes de unirte, mira exactamente cómo está diseñado el protocolo — sin sorpresas, sin letra pequeña.</p>
+    <div class="hero-actions">
+      <a href="presentacion.html" class="btn-primary">
+        Ver la presentación
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
     </div>
-  </footer>
+  </div>
+</section>
 
-  <script src="app.js"></script>
+<footer>
+  <div class="wrap">
+    <span class="logo" style="font-size:0.85rem;">BACKER<span class="s">SS</span></span>
+    <span class="mono">PROTOCOLO 90 DÍAS · CICLO 1 → 2 → 3</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var canvas = document.getElementById('financeCanvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var symbols = ['$', '↗', '✓', '%'];
+  var colors = [
+    'rgba(212,175,55,', // gold
+    'rgba(63,166,106,', // green
+    'rgba(163,156,138,' // dim ink, neutral
+  ];
+
+  var particles = [];
+  var hero, w, h, dpr;
+
+  function resize() {
+    hero = canvas.parentElement;
+    w = hero.offsetWidth;
+    h = hero.offsetHeight;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    seed();
+  }
+
+  function rand(min, max) { return Math.random() * (max - min) + min; }
+
+  function seed() {
+    var count = w < 640 ? 14 : 26;
+    particles = [];
+    for (var i = 0; i < count; i++) {
+      particles.push(makeParticle(true));
+    }
+  }
+
+  function makeParticle(initial) {
+    var colorIdx = Math.random() < 0.5 ? 0 : (Math.random() < 0.75 ? 1 : 2);
+    return {
+      x: rand(0, w),
+      y: initial ? rand(0, h) : h + rand(10, 60),
+      size: rand(11, 22),
+      speed: rand(6, 16) / 100,
+      drift: rand(-0.12, 0.12),
+      symbol: symbols[Math.floor(rand(0, symbols.length))],
+      color: colors[colorIdx],
+      alphaBase: rand(0.12, 0.34),
+      phase: rand(0, Math.PI * 2),
+      flicker: rand(0.002, 0.006)
+    };
+  }
+
+  var t = 0;
+  function tick() {
+    t += 1;
+    ctx.clearRect(0, 0, w, h);
+    for (var i = 0; i < particles.length; i++) {
+      var p = particles[i];
+      p.y -= p.speed;
+      p.x += p.drift;
+      var alpha = p.alphaBase + Math.sin(t * p.flicker + p.phase) * 0.08;
+      if (alpha < 0) alpha = 0;
+      ctx.font = (p.size) + 'px JetBrains Mono, monospace';
+      ctx.fillStyle = p.color + alpha.toFixed(3) + ')';
+      ctx.fillText(p.symbol, p.x, p.y);
+
+      if (p.y < -30) {
+        particles[i] = makeParticle(false);
+        particles[i].x = rand(0, w);
+      }
+    }
+    if (!reduceMotion) {
+      requestAnimationFrame(tick);
+    }
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+
+  if (reduceMotion) {
+    tick();
+  } else {
+    requestAnimationFrame(tick);
+  }
+})();
+</script>
 </body>
 </html>
