@@ -1,21 +1,8 @@
 # Actualizacion Forzada del Protocolo Backerss - Rompiendo Cache de Hyperlift
 FROM nginx:alpine
 
-# 1. Creamos la configuración interna de Nginx al vuelo para evitar archivos de configuración faltantes en el repositorio
-RUN echo 'server { \
-    listen 80; \
-    listen [::]:80; \
-    server_name localhost; \
-    location / { \
-        root   /usr/share/nginx/html; \
-        index  index.html index.htm; \
-        try_files $uri $uri/ /index.html; \
-    } \
-    error_page   500 502 503 504  /50x.html; \
-    location = /50x.html { \
-        root   /usr/share/nginx/html; \
-    } \
-}' > /etc/nginx/conf.d/default.conf
+# 1. Creamos la configuración interna de Nginx en una sola línea limpia para evitar fallos de sintaxis en el contenedor
+RUN printf "server {\n    listen 80;\n    listen [::]:80;\n    server_name localhost;\n    location / {\n        root /usr/share/nginx/html;\n        index index.html index.htm;\n        try_files \$uri \$uri/ /index.html;\n    }\n    error_page 500 502 503 504 /50x.html;\n    location = /50x.html {\n        root /usr/share/nginx/html;\n    }\n}\n" > /etc/nginx/conf.d/default.conf
 
 # 2. Copiamos tus 5 archivos modulares de la interfaz Verde y Oro
 COPY index.html /usr/share/nginx/html/
