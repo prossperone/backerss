@@ -1,3 +1,4 @@
+# Actualizacion Forzada del Protocolo Backerss - Rompiendo Cache de Hyperlift
 FROM nginx:alpine
 
 # 1. Creamos la configuración interna de Nginx al vuelo para evitar archivos de configuración faltantes en el repositorio
