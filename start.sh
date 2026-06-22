@@ -1,3 +1,4 @@
 #!/bin/sh
-sed -i "s/\$PORT/$PORT/g" /etc/nginx/conf.d/default.conf
+envsubst '$PORT' < /etc/nginx/conf.d/default.conf > /tmp/default.conf
+cp /tmp/default.conf /etc/nginx/conf.d/default.conf
 nginx -g 'daemon off;'
