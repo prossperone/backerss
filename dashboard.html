@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backerss — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.344.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+  <div class="app-layout">
+    <div class="app-header">
+      <div class="logo" style="font-size: 1.05rem;">BACKER<span class="s">SS</span></div>
+      <span id="headerCycleBadge" style="border: 1px solid var(--gold); padding: 4px 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--gold); font-weight: bold; letter-spacing: 0.05em;">CICLO 1 ACTIVO</span>
+    </div>
+    <div class="timer-banner">
+      ⏳ PROTOCOLO DE 90 DÍAS — LA INERCIA HA SIDO ROTA
+    </div>
+
+    <!-- APP SUB-VIEW: MOTOR -->
+    <div id="sub-inicio" class="app-content sub-view-app">
+      <div class="motor-container">
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--ink-dim); margin-bottom: 14px; letter-spacing: 0.12em; text-transform: uppercase;">Motor de Ciclos continuos</p>
+        <div class="motor-outer">
+          <div class="motor-inner">
+            <span class="motor-number" id="centerNumber">1</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="constelacion">
+        <div class="constelacion-header">
+          <span>Constelación Directa</span>
+          <span style="color: var(--gold); font-weight: bold;">Sugerido: 7 Backerss</span>
+        </div>
+        <div class="backers-grid" id="backersGrid"></div>
+        <button class="btn-primary" style="width: 100%; margin-top: 24px; padding: 12px; font-size: 0.78rem; justify-content: center;" onclick="addSimulatedBacker()">
+          Simular Registro (+1 Backer)
+        </button>
+      </div>
+    </div>
+
+    <!-- APP SUB-VIEW: ACADEMIA -->
+    <div id="sub-academia" class="app-content sub-view-app" style="display: none;">
+      <h3 style="font-family: 'Archivo Black', sans-serif; margin-bottom: 20px; font-size: 1.1rem; letter-spacing: -0.01em;">Kits de Entrenamiento</h3>
+      
+      <div class="tool-card">
+        <h4><i data-lucide="unlock" style="color: var(--green); width:16px;"></i> Ciclo 1: Protocolo Anti-Miedo</h4>
+        <p style="font-size: 0.82rem; color: var(--ink-dim); margin-top: 6px;">Copia este guion y utilízalo en tus canales directos para filtrar emprendedores interesados.</p>
+        <div class="code-box" id="scriptText">Estoy armando un equipo cerrado de emprendedores (mis primeros Backerss). El objetivo es apoyarnos económicamente con un sistema matemático para generar capital semilla en los próximos 90 días sin deudas bancarias. El acceso inicial es de solo $20 USD. Si estás listo para ejecutar, responde 'CAPITAL'.</div>
+        <button class="nav-cta" style="font-size: 0.68rem; padding: 6px 12px;" onclick="copyScript()">Copiar Libreto</button>
+      </div>
+
+      <div class="tool-card" style="opacity: 0.4;">
+        <h4><i data-lucide="lock" style="width:16px; color: var(--ink-faint);"></i> Ciclo 2: Liderazgo Ejecutivo</h4>
+        <p style="font-size: 0.82rem; color: var(--ink-faint); margin-top: 6px;">Bloqueado. Requires completar la madurez operativa de tu primer ciclo.</p>
+      </div>
+    </div>
+
+    <!-- APP SUB-VIEW: BÓVEDA -->
+    <div id="sub-boveda" class="app-content sub-view-app" style="display: none;">
+      <div class="vaca-box">
+        <p style="font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--ink-dim); text-transform: uppercase;">Capital Semilla Acumulado</p>
+        <div class="vaca-amount" id="bovedaAmount">$0.00 <span style="font-size: 0.85rem; color: var(--ink-faint); font-family: 'JetBrains Mono'; font-weight: normal;">USD</span></div>
+        <button class="nav-cta" style="font-size: 0.7rem; padding: 8px 16px; border-color: var(--gold); color: var(--gold);" onclick="alert('Procesando transferencia...')">Retirar Fondos</button>
+      </div>
+
+      <h4 style="margin-bottom: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.76rem; color: var(--ink-dim); text-transform: uppercase;">Historial de Comisiones</h4>
+      <div style="background: var(--bg-raised); border: 1px solid var(--line); border-radius: 2px;" id="feedContainer">
+        <div class="feed-item" style="color: var(--ink-faint); text-align: center; display: block; padding: 20px;">Esperando primera activación del Ciclo 1.</div>
+      </div>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="nav-bar">
+      <button class="nav-item active" id="navBtn-inicio" onclick="switchSubView('inicio')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="20" x2="12" y2="10"></line><line x1="18" y1="20" x2="18" y2="4"></line><line x1="6" y1="20" x2="6" y2="16"></line></svg>
+        <span>Motor</span>
+      </button>
+      <button class="nav-item" id="navBtn-academia" onclick="switchSubView('academia')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5v-15z"></path></svg>
+        <span>Academia</span>
+      </button>
+      <button class="nav-item" id="navBtn-boveda" onclick="switchSubView('boveda')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12V8H4v4"></path><path d="M4 12v6h16v-6H4z"></path><circle cx="12" cy="15" r="1"></circle></svg>
+        <span>Bóveda</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+    
+    function switchSubView(subId) {
+      document.querySelectorAll('.sub-view-app').forEach(v => v.style.display = 'none');
+      document.getElementById('sub-' + subId).style.display = 'block';
+      document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+      document.getElementById('navBtn-' + subId).classList.add('active');
+    }
+
+    let backersCount = 0;
+    let totalCapital = 0;
+
+    function addSimulatedBacker() {
+      backersCount++;
+      const grid = document.getElementById('backersGrid');
+      if(backersCount === 1) grid.innerHTML = ''; 
+      
+      const bubble = document.createElement('div');
+      bubble.className = 'backer-bubble';
+      bubble.innerText = 'B' + backersCount;
+      grid.appendChild(bubble);
+
+      totalCapital += 10;
+      document.getElementById('bovedaAmount').innerHTML = `$${totalCapital}.00 <span style="font-size: 0.85rem; color: var(--ink-faint); font-family: 'JetBrains Mono'; font-weight: normal;">USD</span>`;
+
+      const feed = document.getElementById('feedContainer');
+      if(backersCount === 1) feed.innerHTML = '';
+      
+      const item = document.createElement('div');
+      item.className = 'feed-item';
+      item.innerHTML = `<span>Acción Directa (Backer #${backersCount})</span><span class="amount">+$10.00</span>`;
+      feed.insertBefore(item, feed.firstChild);
+
+      if (totalCapital >= 70 && totalCapital < 130) {
+        document.getElementById('centerNumber').innerText = '2';
+        document.getElementById('headerCycleBadge').innerText = 'CICLO 2 ACTIVO';
+      } else if (totalCapital >= 130) {
+        document.getElementById('centerNumber').innerText = '3';
+        document.getElementById('headerCycleBadge').innerText = 'CICLO 3 MAESTRÍA';
+      }
+    }
+
+    function copyScript() {
+      const text = document.getElementById('scriptText').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('¡Libreto comercial copiado con éxito al portapapeles!');
+      });
+    }
+  </script>
+</body>
+</html>
