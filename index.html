@@ -303,7 +303,11 @@
     border: 1px solid var(--line-bright);
     background: var(--bg-raised);
     border-radius: 4px;
+    color: var(--ink);
+    font-family: 'Archivo', sans-serif;
+    transition: border-color 0.2s ease;
   }
+  .video-cta-card:hover { border-color: var(--gold); }
   .video-cta-icon {
     width: 44px; height: 44px;
     border-radius: 50%;
@@ -384,6 +388,118 @@
   }
 
   :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  /* ---------- TRAILER MODAL (9:16 vertical) ---------- */
+  .trailer-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5,5,4,0.88);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .trailer-modal-overlay.is-open { opacity: 1; pointer-events: auto; }
+
+  .trailer-modal {
+    width: 100%;
+    max-width: 360px;
+    background: var(--bg-raised);
+    border: 1px solid var(--gold-dim);
+    border-radius: 10px;
+    overflow: hidden;
+    transform: scale(0.96) translateY(10px);
+    transition: transform 0.25s ease;
+    box-shadow: 0 40px 100px -20px rgba(0,0,0,0.7);
+  }
+  .trailer-modal-overlay.is-open .trailer-modal { transform: scale(1) translateY(0); }
+
+  .trailer-modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .tm-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tm-title::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 8px var(--gold);
+  }
+  .tm-close {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 1px solid var(--line-bright);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-dim);
+    transition: all 0.2s ease;
+  }
+  .tm-close:hover { border-color: var(--gold); color: var(--gold); }
+  .tm-close svg { width: 12px; height: 12px; }
+
+  .trailer-modal-body {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    background: #000;
+  }
+  .trailer-modal-body iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: 0;
+  }
+
+  .tm-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background: radial-gradient(ellipse 70% 50% at 50% 40%, rgba(212,175,55,0.10), transparent), var(--bg-card);
+  }
+  .tm-play {
+    width: 58px; height: 58px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .tm-play svg { width: 20px; height: 20px; margin-left: 2px; }
+  .tm-ph-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--ink-dim); text-align: center; padding: 0 20px; }
+  .tm-ph-label .dur { color: var(--gold); }
+
+  .trailer-modal-foot {
+    padding: 12px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+
+  @media (max-width: 420px) {
+    .trailer-modal { max-width: 92vw; }
+  }
 </style>
 </head>
 <body>
@@ -493,15 +609,15 @@
     <p class="hook-note"><span class="reveal-tag">DENTRO DE LA PRESENTACIÓN</span>cómo multiplicar tu esfuerzo a través de tu propio equipo de Backerss.</p>
 
     <div class="video-cta">
-      <a href="presentacion.html" class="video-cta-card">
+      <button type="button" class="video-cta-card" id="openTrailerModal">
         <span class="video-cta-icon">
           <svg viewBox="0 0 24 24" fill="#0B0B0A"><path d="M8 5v14l11-7z"/></svg>
         </span>
         <span class="video-cta-text">
-          <span class="vt-title">Mira cómo funciona el protocolo</span>
-          <span class="vt-sub mono">8 MIN · EXPLICACIÓN COMPLETA DEL MÉTODO</span>
+          <span class="vt-title">Mira el adelanto</span>
+          <span class="vt-sub mono">10 SEG · UN VISTAZO ANTES DE LA PRESENTACIÓN</span>
         </span>
-      </a>
+      </button>
     </div>
   </div>
 </section>
@@ -657,6 +773,68 @@
     tick();
   } else {
     requestAnimationFrame(tick);
+  }
+})();
+</script>
+
+<div class="trailer-modal-overlay" id="trailerModalOverlay">
+  <div class="trailer-modal" role="dialog" aria-modal="true" aria-labelledby="tmTitle">
+    <div class="trailer-modal-head">
+      <span class="tm-title" id="tmTitle">Adelanto · 10 seg</span>
+      <button type="button" class="tm-close" id="tmCloseBtn" aria-label="Cerrar video">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="trailer-modal-body" id="tmBody">
+      <!--
+        INSTRUCCIONES PARA CONECTAR EL TRAILER REAL (Vimeo, formato 9:16):
+
+        Reemplaza el div .tm-placeholder de abajo por:
+        <iframe src="https://player.vimeo.com/video/TU_ID_DE_VIMEO?title=0&byline=0&portrait=0&autoplay=1"
+          title="Trailer Backerss" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+
+        El contenedor .trailer-modal-body ya está forzado a aspect-ratio 9/16,
+        así que el iframe se ajusta automáticamente al formato vertical del video.
+      -->
+      <div class="tm-placeholder" id="tmPlaceholder">
+        <span class="tm-play"><svg viewBox="0 0 24 24" fill="#0B0B0A"><path d="M8 5v14l11-7z"/></svg></span>
+        <span class="tm-ph-label">Trailer pendiente de conectar &nbsp;·&nbsp; <span class="dur">10 seg</span></span>
+      </div>
+    </div>
+    <div class="trailer-modal-foot mono">SOLO EXISTE UN DÍA. HOY.</div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var openBtn = document.getElementById('openTrailerModal');
+  var overlay = document.getElementById('trailerModalOverlay');
+  var closeBtn = document.getElementById('tmCloseBtn');
+  var placeholder = document.getElementById('tmPlaceholder');
+
+  function openModal() {
+    overlay.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    overlay.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  if (openBtn) openBtn.addEventListener('click', openModal);
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (overlay) {
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) closeModal();
+    });
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
+  });
+  if (placeholder) {
+    placeholder.addEventListener('click', function () {
+      placeholder.querySelector('.tm-ph-label').innerHTML = 'Conecta tu link de Vimeo aquí<br>(ver instrucciones en el código)';
+    });
   }
 })();
 </script>
