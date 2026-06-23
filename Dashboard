@@ -620,7 +620,7 @@
     </div>
     <div class="mission-body">
       <h2 class="mission-title">El Baño de Realidad</h2>
-      <p class="mission-desc">Tu meta mínima: 20 contactos reales desde tu página de captura. No estás cazando un "no" — estás cazando el contacto número 20. Si el camino te regala un "sí" antes de llegar, bienvenido sea: sigue contactando igual.</p>
+      <p class="mission-desc">Tu meta mínima: 20 contactos reales desde tu página de captura. No estás cazando un "no" — estás cazando el contacto número 20. Si tu esfuerzo te da un "sí" antes de llegar, sigue contactando igual: el piso no cambia.</p>
 
       <button type="button" class="mission-video-link" id="openVideoModal">
         <span class="mvl-icon"><svg viewBox="0 0 24 24" fill="#0B0B0A"><path d="M8 5v14l11-7z"/></svg></span>
@@ -685,7 +685,7 @@
           <span class="constellation-title">Tu Constelación</span>
           <span class="constellation-count mono" id="constellationCount">0 Backers</span>
         </div>
-        <p class="constellation-sub">Cada "sí" es un Backer nuevo en tu red. Sin límite, sin techo — si la vida te sorprende con más de 20, mejor todavía.</p>
+        <p class="constellation-sub">Cada Backer aquí es esfuerzo, no casualidad. 20 es el piso — qué tan alto llegues, depende solo de ti.</p>
         <div class="constellation-field" id="constellationField">
           <button type="button" class="add-backer-btn" id="addBackerBtn" aria-label="Registrar nuevo Backer">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
