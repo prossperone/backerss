@@ -171,9 +171,13 @@
     align-items: center;
     gap: 12px;
     border: 1px solid var(--line-bright);
+    background: transparent;
     padding: 13px 20px;
     border-radius: 4px;
     transition: all 0.2s ease;
+    color: var(--ink);
+    font-family: 'Archivo', sans-serif;
+    text-align: left;
   }
   .mission-video-link:hover { border-color: var(--gold); background: rgba(212,175,55,0.06); }
   .mvl-icon {
@@ -247,6 +251,84 @@
   .check-label { font-size: 0.94rem; color: var(--ink); transition: color 0.18s ease; }
   .check-item.checked .check-label { color: var(--ink-faint); text-decoration: line-through; text-decoration-color: var(--line-bright); }
   .check-meta { margin-top: 3px; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--ink-faint); }
+
+  /* ---------- CONSTELACIÓN (open-ended Backers registry) ---------- */
+  .constellation {
+    margin-top: 28px;
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+  }
+  .constellation-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .constellation-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .constellation-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--green);
+  }
+  .constellation-sub {
+    font-size: 0.82rem;
+    color: var(--ink-faint);
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  .constellation-field {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    min-height: 56px;
+  }
+
+  .backer-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    animation: node-appear 0.4s ease;
+  }
+  @keyframes node-appear {
+    from { opacity: 0; transform: scale(0.5); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .backer-node .dot {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 10px rgba(63,166,106,0.7), 0 0 2px rgba(63,166,106,1);
+  }
+  .backer-node .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.64rem;
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .add-backer-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1.5px dashed var(--line-bright);
+    background: transparent;
+    color: var(--ink-faint);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+  .add-backer-btn:hover { border-color: var(--green); color: var(--green); }
+  .add-backer-btn svg { width: 16px; height: 16px; }
 
   /* ---------- COMPLETE BUTTON ---------- */
   .mission-complete {
@@ -344,6 +426,123 @@
   .vault-note-text { font-size: 0.88rem; color: var(--ink-dim); line-height: 1.55; }
   .vault-note-text strong { color: var(--green); }
 
+  /* ---------- VIDEO MODAL ---------- */
+  .video-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5,5,4,0.86);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .video-modal-overlay.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .video-modal {
+    width: 100%;
+    max-width: 760px;
+    background: var(--bg-card);
+    border: 1px solid var(--gold-dim);
+    border-radius: 8px;
+    overflow: hidden;
+    transform: scale(0.96) translateY(10px);
+    transition: transform 0.25s ease;
+    box-shadow: 0 40px 100px -20px rgba(0,0,0,0.7);
+  }
+  .video-modal-overlay.is-open .video-modal {
+    transform: scale(1) translateY(0);
+  }
+
+  .video-modal-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--line);
+  }
+  .vm-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .vm-title::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 8px var(--gold);
+  }
+  .vm-close {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--bg-raised);
+    border: 1px solid var(--line-bright);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-dim);
+    transition: all 0.2s ease;
+  }
+  .vm-close:hover { border-color: var(--gold); color: var(--gold); }
+  .vm-close svg { width: 13px; height: 13px; }
+
+  .video-modal-body {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+  }
+  .video-modal-body iframe {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    border: 0;
+  }
+
+  /* Placeholder shown until a real video URL is connected */
+  .vm-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background: radial-gradient(ellipse 60% 60% at 50% 40%, rgba(212,175,55,0.08), transparent), var(--bg-raised);
+  }
+  .vm-play {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .vm-play svg { width: 22px; height: 22px; margin-left: 2px; }
+  .vm-ph-label { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--ink-dim); }
+  .vm-ph-label .dur { color: var(--gold); }
+
+  .video-modal-foot {
+    padding: 16px 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--line);
+  }
+
+  @media (max-width: 600px) {
+    .video-modal { max-width: 100%; }
+  }
+
   /* ---------- TOAST ---------- */
   .toast {
     position: fixed;
@@ -421,20 +620,20 @@
     </div>
     <div class="mission-body">
       <h2 class="mission-title">El Baño de Realidad</h2>
-      <p class="mission-desc">Tu única meta: completar 20 contactos reales desde tu página de captura. No estás cazando un "no" — estás cazando el contacto número 20. Lo que pase en el camino es información, no juicio.</p>
+      <p class="mission-desc">Tu meta mínima: 20 contactos reales desde tu página de captura. No estás cazando un "no" — estás cazando el contacto número 20. Si el camino te regala un "sí" antes de llegar, bienvenido sea: sigue contactando igual.</p>
 
-      <a href="#" class="mission-video-link">
+      <button type="button" class="mission-video-link" id="openVideoModal">
         <span class="mvl-icon"><svg viewBox="0 0 24 24" fill="#0B0B0A"><path d="M8 5v14l11-7z"/></svg></span>
         <span>
           <span class="mvl-text">Ver Video Briefing — Misión 1</span><br>
           <span class="mvl-sub">60 SEG · CONTEXTO, OBJETIVO Y POR QUÉ</span>
         </span>
-      </a>
+      </button>
 
       <div class="goal-strip">
         <div class="goal-cell">
           <div class="goal-num mono" id="contactCount">0 / 20</div>
-          <div class="goal-label">Contactos reales</div>
+          <div class="goal-label">Contactos reales · mínimo</div>
         </div>
         <div class="goal-cell">
           <div class="goal-num mono" id="dayCount">Día 1</div>
@@ -475,9 +674,22 @@
         <div class="check-item" data-value="0">
           <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
           <div class="check-text">
-            <div class="check-label">Tuve al menos una conversación que no esperaba (un "sí" o una objeción real)</div>
+            <div class="check-label">Tuve al menos una conversación que no esperaba (una objeción real, o algo distinto a un "no")</div>
             <div class="check-meta mono">REGISTRO LIBRE — NO SUMA AL CONTADOR</div>
           </div>
+        </div>
+      </div>
+
+      <div class="constellation">
+        <div class="constellation-head">
+          <span class="constellation-title">Tu Constelación</span>
+          <span class="constellation-count mono" id="constellationCount">0 Backers</span>
+        </div>
+        <p class="constellation-sub">Cada "sí" es un Backer nuevo en tu red. Sin límite, sin techo — si la vida te sorprende con más de 20, mejor todavía.</p>
+        <div class="constellation-field" id="constellationField">
+          <button type="button" class="add-backer-btn" id="addBackerBtn" aria-label="Registrar nuevo Backer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
         </div>
       </div>
 
@@ -515,6 +727,37 @@
     <span class="vault-note-text">Cada contacto que registras aquí alimenta tu <strong>Bóveda</strong>. No es solo progreso — es el capital semilla que va a autofinanciar tu Ciclo 2.</span>
   </div>
 </main>
+
+<div class="video-modal-overlay" id="videoModalOverlay">
+  <div class="video-modal" role="dialog" aria-modal="true" aria-labelledby="vmTitle">
+    <div class="video-modal-head">
+      <span class="vm-title" id="vmTitle">Video Briefing — Misión 1</span>
+      <button type="button" class="vm-close" id="vmCloseBtn" aria-label="Cerrar video">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="video-modal-body" id="vmBody">
+      <!--
+        INSTRUCCIONES PARA CONECTAR EL VIDEO REAL (igual que en presentacion.html):
+
+        YouTube (no listado):
+        <iframe src="https://www.youtube.com/embed/TU_ID?rel=0&modestbranding=1"
+          title="Video Briefing Misión 1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+        Vimeo (privado/unlisted):
+        <iframe src="https://player.vimeo.com/video/TU_ID?title=0&byline=0&portrait=0"
+          title="Video Briefing Misión 1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+
+        Reemplaza el div .vm-placeholder de abajo por el iframe elegido.
+      -->
+      <div class="vm-placeholder" id="vmPlaceholder">
+        <span class="vm-play"><svg viewBox="0 0 24 24" fill="#0B0B0A"><path d="M8 5v14l11-7z"/></svg></span>
+        <span class="vm-ph-label">Video pendiente de conectar &nbsp;·&nbsp; <span class="dur">60 seg</span></span>
+      </div>
+    </div>
+    <div class="video-modal-foot mono">CONTEXTO · OBJETIVO REAL · POR QUÉ · CIERRE CON ENERGÍA</div>
+  </div>
+</div>
 
 <div class="toast mono" id="toast">Misión 1 completada — Bóveda actualizada</div>
 
@@ -570,6 +813,59 @@
   });
 
   recalc();
+
+  // ---------- Constelación: registrar nuevos Backers (B1, B2, B3...) ----------
+  var addBackerBtn = document.getElementById('addBackerBtn');
+  var constellationField = document.getElementById('constellationField');
+  var constellationCount = document.getElementById('constellationCount');
+  var backerTotal = 0;
+
+  if (addBackerBtn) {
+    addBackerBtn.addEventListener('click', function () {
+      backerTotal++;
+      var node = document.createElement('div');
+      node.className = 'backer-node';
+      node.innerHTML = '<span class="dot"></span><span class="tag mono">B' + backerTotal + '</span>';
+      constellationField.insertBefore(node, addBackerBtn);
+      constellationCount.textContent = backerTotal + (backerTotal === 1 ? ' Backer' : ' Backers');
+    });
+  }
+
+  // ---------- Video modal ----------
+  var openBtn = document.getElementById('openVideoModal');
+  var overlay = document.getElementById('videoModalOverlay');
+  var closeBtn = document.getElementById('vmCloseBtn');
+  var placeholder = document.getElementById('vmPlaceholder');
+
+  function openModal() {
+    overlay.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    overlay.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  if (openBtn) openBtn.addEventListener('click', openModal);
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+  if (overlay) {
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) closeModal();
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
+  });
+
+  // Placeholder click is just a visual stand-in until a real iframe is connected.
+  if (placeholder) {
+    placeholder.addEventListener('click', function () {
+      placeholder.querySelector('.vm-ph-label').textContent = 'Conecta tu video real aquí (ver instrucciones en el código)';
+    });
+  }
 })();
 </script>
 </body>
