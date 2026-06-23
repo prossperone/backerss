@@ -3,40 +3,521 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Backerss — Iniciar Protocolo</title>
+<title>Backerss — Activar Ciclo 1</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<style>
+  :root {
+    --bg: #0B0B0A;
+    --bg-raised: #141312;
+    --bg-card: #171614;
+    --ink: #F1EDE2;
+    --ink-dim: #A39C8A;
+    --ink-faint: #5C574A;
+    --gold: #D4AF37;
+    --gold-bright: #F0CC5B;
+    --gold-dim: #4A3B14;
+    --green: #3FA66A;
+    --green-dim: #1E4A30;
+    --red: #C0463C;
+    --line: #2A2722;
+    --line-bright: #3D3829;
+  }
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse 70% 45% at 50% -5%, rgba(212,175,55,0.09), transparent),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 3px);
+    color: var(--ink);
+    font-family: 'Archivo', sans-serif;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  .mono { font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em; }
+  a { color: inherit; text-decoration: none; }
+  button, input { font-family: inherit; }
+
+  /* ---------- NAV ---------- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: rgba(11,11,10,0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap {
+    max-width: 980px; margin: 0 auto; padding: 0 28px;
+    display: flex; align-items: center; justify-content: space-between; height: 64px;
+  }
+  .logo { font-family: 'Archivo Black', sans-serif; font-size: 1.05rem; letter-spacing: -0.01em; color: var(--gold); }
+  .logo .s { color: var(--ink); }
+  .nav-back {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--ink-faint);
+    display: flex; align-items: center; gap: 6px;
+    transition: color 0.2s ease;
+  }
+  .nav-back:hover { color: var(--gold); }
+  .nav-back svg { width: 12px; height: 12px; }
+
+  /* ---------- MAIN LAYOUT ---------- */
+  main {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 130px 24px 90px;
+  }
+
+  .page-head { text-align: center; margin-bottom: 44px; }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold);
+    display: flex; align-items: center; justify-content: center; gap: 0.6em;
+    margin-bottom: 18px;
+  }
+  .eyebrow::before {
+    content: ''; width: 6px; height: 6px; background: var(--gold); border-radius: 50%;
+    box-shadow: 0 0 8px var(--gold); animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  h1 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(1.7rem, 3.6vw, 2.4rem);
+    line-height: 1.15;
+    letter-spacing: -0.005em;
+  }
+  .page-sub { margin-top: 14px; color: var(--ink-dim); font-size: 1rem; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+
+  /* ---------- LAYOUT GRID ---------- */
+  .auth-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 28px;
+    align-items: start;
+  }
+
+  /* ---------- FORM CARD ---------- */
+  .form-card {
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 34px;
+  }
+
+  .step-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .step-label .num {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: #0B0B0A;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700;
+    font-size: 0.66rem;
+  }
+
+  .field-group { margin-bottom: 18px; }
+  .field-label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+  .field-input {
+    width: 100%;
+    background: var(--bg-raised);
+    border: 1px solid var(--line-bright);
+    border-radius: 4px;
+    padding: 13px 14px;
+    color: var(--ink);
+    font-size: 0.96rem;
+    transition: border-color 0.2s ease;
+  }
+  .field-input::placeholder { color: var(--ink-faint); }
+  .field-input:focus {
+    outline: none;
+    border-color: var(--gold);
+  }
+  .field-input.invalid { border-color: var(--red); }
+  .field-hint {
+    margin-top: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+  }
+  .field-hint.error { color: var(--red); }
+
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  .divider-soft {
+    margin: 26px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  /* ---------- PAYMENT BLOCK ---------- */
+  .pay-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .pay-option {
+    border: 1px solid var(--line-bright);
+    background: var(--bg-raised);
+    border-radius: 5px;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .pay-option.is-selected {
+    border-color: var(--gold);
+    background: rgba(212,175,55,0.07);
+  }
+  .pay-option .po-dot {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 1.5px solid var(--line-bright);
+    flex-shrink: 0;
+    position: relative;
+  }
+  .pay-option.is-selected .po-dot { border-color: var(--gold); }
+  .pay-option.is-selected .po-dot::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+  .po-label { font-size: 0.88rem; font-weight: 600; }
+
+  .pay-placeholder {
+    border: 1px dashed var(--line-bright);
+    background: var(--bg-raised);
+    border-radius: 6px;
+    padding: 22px;
+    text-align: center;
+  }
+  .pay-placeholder .pp-icon {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: var(--gold-dim);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 12px;
+  }
+  .pay-placeholder .pp-icon svg { width: 16px; height: 16px; color: var(--gold); }
+  .pay-placeholder .pp-title { font-size: 0.9rem; font-weight: 600; color: var(--ink); }
+  .pay-placeholder .pp-sub { margin-top: 6px; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--ink-faint); line-height: 1.6; }
+
+  /* ---------- SUBMIT ---------- */
+  .form-foot {
+    margin-top: 28px;
+  }
+  .btn-submit {
+    width: 100%;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.86rem; letter-spacing: 0.04em; text-transform: uppercase;
+    background: var(--gold);
+    color: #0B0B0A;
+    font-weight: 600;
+    padding: 16px 0;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: all 0.2s ease;
+  }
+  .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(212,175,55,0.25); }
+  .btn-submit svg { width: 14px; height: 14px; }
+
+  .form-fine {
+    margin-top: 14px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+    line-height: 1.7;
+  }
+
+  /* ---------- SUMMARY SIDEBAR ---------- */
+  .summary-card {
+    background: var(--bg-card);
+    border: 1px solid var(--gold-dim);
+    border-radius: 8px;
+    padding: 26px;
+    position: relative;
+    overflow: hidden;
+  }
+  .summary-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
+    background: linear-gradient(180deg, var(--gold), var(--green));
+  }
+  .summary-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .summary-title {
+    margin-top: 10px;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 1.25rem;
+  }
+  .summary-list { margin-top: 18px; display: flex; flex-direction: column; gap: 12px; }
+  .summary-item { display: flex; align-items: flex-start; gap: 10px; }
+  .si-icon {
+    width: 16px; height: 16px;
+    color: var(--green);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .si-text { font-size: 0.86rem; color: var(--ink-dim); line-height: 1.5; }
+
+  .summary-divider { margin: 20px 0; border-top: 1px dashed var(--line); }
+
+  .summary-price-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .sp-label { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--ink-dim); text-transform: uppercase; }
+  .sp-amount { font-family: 'Archivo Black', sans-serif; font-size: 1.6rem; color: var(--gold-bright); }
+
+  .summary-note {
+    margin-top: 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+    line-height: 1.7;
+  }
+
+  footer {
+    padding: 36px 28px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+  footer .mono { font-size: 0.72rem; color: var(--ink-faint); }
+
+  @media (max-width: 760px) {
+    .auth-grid { grid-template-columns: 1fr; }
+    .summary-card { order: -1; }
+    main { padding: 110px 18px 70px; }
+    .form-card { padding: 26px 22px; }
+    .field-row { grid-template-columns: 1fr; }
+    .pay-options { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .eyebrow::before { animation: none !important; }
+  }
+
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+</style>
 </head>
 <body>
-  <section class="auth-section">
-    <div class="auth-container">
-      <div class="logo" style="font-size: 1.4rem; margin-bottom: 12px;">BACKER<span class="s">SS</span></div>
-      <h2>Iniciar Protocolo</h2>
-      
-      <form id="loginForm">
-        <div class="input-group">
-          <label>Identificador / Email</label>
-          <input type="email" id="authEmail" required placeholder="usuario@backerss.com">
+
+<nav>
+  <div class="wrap">
+    <div class="logo">BACKER<span class="s">SS</span></div>
+    <a href="presentacion.html" class="nav-back">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Volver a la presentación
+    </a>
+  </div>
+</nav>
+
+<main>
+  <div class="page-head">
+    <div class="eyebrow">Último paso</div>
+    <h1>Activa tu acceso y entra a tu Ciclo 1.</h1>
+    <p class="page-sub">Crea tu cuenta y confirma tu acceso. En cuanto termines, entras directo a tu Academia.</p>
+  </div>
+
+  <form class="auth-grid" id="authForm">
+    <div class="form-card">
+      <div class="step-label"><span class="num">1</span> TU CUENTA</div>
+
+      <div class="field-group">
+        <label class="field-label" for="fullName">Nombre completo</label>
+        <input class="field-input" type="text" id="fullName" name="fullName" placeholder="Tu nombre y apellido" required>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="email">Correo electrónico</label>
+        <input class="field-input" type="email" id="email" name="email" placeholder="tucorreo@email.com" required>
+      </div>
+
+      <div class="field-row">
+        <div class="field-group">
+          <label class="field-label" for="password">Contraseña</label>
+          <input class="field-input" type="password" id="password" name="password" placeholder="Mínimo 8 caracteres" minlength="8" required>
         </div>
-        <div class="input-group">
-          <label>Clave de Acceso</label>
-          <input type="password" id="authPassword" required placeholder="••••••••">
+        <div class="field-group">
+          <label class="field-label" for="passwordConfirm">Confirmar contraseña</label>
+          <input class="field-input" type="password" id="passwordConfirm" name="passwordConfirm" placeholder="Repite tu contraseña" minlength="8" required>
+          <div class="field-hint error" id="passwordMismatchHint" style="display:none;">Las contraseñas no coinciden</div>
         </div>
-        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
-          Acceder al Dashboard
+      </div>
+
+      <div class="divider-soft"></div>
+
+      <div class="step-label"><span class="num">2</span> CONFIRMAR PAGO</div>
+
+      <div class="pay-options">
+        <div class="pay-option is-selected" data-method="card">
+          <span class="po-dot"></span>
+          <span class="po-label">Tarjeta</span>
+        </div>
+        <div class="pay-option" data-method="paypal">
+          <span class="po-dot"></span>
+          <span class="po-label">PayPal</span>
+        </div>
+      </div>
+
+      <!--
+        INSTRUCCIONES PARA CONECTAR PASARELA DE PAGO REAL:
+
+        Cuando elijas tu proveedor (Stripe, PayPal, etc.), reemplaza el div
+        .pay-placeholder de abajo por el widget/checkout embebido correspondiente.
+
+        Ejemplo con Stripe Elements (requiere stripe.js cargado):
+        <div id="card-element"></div>
+
+        Ejemplo con PayPal Buttons SDK:
+        <div id="paypal-button-container"></div>
+
+        El monto a cobrar es el de .sp-amount en el panel lateral — mantenlo
+        sincronizado con lo que configures en tu proveedor de pago.
+      -->
+      <div class="pay-placeholder" id="payPlaceholder">
+        <span class="pp-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+        </span>
+        <div class="pp-title">Pasarela de pago pendiente de conectar</div>
+        <div class="pp-sub">Aquí se mostrará el formulario seguro de tu proveedor de pago (Stripe, PayPal, etc.)</div>
+      </div>
+
+      <div class="form-foot">
+        <button type="submit" class="btn-submit" id="submitBtn">
+          Activar Ciclo 1
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </button>
-      </form>
-      
-      <div>
-        <a href="index.html" class="auth-back">← Volver a la Landing</a>
+        <p class="form-fine">Pago único. Sin suscripciones, sin cargos recurrentes.</p>
       </div>
     </div>
-  </section>
 
-  <script src="app.js"></script>
+    <aside class="summary-card">
+      <div class="summary-tag">Estás activando</div>
+      <div class="summary-title">Ciclo 1 — Acción Directa</div>
+
+      <div class="summary-list">
+        <div class="summary-item">
+          <svg class="si-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>
+          <span class="si-text">Acceso inmediato a tu Academia</span>
+        </div>
+        <div class="summary-item">
+          <svg class="si-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>
+          <span class="si-text">Video de bienvenida al Ciclo 1</span>
+        </div>
+        <div class="summary-item">
+          <svg class="si-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>
+          <span class="si-text">3 misiones con guiones, libretos y materiales</span>
+        </div>
+        <div class="summary-item">
+          <svg class="si-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>
+          <span class="si-text">Tu Bóveda activa desde el primer contacto</span>
+        </div>
+      </div>
+
+      <div class="summary-divider"></div>
+
+      <div class="summary-price-row">
+        <span class="sp-label">Total a pagar</span>
+        <span class="sp-amount mono">$20</span>
+      </div>
+      <p class="summary-note">Pago único de entrada al protocolo. El Ciclo 2 y 3 se desbloquean con tus propios resultados — sin pagos adicionales.</p>
+    </aside>
+  </form>
+</main>
+
+<footer>
+  <span class="mono">BACKERSS · PROTOCOLO 90 DÍAS</span>
+</footer>
+
+<script>
+(function () {
+  var form = document.getElementById('authForm');
+  var password = document.getElementById('password');
+  var passwordConfirm = document.getElementById('passwordConfirm');
+  var mismatchHint = document.getElementById('passwordMismatchHint');
+  var payOptions = document.querySelectorAll('.pay-option');
+
+  // Payment method selector (visual only for now)
+  payOptions.forEach(function (opt) {
+    opt.addEventListener('click', function () {
+      payOptions.forEach(function (o) { o.classList.remove('is-selected'); });
+      opt.classList.add('is-selected');
+    });
+  });
+
+  function checkPasswordsMatch() {
+    if (passwordConfirm.value && password.value !== passwordConfirm.value) {
+      passwordConfirm.classList.add('invalid');
+      mismatchHint.style.display = 'block';
+      return false;
+    }
+    passwordConfirm.classList.remove('invalid');
+    mismatchHint.style.display = 'none';
+    return true;
+  }
+
+  password.addEventListener('input', checkPasswordsMatch);
+  passwordConfirm.addEventListener('input', checkPasswordsMatch);
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    if (!checkPasswordsMatch()) {
+      passwordConfirm.focus();
+      return;
+    }
+
+    /*
+      INTEGRACIÓN PENDIENTE:
+      Aquí es donde, una vez conectado el backend (Supabase Auth + pasarela
+      de pago), se debe:
+        1. Crear el usuario (correo + contraseña) en Supabase.
+        2. Procesar el pago a través del proveedor elegido.
+        3. Solo si el pago es exitoso, redirigir a dashboard.html.
+
+      Por ahora, mientras se construye esa integración, el formulario
+      simplemente simula el registro y avanza directo al dashboard.
+    */
+    window.location.href = 'dashboard.html';
+  });
+})();
+</script>
 </body>
 </html>
