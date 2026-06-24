@@ -193,6 +193,83 @@
   .mvl-text { font-size: 0.88rem; font-weight: 600; }
   .mvl-sub { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--ink-faint); margin-top: 1px; }
 
+  /* ---------- CAPTURE LINK CARD ---------- */
+  .capture-card {
+    margin-top: 16px;
+    border: 1px solid var(--line-bright);
+    background: var(--bg-raised);
+    border-radius: 4px;
+    padding: 18px 20px;
+  }
+  .capture-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .cc-title {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .cc-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--green);
+    border: 1px solid var(--green-dim);
+    background: rgba(63,166,106,0.08);
+    padding: 2px 8px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .capture-link-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .capture-link-box {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 11px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--gold-bright);
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .capture-link-box .ref-part { color: var(--green); }
+  .copy-link-btn {
+    flex-shrink: 0;
+    background: var(--gold);
+    color: #0B0B0A;
+    border: none;
+    border-radius: 4px;
+    padding: 11px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.18s ease;
+  }
+  .copy-link-btn:hover { transform: translateY(-1px); }
+  .copy-link-btn svg { width: 12px; height: 12px; }
+  .copy-link-btn.is-copied { background: var(--green); }
+  .cc-hint {
+    margin-top: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    color: var(--ink-faint);
+    line-height: 1.6;
+  }
+
   /* ---------- GOAL STRIP ---------- */
   .goal-strip {
     margin-top: 26px;
@@ -632,6 +709,21 @@
         </span>
       </button>
 
+      <div class="capture-card">
+        <div class="capture-card-head">
+          <span class="cc-title">Tu página de captura</span>
+          <span class="cc-badge">Lista para usar</span>
+        </div>
+        <div class="capture-link-row">
+          <div class="capture-link-box mono" id="captureLinkText">backerss.com/captura.html?ref=<span class="ref-part">TU-NOMBRE</span></div>
+          <button type="button" class="copy-link-btn" id="copyLinkBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            Copiar
+          </button>
+        </div>
+        <p class="cc-hint">Comparte este link con tu tráfico frío. Cuando alguien deja sus datos ahí, entra directo a tu Constelación.</p>
+      </div>
+
       <div class="goal-strip">
         <div class="goal-cell">
           <div class="goal-num mono" id="contactCount">0 / 20</div>
@@ -815,6 +907,27 @@
   });
 
   recalc();
+
+  // ---------- Copiar link de página de captura ----------
+  // NOTA: "TU-NOMBRE" es un placeholder. Cuando exista una cuenta real
+  // conectada a Supabase, este valor debe reemplazarse por el identificador
+  // único del usuario (ej. su nombre de usuario o ID corto).
+  var copyLinkBtn = document.getElementById('copyLinkBtn');
+  var captureLinkText = document.getElementById('captureLinkText');
+
+  if (copyLinkBtn) {
+    copyLinkBtn.addEventListener('click', function () {
+      var linkValue = 'https://backerss.com/captura.html?ref=TU-NOMBRE';
+      navigator.clipboard.writeText(linkValue).then(function () {
+        copyLinkBtn.classList.add('is-copied');
+        copyLinkBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg> Copiado';
+        setTimeout(function () {
+          copyLinkBtn.classList.remove('is-copied');
+          copyLinkBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copiar';
+        }, 2000);
+      });
+    });
+  }
 
   // ---------- Constelación: registrar nuevos Backers (B1, B2, B3...) ----------
   var addBackerBtn = document.getElementById('addBackerBtn');
