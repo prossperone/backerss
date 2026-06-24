@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backerss — Tu oportunidad de construir capital propio</title>
+<link rel="icon" type="image/png" href="favicon.png.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0B0B0A;
+    --bg-raised: #141312;
+    --bg-card: #171614;
+    --ink: #F1EDE2;
+    --ink-dim: #A39C8A;
+    --ink-faint: #5C574A;
+    --gold: #D4AF37;
+    --gold-bright: #F0CC5B;
+    --gold-dim: #4A3B14;
+    --green: #3FA66A;
+    --green-dim: #1E4A30;
+    --line: #2A2722;
+    --line-bright: #3D3829;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(212,175,55,0.10), transparent),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 3px);
+    color: var(--ink);
+    font-family: 'Archivo', sans-serif;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  .mono { font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em; }
+  a { color: inherit; text-decoration: none; }
+  button, input { font-family: inherit; }
+
+  /* ---------- REFERRER BANNER ---------- */
+  .ref-banner {
+    background: var(--bg-raised);
+    border-bottom: 1px solid var(--line);
+    padding: 12px 24px;
+    text-align: center;
+  }
+  .ref-banner .rb-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.76rem;
+    color: var(--ink-dim);
+  }
+  .ref-banner .rb-name { color: var(--gold); font-weight: 600; }
+
+  /* ---------- NAV ---------- */
+  nav {
+    padding: 20px 24px 0;
+    display: flex;
+    justify-content: center;
+  }
+  .logo img { height: 32px; display: block; }
+
+  /* ---------- MAIN ---------- */
+  main {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  .page-head { text-align: center; }
+
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold);
+    display: flex; align-items: center; justify-content: center; gap: 0.6em;
+    margin-bottom: 20px;
+  }
+  .eyebrow::before {
+    content: ''; width: 6px; height: 6px; background: var(--gold); border-radius: 50%;
+    box-shadow: 0 0 8px var(--gold); animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  h1 {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: clamp(1.9rem, 5vw, 2.6rem);
+    line-height: 1.12;
+    letter-spacing: -0.01em;
+  }
+  h1 .accent { color: var(--gold); }
+
+  .sub {
+    margin-top: 18px;
+    color: var(--ink-dim);
+    font-size: 1.02rem;
+    line-height: 1.65;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ---------- RISK STRIP ---------- */
+  .risk-strip {
+    margin-top: 36px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .risk-cell { padding: 20px 14px; text-align: center; border-left: 1px solid var(--line); }
+  .risk-cell:first-child { border-left: none; }
+  .risk-num { font-family: 'Archivo Black', sans-serif; font-size: 1.5rem; color: var(--gold); }
+  .risk-num.green { color: var(--green); }
+  .risk-label {
+    margin-top: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.64rem;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    line-height: 1.4;
+  }
+
+  /* ---------- WHY BLOCK ---------- */
+  .why-block {
+    margin-top: 36px;
+    padding: 24px 26px;
+    border-left: 3px solid var(--gold);
+    background: var(--bg-raised);
+    border-radius: 0 6px 6px 0;
+  }
+  .why-block p { font-size: 0.98rem; color: var(--ink); line-height: 1.7; }
+  .why-block p + p { margin-top: 12px; color: var(--ink-dim); }
+  .why-block strong { color: var(--gold); }
+
+  /* ---------- FORM CARD ---------- */
+  .lead-card {
+    margin-top: 40px;
+    background: var(--bg-card);
+    border: 1px solid var(--gold-dim);
+    border-radius: 8px;
+    padding: 30px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .lead-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--green));
+  }
+  .lead-card-title {
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+  .lead-card-sub {
+    margin-top: 8px;
+    text-align: center;
+    font-size: 0.88rem;
+    color: var(--ink-faint);
+  }
+
+  .field-group { margin-top: 18px; }
+  .field-label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+  .field-input {
+    width: 100%;
+    background: var(--bg-raised);
+    border: 1px solid var(--line-bright);
+    border-radius: 4px;
+    padding: 13px 14px;
+    color: var(--ink);
+    font-size: 0.96rem;
+    transition: border-color 0.2s ease;
+  }
+  .field-input::placeholder { color: var(--ink-faint); }
+  .field-input:focus { outline: none; border-color: var(--gold); }
+
+  .btn-submit {
+    width: 100%;
+    margin-top: 22px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.86rem; letter-spacing: 0.04em; text-transform: uppercase;
+    background: var(--gold);
+    color: #0B0B0A;
+    font-weight: 600;
+    padding: 16px 0;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: all 0.2s ease;
+  }
+  .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(212,175,55,0.25); }
+  .btn-submit svg { width: 14px; height: 14px; }
+
+  .lead-fine {
+    margin-top: 14px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    color: var(--ink-faint);
+    line-height: 1.7;
+  }
+
+  /* ---------- SUCCESS STATE ---------- */
+  .success-state {
+    display: none;
+    text-align: center;
+    padding: 10px 0;
+  }
+  .success-state.is-visible { display: block; }
+  .success-icon {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--green);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 18px;
+  }
+  .success-icon svg { width: 24px; height: 24px; color: #0B0B0A; }
+  .success-state h3 { font-family: 'Archivo Black', sans-serif; font-size: 1.3rem; }
+  .success-state p { margin-top: 10px; color: var(--ink-dim); font-size: 0.94rem; line-height: 1.6; }
+
+  footer {
+    padding: 30px 24px;
+    text-align: center;
+    border-top: 1px solid var(--line);
+  }
+  footer .mono { font-size: 0.68rem; color: var(--ink-faint); }
+
+  @media (max-width: 480px) {
+    .risk-strip { grid-template-columns: 1fr; }
+    .risk-cell { border-left: none; border-top: 1px solid var(--line); }
+    .risk-cell:first-child { border-top: none; }
+    .lead-card { padding: 24px 20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .eyebrow::before { animation: none !important; }
+  }
+
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+</style>
+</head>
+<body>
+
+<!--
+  SISTEMA DE REFERIDO — LÓGICA ACTUAL (placeholder, sin backend):
+
+  Esta página lee el parámetro ?ref= de la URL para saber qué Backer comparte
+  el link (ej. backerss.com/captura.html?ref=tomas92).
+
+  Cuando cada usuario tenga su propio link único generado desde el dashboard
+  (conectado a Supabase), ese "ref" deberá:
+    1. Mostrarse en el banner de arriba (ya implementado abajo en JS).
+    2. Guardarse junto con el registro del nuevo lead, para atribuir
+       el nuevo Backer a la Constelación de quien comparte el link.
+
+  Por ahora, sin backend, el banner solo es visual — el formulario no
+  envía esta atribución a ningún lado todavía.
+-->
+<div class="ref-banner" id="refBanner" style="display:none;">
+  <span class="rb-text mono">Invitación de <span class="rb-name" id="refName"></span></span>
+</div>
+
+<nav>
+  <div class="logo"><img src="logo-backerss.png.png" alt="Backerss"></div>
+</nav>
+
+<main>
+  <div class="page-head">
+    <div class="eyebrow">Protocolo de Ejecución</div>
+    <h1>Si solo tuvieras <span class="accent">90 días</span> para construir las bases financieras de tu futuro... ¿qué harías hoy?</h1>
+    <p class="sub">Backerss es un campo de entrenamiento práctico diseñado para romper la parálisis. Aquí desarrollas las habilidades que producen capital real — con guiones probados, y con el capital mínimo posible.</p>
+  </div>
+
+  <div class="risk-strip">
+    <div class="risk-cell">
+      <div class="risk-num">90</div>
+      <div class="risk-label">Días de entrenamiento real</div>
+    </div>
+    <div class="risk-cell">
+      <div class="risk-num">3</div>
+      <div class="risk-label">Ciclos de habilidad progresiva</div>
+    </div>
+    <div class="risk-cell">
+      <div class="risk-num green">Mínimo</div>
+      <div class="risk-label">Capital de entrada</div>
+    </div>
+  </div>
+
+  <div class="why-block">
+    <p>¿Y si sigues esperando el momento perfecto y los 90 días pasan igual, <strong>con o sin ti?</strong></p>
+    <p>Con el capital mínimo posible, tienes la posibilidad de construir, por tu propio esfuerzo, el capital que necesitas para prosperar. No es azar. Es una estructura, y 90 días para probarla.</p>
+  </div>
+
+  <div class="lead-card">
+    <form id="leadForm">
+      <div class="lead-card-title">Déjame mostrarte cómo funciona</div>
+      <p class="lead-card-sub">Déjanos tu correo y te enviamos el acceso a la presentación completa.</p>
+
+      <div class="field-group">
+        <label class="field-label" for="leadName">Tu nombre</label>
+        <input class="field-input" type="text" id="leadName" name="leadName" placeholder="¿Cómo te llamas?" required>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="leadEmail">Tu correo</label>
+        <input class="field-input" type="email" id="leadEmail" name="leadEmail" placeholder="tucorreo@email.com" required>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="leadPhone">Tu WhatsApp (opcional)</label>
+        <input class="field-input" type="tel" id="leadPhone" name="leadPhone" placeholder="Para enviarte el acceso más rápido">
+      </div>
+
+      <button type="submit" class="btn-submit">
+        Quiero ver cómo funciona
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+      <p class="lead-fine">Sin spam. Solo el acceso que pediste.</p>
+    </form>
+
+    <div class="success-state" id="successState">
+      <span class="success-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
+      </span>
+      <h3>Listo. Ya casi.</h3>
+      <p>Te escribimos pronto con el acceso a la presentación completa del protocolo.</p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span class="mono">BACKERSS · PROTOCOLO 90 DÍAS</span>
+</footer>
+
+<script>
+(function () {
+  // ---------- Mostrar banner de referido si existe ?ref= en la URL ----------
+  var params = new URLSearchParams(window.location.search);
+  var ref = params.get('ref');
+  if (ref) {
+    document.getElementById('refName').textContent = ref;
+    document.getElementById('refBanner').style.display = 'block';
+  }
+
+  // ---------- Envío del formulario (simulado, sin backend aún) ----------
+  var form = document.getElementById('leadForm');
+  var successState = document.getElementById('successState');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    /*
+      INTEGRACIÓN PENDIENTE:
+      Cuando Supabase esté conectado, aquí se debe:
+        1. Guardar el lead (nombre, correo, teléfono) en la base de datos.
+        2. Guardar el "ref" (si existe) para atribuir este lead al Backer
+           que comparte el link, alimentando su Constelación.
+        3. Disparar el correo/mensaje automático con el acceso a la
+           presentación (presentacion.html).
+
+      Por ahora, el formulario solo muestra el estado de éxito visual.
+    */
+
+    form.style.display = 'none';
+    successState.classList.add('is-visible');
+  });
+})();
+</script>
+</body>
+</html>
