@@ -15,6 +15,7 @@
       --text-muted: #8A8A85;
       --border: #262622;
       --success: #3EE587;
+      --danger: #FF5555;
     }
 
     * {
@@ -77,68 +78,125 @@
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 30px;
+      gap: 25px;
     }
 
-    /* --- ARSENAL DE MATERIALES DE BIENVENIDA --- */
-    .arsenal-box {
-      background: var(--bg-card);
+    /* --- NUEVA SECCIÓN: ARSENAL DE BIENVENIDA --- */
+    .arsenal-card {
+      background: linear-gradient(135deg, #181815 0%, #11110F 100%);
       border: 1px solid rgba(229, 193, 88, 0.25);
       border-radius: 12px;
-      padding: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
-    .arsenal-title {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+
+    .arsenal-badge {
+      background: #2E2714;
       color: var(--accent);
-      margin-bottom: 12px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.75rem;
       font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      display: inline-block;
+      margin-bottom: 12px;
     }
-    .arsenal-flex {
+
+    .arsenal-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 12px;
+      gap: 16px;
+      margin-top: 20px;
     }
-    .arsenal-card-item {
+
+    .arsenal-item {
       background: #0F0F0E;
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 12px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: border-color 0.2s;
+    }
+
+    .arsenal-item:hover {
+      border-color: #3A3A33;
+    }
+
+    .arsenal-title {
+      font-weight: bold;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+      color: var(--text-primary);
+    }
+
+    .arsenal-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .arsenal-btn {
+      background: #1C1C18;
+      border: 1px solid var(--border);
+      color: var(--accent);
+      padding: 8px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      font-weight: bold;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .arsenal-btn:hover {
+      background: var(--accent);
+      color: var(--bg-main);
+    }
+
+    /* --- ESPEJO DE TRANSFORMACIÓN (MAPA VISUAL A -> B) --- */
+    .transformation-mirror {
+      background: #090908;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 16px;
+    }
+
+    .mirror-axis {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      position: relative;
+      margin-top: 10px;
     }
-    .ai-info {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
+
+    .mirror-axis::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      border-top: 1px dashed var(--border);
+      z-index: 1;
     }
-    .ai-name {
-      font-size: 0.85rem;
-      font-weight: bold;
-      color: var(--text-primary);
+
+    .point-box {
+      width: 45%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px;
+      position: relative;
+      z-index: 2;
     }
-    .ai-tag {
-      font-size: 0.68rem;
-      color: var(--text-muted);
-    }
-    .btn-download-item {
-      background: transparent;
-      border: none;
-      color: var(--accent);
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: bold;
-      padding: 4px;
-      transition: transform 0.2s;
-    }
-    .btn-download-item:hover {
-      transform: translateY(2px);
-    }
+
+    .point-box.pointA { border-left: 3px solid var(--danger); }
+    .point-box.pointB { border-left: 3px solid var(--success); }
+
+    .point-title { font-size: 0.75rem; font-weight: bold; text-transform: uppercase; margin-bottom: 2px;}
+    .point-txt { font-size: 0.8rem; color: var(--text-muted); }
 
     /* Constelación Visual */
     .constellation-card {
@@ -212,12 +270,12 @@
       border-radius: 12px;
       padding: 24px;
       transition: opacity 0.3s;
-      position: relative;
     }
 
     .mission-card.is-locked {
       opacity: 0.4;
       pointer-events: none;
+      position: relative;
     }
 
     .mission-card.is-locked::after {
@@ -352,17 +410,14 @@
       font-size: 0.9rem;
     }
 
+    .copy-link-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
     .cc-hint {
       font-size: 0.8rem;
       color: var(--text-muted);
-    }
-
-    .goal-strip {
-      display: flex;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-      margin-bottom: 24px;
     }
 
     .goal-strip {
@@ -466,6 +521,7 @@
       letter-spacing: 0.5px;
     }
 
+    /* --- Píldoras de Diagnóstico --- */
     .diagnostic-options {
       display: flex;
       gap: 8px;
@@ -498,6 +554,7 @@
       box-shadow: 0 0 8px rgba(229, 193, 88, 0.15);
     }
 
+    /* Acción Final */
     .action-row {
       display: flex;
       justify-content: flex-end;
@@ -520,63 +577,6 @@
       color: var(--bg-main);
       cursor: pointer;
       box-shadow: 0 4px 14px rgba(229, 193, 88, 0.2);
-    }
-
-    /* --- NUEVO: CORRECCIÓN POP-UP MODAL VIDEO BRIEFING --- */
-    .video-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(8px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-      z-index: 1000;
-    }
-    .video-modal.is-active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .modal-content {
-      background: #141412;
-      border: 1px solid var(--border);
-      width: 90%;
-      max-width: 640px;
-      border-radius: 12px;
-      padding: 20px;
-      position: relative;
-    }
-    .close-modal-btn {
-      position: absolute;
-      top: -40px;
-      right: 0;
-      background: transparent;
-      border: none;
-      color: var(--text-primary);
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-    .video-wrapper {
-      position: relative;
-      padding-bottom: 56.25%; /* Relación de aspecto 16:9 */
-      height: 0;
-      background: #000;
-      border-radius: 6px;
-      overflow: hidden;
-    }
-    .video-wrapper iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: none;
     }
 
     /* Toast */
@@ -620,32 +620,48 @@
 
   <main class="dashboard-layout">
 
-    <section class="arsenal-box">
-      <div class="arsenal-title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-        Tu Arsenal de Inicio Adquirido
+    <section class="arsenal-card">
+      <span class="arsenal-badge mono">✨ CICLO 1 ACTIVADO EXITOSAMENTE</span>
+      <h2 style="font-size: 1.4rem; margin-bottom: 6px;">¡Bienvenido al Tablero de Batalla!</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem;">Tu acceso de $12 ha desbloqueado un ecosistema completo de transformación. Para superar la escasez, no necesitas motivación vacía; necesitas herramientas de combate y estructura teórica. Aquí tienes tu Arsenal de Inicio:</p>
+      
+      <div class="arsenal-grid">
+        <div class="arsenal-item">
+          <div>
+            <div class="arsenal-title">📚 Ebook Principal</div>
+            <p class="arsenal-desc">"Primero organiza tu vida". El manual definitivo para purgar el caos interno antes de liderar capital externo.</p>
+          </div>
+          <button type="button" class="arsenal-btn">Abrir Ebook (PDF)</button>
+        </div>
+        
+        <div class="arsenal-item">
+          <div>
+            <div class="arsenal-title">🖨️ Checklist de Pared</div>
+            <p class="arsenal-desc">Mapa de tareas diarias optimizado para imprimir. Pégalo donde lo veas al despertar. Sin excusas.</p>
+          </div>
+          <button type="button" class="arsenal-btn">Descargar para Imprimir</button>
+        </div>
+
+        <div class="arsenal-item">
+          <div>
+            <div class="arsenal-title">🛡️ Red de Interdependencia</div>
+            <p class="arsenal-desc">Marco teórico y protocolo económico mutuo que blinda tu negocio contra pérdidas individuales.</p>
+          </div>
+          <button type="button" class="arsenal-btn">Ver Manifiesto Backerss</button>
+        </div>
       </div>
-      <div class="arsenal-flex">
-        <div class="arsenal-card-item">
-          <div class="ai-info">
-            <span class="ai-name">Ebook: Orden Interno</span>
-            <span class="ai-tag mono">PDF DETALLADO DE ORGANIZACIÓN</span>
+
+      <div class="transformation-mirror">
+        <span class="mono" style="font-size: 0.7rem; color: var(--accent); letter-spacing: 0.5px;">MAPA DE TRANSFORMACIÓN DEL EMPrendedor:</span>
+        <div class="mirror-axis">
+          <div class="point-box pointA">
+            <div class="point-title" style="color: var(--danger);">Punto A (Tu Pasado)</div>
+            <p class="point-txt">Parálisis por análisis, miedo al rechazo en frío, aislamiento y falta crónica de recursos económicos.</p>
           </div>
-          <button class="btn-download-item" data-doc="orden" title="Descargar PDF">⬇️</button>
-        </div>
-        <div class="arsenal-card-item">
-          <div class="ai-info">
-            <span class="ai-name">Mapa de Transformación</span>
-            <span class="ai-tag mono">INFOGRAFÍA ESTRATÉGICA A ➔ B</span>
+          <div class="point-box pointB">
+            <div class="point-title" style="color: var(--success);">Punto B (Tu Destino)</div>
+            <p class="point-txt">Estratega comercial con volumen de datos, blindaje mental absoluto e ingresos pasivos recurrentes en red.</p>
           </div>
-          <button class="btn-download-item" data-doc="mapa" title="Descargar Infografía">⬇️</button>
-        </div>
-        <div class="arsenal-card-item">
-          <div class="ai-info">
-            <span class="ai-name">Checklist de Pared</span>
-            <span class="ai-tag mono">IMPRIMIBLE DE ACCIÓN DIARIA</span>
-          </div>
-          <button class="btn-download-item" data-doc="checklist" title="Descargar Checklist">⬇️</button>
         </div>
       </div>
     </section>
@@ -656,7 +672,7 @@
         <span class="mono" id="constellationCount" style="color: var(--accent); font-size: 0.9rem;">0 Backers</span>
       </div>
       <div class="constellation-field" id="constellationField">
-        <button type="button" class="add-backer-btn mono" id="addBackerBtn">+ Simular Registro Externo ($12)</button>
+        <button type="button" class="add-backer-btn mono" id="addBackerBtn">+ Simular Registro Externo</button>
       </div>
     </div>
 
@@ -669,9 +685,9 @@
         </div>
         <div class="mission-body">
           <h2 class="mission-title">El Baño de Realidad</h2>
-          <p class="mission-desc">Tu única meta: conseguir al menos 20 contactos reales desde tu página de captura. No estás cazando un “no” ni un “sí” — estás cazando el contacto número 20 como tu primera victoria.</p>
+          <p class="mission-desc">Tu única meta: conseguir al menos 20 contactos reales desde tu página de captura. No estás cazando un “no” ni un “sí” — estás cazando el contacto número 20 como tu primera victoria. Lo que pase en el camino es información, no juicio.</p>
 
-          <button type="button" class="mission-video-link" id="openVideoBtn">
+          <button type="button" class="mission-video-link">
             <span class="mvl-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="#0B0B0A"><path d="M8 5v14l11-7z"/></svg></span>
             <span>
               <span class="mvl-text">Ver Video Briefing — Misión 1</span><br>
@@ -686,7 +702,10 @@
             </div>
             <div class="capture-link-row">
               <div class="capture-link-box mono" id="captureLinkText">backerss.com/captura.html?ref=<span style="color: #fff;">TU-NOMBRE</span></div>
-              <button type="button" class="copy-link-btn" id="copyLinkBtn">Copiar</button>
+              <button type="button" class="copy-link-btn" id="copyLinkBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+                Copiar
+              </button>
             </div>
             <p class="cc-hint">Comparte este link con tu tráfico frío. Cuando alguien deja sus datos ahí, entra directo a tu Constelación.</p>
           </div>
@@ -762,106 +781,42 @@
         <div class="mission-body">
           <h2 class="mission-title">Tu primera comisión en 48 horas</h2>
           <p class="mission-desc">Filtra tus 20 capturas iniciales y ejecuta el script de inversión cooperativa para activar tu sistema económico mutuo.</p>
+          
+          <div class="checklist">
+            <div class="checklist-head">
+              <span>Compromiso de ejecución · Reto 2</span>
+              <span class="mono">0 / 4</span>
+            </div>
+            <div class="check-item">
+              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
+              <div class="check-text"><div class="check-label">Identifiqué y contacté a los 5 perfiles con mayor potencial de mi lista de 20 capturas iniciales</div><div class="check-meta mono">FILTRADO DE DATOS</div></div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
+              <div class="check-text"><div class="check-label">Envié la propuesta de valor usando el script de "inversión cooperativa"</div><div class="check-meta mono">MECÁNICA COMERCIAL</div></div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
+              <div class="check-text"><div class="check-label">Gestioné mi primer rechazo directo entendiendo que es parte de la estadística</div><div class="check-meta mono">BLINDAJE EMOCIONAL</div></div>
+            </div>
+            <div class="check-item">
+              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
+              <div class="check-text"><div class="check-label">Validé la pasarela de pagos recibiendo mi primera alerta de comisión</div><div class="check-meta mono">MONETIZACIÓN</div></div>
+            </div>
+          </div>
         </div>
       </div>
 
     </div>
   </main>
 
-  <div class="video-modal" id="videoModal">
-    <div class="modal-content">
-      <button class="close-modal-btn" id="closeVideoBtn">✕ Cerrar</button>
-      <div class="video-wrapper">
-        <iframe id="modalIframe" src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
-    </div>
-  </div>
-
   <div class="toast mono" id="toast">¡RETO COMPLETADO! CAPÍTULO SUPERADO</div>
 
   <script>
   (function () {
-    // === SISTEMA DE VIDEO POP-UP (REPARADO) ===
-    var openVideoBtn = document.getElementById('openVideoBtn');
-    var closeVideoBtn = document.getElementById('closeVideoBtn');
-    var videoModal = document.getElementById('videoModal');
-    var modalIframe = document.getElementById('modalIframe');
-
-    if(openVideoBtn && videoModal) {
-      openVideoBtn.addEventListener('click', function() {
-        videoModal.classList.add('is-active');
-      });
-    }
-
-    if(closeVideoBtn && videoModal) {
-      closeVideoBtn.addEventListener('click', function() {
-        videoModal.classList.remove('is-active');
-        // Esto detiene el video al cerrar para que no siga sonando de fondo
-        var src = modalIframe.src;
-        modalIframe.src = src;
-      });
-      // Cerrar también si hacen clic fuera del cuadro negro
-      videoModal.addEventListener('click', function(e) {
-        if(e.target === videoModal) {
-          closeVideoBtn.click();
-        }
-      });
-    }
-
-    // === INTERACTIVIDAD DE DESCARGAS REALES DE PDF ===
-    var downloadButtons = document.querySelectorAll('.btn-download-item');
-    downloadButtons.forEach(function(btn) {
-      btn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        var docType = btn.getAttribute('data-doc');
-        var filename = "Backerss_Material.txt";
-        var content = "";
-
-        if (docType === "orden") {
-          filename = "Backerss_Ebook_Orden_Interno.txt";
-          content = "====================================================\n" +
-                    "PROTOCOLOS BACKERSS — ACADEMIA DE ALTO RENDIMIENTO\n" +
-                    "EBOOK: ORDEN INTERNO & INFRAESTRUCTURA MENTAL\n" +
-                    "====================================================\n\n" +
-                    "1. LA PARÁLISIS POR ANÁLISIS\n" +
-                    "El 95% de los emprendedores consume motivación como entretenimiento.\n" +
-                    "Este documento certifica tu inicio en el 5% que ejecuta.\n\n" +
-                    "2. ENFOQUE OPERATIVO\n" +
-                    "Tu mente debe estar limpia de ruido exterior. Solo existe un día: HOY.\n" +
-                    "Lo que hagas con él, te construye a ti.";
-        } else if (docType === "mapa") {
-          filename = "Backerss_Mapa_Transformacion.txt";
-          content = "====================================================\n" +
-                    "PROTOCOLOS BACKERSS — MAPA DE RUTA A -> B\n" +
-                    "====================================================\n\n" +
-                    "[FASE 1: DÍAS 1-30] Adquisición y Tráfico Frío (Volumen de datos).\n" +
-                    "[FASE 2: DÍAS 4-10] Monetización Inmediata ($12 por conversión).\n" +
-                    "[FASE 3: DÍAS 11-20] Duplicación e Interdependencia Colectiva.\n\n" +
-                    "Meta del Ciclo: Desarrollar blindaje mental a través de la acción pura.";
-        } else if (docType === "checklist") {
-          filename = "Backerss_Checklist_De_Pared.txt";
-          content = "====================================================\n" +
-                    "CHECKLIST DIARIO DE PARED — EJECUCIÓN INMEDIATA\n" +
-                    "====================================================\n\n" +
-                    "[ ] Enlace Único de Captura Verificado e Instalado.\n" +
-                    "[ ] Publicación Orgánica/Pauta efectuada en 2 canales mínimos.\n" +
-                    "[ ] Registro de Datos e Interacciones en la Constelación.\n" +
-                    "[ ] Cero juicios emocionales ante el rechazo estadístico.";
-        }
-
-        // Crear archivo descargable al instante (Nativo y ultra veloz)
-        var blob = new Blob([content], { type: "text/plain;charset=utf-8" });
-        var link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = filename;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      });
-    });
-
-    // === MANEJO DE CHECKLIST TRADICIONAL ===
-    var normalItems = document.querySelectorAll('.normal-check');
+    // 1. Manejo de Checklists Tradicionales
+    var normalItems = document.querySelectorAll('.normal-check, #cardReto2 .check-item');
+    
     normalItems.forEach(function (item) {
       item.addEventListener('click', function () {
         item.classList.toggle('checked');
@@ -870,14 +825,14 @@
       });
     });
 
-    // === MANEJO DEL CHECKLIST DIAGNÓSTICO ===
+    // 2. Control del Punto Diagnóstico Abierto (Punto 4 del Reto 1)
     var diagnosticItem = document.getElementById('diagnosticItem');
     var diagButtons = document.querySelectorAll('.diag-btn');
     var selectedDiagnosticScenario = null;
 
     diagButtons.forEach(function (btn) {
       btn.addEventListener('click', function (e) {
-        e.stopPropagation(); 
+        e.stopPropagation();
         diagButtons.forEach(el => el.classList.remove('active'));
         
         if (selectedDiagnosticScenario === btn.getAttribute('data-type')) {
@@ -886,8 +841,9 @@
         } else {
           btn.classList.add('active');
           selectedDiagnosticScenario = btn.getAttribute('data-type');
-          diagnosticItem.classList.add('checked'); 
+          diagnosticItem.classList.add('checked');
         }
+
         recalcChecklistCounters();
         checkReto1GlobalStatus();
       });
@@ -899,7 +855,7 @@
       document.getElementById('checklistCount').textContent = checkedInCard1 + ' / 4';
     }
 
-    // === MANEJO DE LA CONSTELACIÓN INTERACTIVA ($12) ===
+    // 3. Control Global e inyección de precio corregido ($12)
     var contactCount = document.getElementById('contactCount');
     var vaultAmount = document.getElementById('vaultAmount');
     var completeBtn = document.getElementById('completeBtn');
@@ -929,23 +885,46 @@
       if (card2) card2.classList.remove('is-locked');
     });
 
-    // Copiar link de captura
+    // ---------- Copiar link de página de captura ----------
     var copyLinkBtn = document.getElementById('copyLinkBtn');
     if (copyLinkBtn) {
       copyLinkBtn.addEventListener('click', function () {
         var linkValue = 'https://backerss.com/captura.html?ref=TU-NOMBRE';
         navigator.clipboard.writeText(linkValue).then(function () {
-          copyLinkBtn.textContent = '¡Copiado!';
-          setTimeout(function () { copyLinkBtn.textContent = 'Copiar'; }, 2000);
+          copyLinkBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg> Copiado';
+          setTimeout(function () {
+            copyLinkBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copiar';
+          }, 2000);
         });
       });
     }
 
-    // Simulación de registros
+    // ---------- Constelación: Llenado dinámico ajustado a comisiones de $12 ----------
     var addBackerBtn = document.getElementById('addBackerBtn');
     var constellationField = document.getElementById('constellationField');
     var constellationCount = document.getElementById('constellationCount');
 
     if (addBackerBtn) {
       addBackerBtn.addEventListener('click', function () {
-        real
+        realContactsConseguidos++;
+        
+        var node = document.createElement('div');
+        node.className = 'backer-node';
+        node.innerHTML = '<span class="dot"></span><span class="tag mono">B' + realContactsConseguidos + '</span>';
+        constellationField.insertBefore(node, addBackerBtn);
+        
+        constellationCount.textContent = realContactsConseguidos + (realContactsConseguidos === 1 ? ' Backer' : ' Backers');
+        
+        var capped = Math.min(realContactsConseguidos, TARGET);
+        contactCount.textContent = capped + ' / ' + TARGET;
+        
+        // CORRECCIÓN: El sistema ahora multiplica por $12 en lugar del viejo valor de $20
+        vaultAmount.textContent = '$' + (realContactsConseguidos * 12).toFixed(0);
+        
+        checkReto1GlobalStatus();
+      });
+    }
+  })();
+  </script>
+</body>
+</html>
