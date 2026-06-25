@@ -1,764 +1,168 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Backerss — Academia · Ciclo 1</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #0B0B0A;
-    --bg-raised: #141312;
-    --bg-card: #171614;
-    --ink: #F1EDE2;
-    --ink-dim: #A39C8A;
-    --ink-faint: #5C574A;
-    --gold: #D4AF37;
-    --gold-bright: #F0CC5B;
-    --gold-dim: #4A3B14;
-    --green: #3FA66A;
-    --green-dim: #1E4A30;
-    --line: #2A2722;
-    --line-bright: #3D3829;
-    --locked: #1C1B19;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--bg);
-    background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.012) 0px, rgba(255,255,255,0.012) 1px, transparent 1px, transparent 3px);
-    color: var(--ink);
-    font-family: 'Archivo', sans-serif;
-    line-height: 1.5;
-    min-height: 100vh;
-  }
-
-  .mono { font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em; }
-  a { color: inherit; text-decoration: none; }
-  button { font-family: inherit; cursor: pointer; }
-
-  /* ---------- TOP BAR ---------- */
-  .topbar {
-    position: sticky; top: 0; z-index: 40;
-    background: rgba(11,11,10,0.92);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--line);
-  }
-  .topbar-inner {
-    max-width: 980px; margin: 0 auto; padding: 0 24px;
-    height: 64px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .logo { font-family: 'Archivo Black', sans-serif; font-size: 1.02rem; letter-spacing: -0.01em; color: var(--gold); }
-  .logo .s { color: var(--ink); }
-
-  .vault-chip {
-    display: flex; align-items: center; gap: 10px;
-    border: 1px solid var(--line-bright);
-    background: var(--bg-raised);
-    padding: 8px 16px;
-    border-radius: 3px;
-  }
-  .vault-chip .vc-icon { width: 14px; height: 14px; color: var(--gold); flex-shrink: 0; }
-  .vault-chip .vc-label { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.04em; }
-  .vault-chip .vc-amount { font-family: 'JetBrains Mono', monospace; font-size: 0.92rem; color: var(--gold-bright); font-weight: 600; margin-left: 2px; }
-
-  /* ---------- MAIN ---------- */
-  main { max-width: 760px; margin: 0 auto; padding: 48px 24px 100px; }
-
-  .page-head { margin-bottom: 40px; }
-  .breadcrumb {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem; color: var(--ink-faint); letter-spacing: 0.04em; text-transform: uppercase;
-    margin-bottom: 14px;
-  }
-  .breadcrumb .sep { color: var(--line-bright); margin: 0 8px; }
-  .breadcrumb .here { color: var(--gold); }
-
-  .page-title {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: clamp(1.6rem, 3.4vw, 2.1rem);
-    letter-spacing: -0.005em;
-  }
-  .page-sub { margin-top: 10px; color: var(--ink-dim); font-size: 0.98rem; max-width: 520px; line-height: 1.6; }
-
-  /* ---------- CYCLE PROGRESS RAIL ---------- */
-  .cycle-rail {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    margin-top: 28px;
-    margin-bottom: 8px;
-  }
-  .rail-node {
-    width: 9px; height: 9px;
-    border-radius: 50%;
-    background: var(--line-bright);
-    flex-shrink: 0;
-    position: relative;
-  }
-  .rail-node.done { background: var(--green); box-shadow: 0 0 8px rgba(63,166,106,0.5); }
-  .rail-node.active { background: var(--gold); box-shadow: 0 0 10px rgba(212,175,55,0.6); }
-  .rail-line { flex: 1; height: 1px; background: var(--line-bright); }
-  .rail-line.done { background: var(--green-dim); }
-
-  /* ---------- ACTIVE MISSION CARD ---------- */
-  .mission-card {
-    margin-top: 36px;
-    border: 1px solid var(--gold-dim);
-    background: linear-gradient(160deg, rgba(212,175,55,0.06), transparent 55%), var(--bg-card);
-    border-radius: 6px;
-    overflow: hidden;
-    position: relative;
-  }
-  .mission-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; bottom: 0;
-    width: 3px;
-    background: linear-gradient(180deg, var(--gold), var(--green));
-  }
-
-  .mission-head {
-    padding: 28px 30px 0;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 20px;
-  }
-  .mission-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .mission-tag::before {
-    content: '';
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--gold);
-    box-shadow: 0 0 8px var(--gold);
-    animation: pulse 2s ease-in-out infinite;
-  }
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-  .mission-days {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--ink-faint);
-    white-space: nowrap;
-  }
-
-  .mission-body { padding: 14px 30px 30px; }
-  .mission-title {
-    font-family: 'Archivo Black', sans-serif;
-    font-size: 1.55rem;
-    margin-top: 8px;
-    letter-spacing: -0.005em;
-  }
-  .mission-desc { margin-top: 12px; color: var(--ink-dim); font-size: 0.97rem; line-height: 1.65; max-width: 480px; }
-
-  .mission-video-link {
-    margin-top: 22px;
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    border: 1px solid var(--line-bright);
-    background: transparent;
-    padding: 13px 20px;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-    color: var(--ink);
-    font-family: 'Archivo', sans-serif;
-    text-align: left;
-  }
-  .mission-video-link:hover { border-color: var(--gold); background: rgba(212,175,55,0.06); }
-  .mvl-icon {
-    width: 30px; height: 30px;
-    border-radius: 50%;
-    background: var(--gold);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .mvl-icon svg { width: 11px; height: 11px; margin-left: 1px; }
-  .mvl-text { font-size: 0.88rem; font-weight: 600; }
-  .mvl-sub { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--ink-faint); margin-top: 1px; }
-
-  /* ---------- GOAL STRIP ---------- */
-  .goal-strip {
-    margin-top: 26px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1px;
-    background: var(--line);
-    border-radius: 4px;
-    overflow: hidden;
-  }
-  .goal-cell { background: var(--bg-raised); padding: 18px 20px; }
-  .goal-num { font-family: 'Archivo Black', sans-serif; font-size: 1.6rem; color: var(--gold-bright); }
-  .goal-label { margin-top: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.03em; }
-
-  /* ---------- CHECKLIST ---------- */
-  .checklist { margin-top: 28px; border-top: 1px solid var(--line); }
-  .checklist-head {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 0 14px;
-  }
-  .checklist-title { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.06em; }
-  .checklist-count { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--gold); }
-
-  .check-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    padding: 14px 0;
-    border-top: 1px dashed var(--line);
-    cursor: pointer;
-    user-select: none;
-  }
-  .check-item:first-of-type { border-top: none; }
-
-  .check-box {
-    width: 20px; height: 20px;
-    border: 1.5px solid var(--line-bright);
-    border-radius: 3px;
-    flex-shrink: 0;
-    margin-top: 2px;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.18s ease;
-  }
-  .check-item.checked .check-box {
-    background: var(--gold);
-    border-color: var(--gold);
-  }
-  .check-box svg {
-    width: 12px; height: 12px;
-    opacity: 0;
-    transform: scale(0.5);
-    transition: all 0.18s ease;
-    color: #0B0B0A;
-  }
-  .check-item.checked .check-box svg { opacity: 1; transform: scale(1); }
-
-  .check-text { flex: 1; }
-  .check-label { font-size: 0.94rem; color: var(--ink); transition: color 0.18s ease; }
-  .check-item.checked .check-label { color: var(--ink-faint); text-decoration: line-through; text-decoration-color: var(--line-bright); }
-  .check-meta { margin-top: 3px; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--ink-faint); }
-
-  /* ---------- COMPLETE BUTTON ---------- */
-  .mission-complete {
-    margin-top: 30px;
-    padding-top: 26px;
-    border-top: 1px solid var(--line);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
-  .mc-note { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--ink-faint); max-width: 320px; line-height: 1.6; }
-  .btn-complete {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem; letter-spacing: 0.04em; text-transform: uppercase;
-    background: var(--line-bright);
-    color: var(--ink-faint);
-    font-weight: 600;
-    padding: 14px 26px;
-    border-radius: 3px;
-    border: none;
-    display: inline-flex; align-items: center; gap: 10px;
-    transition: all 0.25s ease;
-    white-space: nowrap;
-  }
-  .btn-complete.is-ready {
-    background: var(--gold);
-    color: #0B0B0A;
-    cursor: pointer;
-  }
-  .btn-complete.is-ready:hover { box-shadow: 0 6px 20px rgba(212,175,55,0.25); transform: translateY(-1px); }
-  .btn-complete svg { width: 14px; height: 14px; }
-
-  /* ---------- LOCKED MISSIONS (queue) ---------- */
-  .queue-label {
-    margin-top: 56px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--ink-faint);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .queue-label::after { content: ''; flex: 1; height: 1px; background: var(--line); }
-
-  .locked-card {
-    margin-top: 16px;
-    border: 1px solid var(--line);
-    background: var(--locked);
-    border-radius: 6px;
-    padding: 22px 26px;
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    position: relative;
-    overflow: hidden;
-  }
-  .locked-card + .locked-card { margin-top: 12px; }
-
-  .locked-icon {
-    width: 38px; height: 38px;
-    border-radius: 50%;
-    background: var(--bg-raised);
-    border: 1px solid var(--line-bright);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .locked-icon svg { width: 14px; height: 14px; color: var(--ink-faint); }
-
-  .locked-text .lt-title { font-family: 'JetBrains Mono', monospace; font-size: 0.86rem; color: var(--ink-faint); letter-spacing: 0.02em; }
-  .locked-text .lt-sub { margin-top: 3px; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--line-bright); letter-spacing: 0.03em; }
-
-  /* ---------- VAULT FOOTER NOTE ---------- */
-  .vault-note {
-    margin-top: 60px;
-    padding: 22px 26px;
-    border: 1px solid var(--green-dim);
-    background: rgba(63,166,106,0.05);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .vault-note-icon {
-    width: 34px; height: 34px;
-    border-radius: 50%;
-    background: var(--green);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .vault-note-icon svg { width: 14px; height: 14px; color: #0B0B0A; }
-  .vault-note-text { font-size: 0.88rem; color: var(--ink-dim); line-height: 1.55; }
-  .vault-note-text strong { color: var(--green); }
-
-  /* ---------- VIDEO MODAL ---------- */
-  .video-modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(5,5,4,0.86);
-    backdrop-filter: blur(4px);
-    z-index: 200;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.25s ease;
-  }
-  .video-modal-overlay.is-open {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .video-modal {
-    width: 100%;
-    max-width: 760px;
-    background: var(--bg-card);
-    border: 1px solid var(--gold-dim);
-    border-radius: 8px;
-    overflow: hidden;
-    transform: scale(0.96) translateY(10px);
-    transition: transform 0.25s ease;
-    box-shadow: 0 40px 100px -20px rgba(0,0,0,0.7);
-  }
-  .video-modal-overlay.is-open .video-modal {
-    transform: scale(1) translateY(0);
-  }
-
-  .video-modal-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 22px;
-    border-bottom: 1px solid var(--line);
-  }
-  .vm-title {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.74rem;
-    color: var(--gold);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .vm-title::before {
-    content: '';
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--gold);
-    box-shadow: 0 0 8px var(--gold);
-  }
-  .vm-close {
-    width: 30px; height: 30px;
-    border-radius: 50%;
-    background: var(--bg-raised);
-    border: 1px solid var(--line-bright);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--ink-dim);
-    transition: all 0.2s ease;
-  }
-  .vm-close:hover { border-color: var(--gold); color: var(--gold); }
-  .vm-close svg { width: 13px; height: 13px; }
-
-  .video-modal-body {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    background: #000;
-  }
-  .video-modal-body iframe {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    border: 0;
-  }
-
-  /* Placeholder shown until a real video URL is connected */
-  .vm-placeholder {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    background: radial-gradient(ellipse 60% 60% at 50% 40%, rgba(212,175,55,0.08), transparent), var(--bg-raised);
-  }
-  .vm-play {
-    width: 64px; height: 64px;
-    border-radius: 50%;
-    background: var(--gold);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .vm-play svg { width: 22px; height: 22px; margin-left: 2px; }
-  .vm-ph-label { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--ink-dim); }
-  .vm-ph-label .dur { color: var(--gold); }
-
-  .video-modal-foot {
-    padding: 16px 22px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--ink-faint);
-    border-top: 1px solid var(--line);
-  }
-
-  @media (max-width: 600px) {
-    .video-modal { max-width: 100%; }
-  }
-
-  /* ---------- TOAST ---------- */
-  .toast {
-    position: fixed;
-    bottom: 28px;
-    left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: var(--gold);
-    color: #0B0B0A;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.82rem;
-    font-weight: 600;
-    padding: 14px 26px;
-    border-radius: 4px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.35s ease;
-    z-index: 100;
-    white-space: nowrap;
-  }
-  .toast.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
-
-  @media (max-width: 600px) {
-    main { padding: 32px 18px 80px; }
-    .mission-head { flex-direction: column; gap: 10px; }
-    .mission-title { font-size: 1.3rem; }
-    .goal-strip { grid-template-columns: 1fr; }
-    .mission-complete { flex-direction: column; align-items: stretch; }
-    .btn-complete { justify-content: center; }
-    .vault-chip .vc-label { display: none; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .mission-tag::before { animation: none !important; }
-  }
-
-  :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-</style>
-</head>
-<body>
-
-<div class="topbar">
-  <div class="topbar-inner">
-    <div class="logo">BACKER<span class="s">SS</span></div>
-    <div class="vault-chip">
-      <svg class="vc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="1"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-      <span class="vc-label">Bóveda</span>
-      <span class="vc-amount mono" id="vaultAmount">$0</span>
-    </div>
-  </div>
-</div>
-
-<main>
-  <div class="page-head">
-    <div class="breadcrumb">
-      ACADEMIA <span class="sep">/</span> <span class="here">CICLO 1 · ACCIÓN DIRECTA</span>
-    </div>
-    <h1 class="page-title">Bienvenido a tu Ciclo 1.</h1>
-    <p class="page-sub">3 misiones. 90 días como techo máximo, sin piso mínimo. El volumen es tu única llave de paso — entre más rápido ejecutes, más rápido avanzas.</p>
-  </div>
-
-  <div class="cycle-rail" aria-hidden="true">
-    <div class="rail-node active"></div>
-    <div class="rail-line"></div>
-    <div class="rail-node"></div>
-    <div class="rail-line"></div>
-    <div class="rail-node"></div>
-  </div>
-
-  <!-- ACTIVE MISSION -->
-  <div class="mission-card">
-    <div class="mission-head">
-      <div class="mission-tag">Misión activa · Reto 1</div>
-      <div class="mission-days mono">Días 1–3 · techo máximo</div>
-    </div>
-    <div class="mission-body">
-      <h2 class="mission-title">El Baño de Realidad</h2>
-      <p class="mission-desc">Tu única meta: completar 20 contactos reales desde tu página de captura. No estás cazando un "no" — estás cazando el contacto número 20. Lo que pase en el camino es información, no juicio.</p>
-
-      <button type="button" class="mission-video-link" id="openVideoModal">
-        <span class="mvl-icon"><svg viewBox="0 0 24 24" fill="#0B0B0A"><path d="M8 5v14l11-7z"/></svg></span>
-        <span>
-          <span class="mvl-text">Ver Video Briefing — Misión 1</span><br>
-          <span class="mvl-sub">60 SEG · CONTEXTO, OBJETIVO Y POR QUÉ</span>
-        </span>
-      </button>
-
-      <div class="goal-strip">
-        <div class="goal-cell">
-          <div class="goal-num mono" id="contactCount">0 / 20</div>
-          <div class="goal-label">Contactos reales</div>
-        </div>
-        <div class="goal-cell">
-          <div class="goal-num mono" id="dayCount">Día 1</div>
-          <div class="goal-label">De 3 (techo máximo)</div>
-        </div>
-      </div>
-
-      <div class="checklist">
-        <div class="checklist-head">
-          <span class="checklist-title">Registro de campo</span>
-          <span class="checklist-count" id="checklistCount">0 / 4</span>
-        </div>
-
-        <div class="check-item" data-value="7">
-          <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-          <div class="check-text">
-            <div class="check-label">Activé mi página de captura y compartí mi link</div>
-            <div class="check-meta mono">+7 CONTACTOS AL MARCAR</div>
-          </div>
-        </div>
-
-        <div class="check-item" data-value="7">
-          <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-          <div class="check-text">
-            <div class="check-label">Aplico el guion de cierre a quienes dejaron sus datos</div>
-            <div class="check-meta mono">+7 CONTACTOS AL MARCAR</div>
-          </div>
-        </div>
-
-        <div class="check-item" data-value="6">
-          <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-          <div class="check-text">
-            <div class="check-label">Llegué a mis 20 contactos acumulados</div>
-            <div class="check-meta mono">+6 CONTACTOS AL MARCAR</div>
-          </div>
-        </div>
-
-        <div class="check-item" data-value="0">
-          <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-          <div class="check-text">
-            <div class="check-label">Tuve al menos una conversación que no esperaba (un "sí" o una objeción real)</div>
-            <div class="check-meta mono">REGISTRO LIBRE — NO SUMA AL CONTADOR</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mission-complete">
-        <span class="mc-note">Al completar tus 20 contactos, tu Bóveda recibe tu primer capital semilla y se desbloquea la Misión 2.</span>
-        <button class="btn-complete" id="completeBtn">
-          Cerrar Misión 1
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- LOCKED QUEUE -->
-  <div class="queue-label">Próximas misiones</div>
-
-  <div class="locked-card">
-    <div class="locked-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="1"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></div>
-    <div class="locked-text">
-      <div class="lt-title mono">MISIÓN 2 — BLOQUEADA</div>
-      <div class="lt-sub mono">SE DESBLOQUEA AL CERRAR LA MISIÓN 1</div>
-    </div>
-  </div>
-
-  <div class="locked-card">
-    <div class="locked-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="1"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></div>
-    <div class="locked-text">
-      <div class="lt-title mono">MISIÓN 3 — BLOQUEADA</div>
-      <div class="lt-sub mono">SE DESBLOQUEA AL CERRAR LA MISIÓN 2</div>
-    </div>
-  </div>
-
-  <div class="vault-note">
-    <span class="vault-note-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#0B0B0A" stroke-width="2.4"><rect x="3" y="11" width="18" height="10" rx="1"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>
-    <span class="vault-note-text">Cada contacto que registras aquí alimenta tu <strong>Bóveda</strong>. No es solo progreso — es el capital semilla que va a autofinanciar tu Ciclo 2.</span>
-  </div>
-</main>
-
-<div class="video-modal-overlay" id="videoModalOverlay">
-  <div class="video-modal" role="dialog" aria-modal="true" aria-labelledby="vmTitle">
-    <div class="video-modal-head">
-      <span class="vm-title" id="vmTitle">Video Briefing — Misión 1</span>
-      <button type="button" class="vm-close" id="vmCloseBtn" aria-label="Cerrar video">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6L6 18M6 6l12 12"/></svg>
-      </button>
-    </div>
-    <div class="video-modal-body" id="vmBody">
-      <!--
-        INSTRUCCIONES PARA CONECTAR EL VIDEO REAL (igual que en presentacion.html):
-
-        YouTube (no listado):
-        <iframe src="https://www.youtube.com/embed/TU_ID?rel=0&modestbranding=1"
-          title="Video Briefing Misión 1" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
-        Vimeo (privado/unlisted):
-        <iframe src="https://player.vimeo.com/video/TU_ID?title=0&byline=0&portrait=0"
-          title="Video Briefing Misión 1" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-
-        Reemplaza el div .vm-placeholder de abajo por el iframe elegido.
-      -->
-      <div class="vm-placeholder" id="vmPlaceholder">
-        <span class="vm-play"><svg viewBox="0 0 24 24" fill="#0B0B0A"><path d="M8 5v14l11-7z"/></svg></span>
-        <span class="vm-ph-label">Video pendiente de conectar &nbsp;·&nbsp; <span class="dur">60 seg</span></span>
-      </div>
-    </div>
-    <div class="video-modal-foot mono">CONTEXTO · OBJETIVO REAL · POR QUÉ · CIERRE CON ENERGÍA</div>
-  </div>
-</div>
-
-<div class="toast mono" id="toast">Misión 1 completada — Bóveda actualizada</div>
-
-<script>
-(function () {
-  var items = document.querySelectorAll('.check-item');
-  var contactCount = document.getElementById('contactCount');
-  var checklistCount = document.getElementById('checklistCount');
-  var vaultAmount = document.getElementById('vaultAmount');
-  var completeBtn = document.getElementById('completeBtn');
-  var toast = document.getElementById('toast');
-
-  var TARGET = 20;
-  var totalItems = items.length;
-
-  function recalc() {
-    var sum = 0;
-    var checkedCount = 0;
-    items.forEach(function (item) {
-      if (item.classList.contains('checked')) {
-        sum += parseInt(item.dataset.value, 10) || 0;
-        checkedCount++;
-      }
-    });
-    var capped = Math.min(sum, TARGET);
-    contactCount.textContent = capped + ' / ' + TARGET;
-    checklistCount.textContent = checkedCount + ' / ' + totalItems;
-    vaultAmount.textContent = '$' + (capped * 1).toFixed(0);
-
-    var ready = capped >= TARGET;
-    completeBtn.classList.toggle('is-ready', ready);
-  }
-
-  items.forEach(function (item) {
-    item.addEventListener('click', function () {
-      item.classList.toggle('checked');
-      recalc();
-    });
-    item.setAttribute('role', 'checkbox');
-    item.setAttribute('tabindex', '0');
-    item.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        item.click();
-      }
-    });
-  });
-
-  completeBtn.addEventListener('click', function () {
-    if (!completeBtn.classList.contains('is-ready')) return;
-    toast.classList.add('is-visible');
-    setTimeout(function () { toast.classList.remove('is-visible'); }, 3200);
-  });
-
-  recalc();
-
-  // ---------- Video modal ----------
-  var openBtn = document.getElementById('openVideoModal');
-  var overlay = document.getElementById('videoModalOverlay');
-  var closeBtn = document.getElementById('vmCloseBtn');
-  var placeholder = document.getElementById('vmPlaceholder');
-
-  function openModal() {
-    overlay.classList.add('is-open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeModal() {
-    overlay.classList.remove('is-open');
-    document.body.style.overflow = '';
-  }
-
-  if (openBtn) openBtn.addEventListener('click', openModal);
-  if (closeBtn) closeBtn.addEventListener('click', closeModal);
-
-  if (overlay) {
-    overlay.addEventListener('click', function (e) {
-      if (e.target === overlay) closeModal();
-    });
-  }
-
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
-  });
-
-  // Placeholder click is just a visual stand-in until a real iframe is connected.
-  if (placeholder) {
-    placeholder.addEventListener('click', function () {
-      placeholder.querySelector('.vm-ph-label').textContent = 'Conecta tu video real aquí (ver instrucciones en el código)';
-    });
-  }
-})();
-</script>
-</body>
-</html>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backerss — Dashboard Academia</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  
+  <style>
+    :root {
+      --bg-main: #0B0B0A;
+      --bg-card: #141412;
+      --accent: #E5C158;
+      --text-primary: #F5F5F3;
+      --text-muted: #8A8A85;
+      --border: #262622;
+      --success: #3EE587;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      line-height: 1.25;
+      padding: 20px;
+    }
+
+    .mono {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    }
+
+    header {
+      max-width: 800px;
+      margin: 0 auto 30px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    .vault-chip {
+      background: #1A1A16;
+      border: 1px solid var(--accent);
+      padding: 8px 16px;
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .vault-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .vault-amount {
+      font-size: 1.2rem;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .dashboard-layout {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    /* --- NUEVO: ESTILOS PARA TU ARSENAL DE MATERIALES --- */
+    .arsenal-box {
+      background: var(--bg-card);
+      border: 1px solid rgba(229, 193, 88, 0.25);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .arsenal-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      margin-bottom: 12px;
+      font-weight: bold;
+    }
+    .arsenal-flex {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .arsenal-card-item {
+      background: #0F0F0E;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .btn-download-item {
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    /* Constelación Visual */
+    .constellation-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    .constellation-head {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .constellation-field {
+      background: #0F0F0E;
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      min-height: 140px;
+      padding: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .backer-node {
+      background: #1A2E22;
+      border: 1px solid var(--success);
+      padding: 6px 12px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    .backer-node .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--success);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--success);
+    }
+
+    .backer-node .tag {
+      font-size: 0.8rem;
+      color: var(--text-primary);
