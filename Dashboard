@@ -767,4 +767,74 @@
     var realContactsConseguidos = 0;
 
     function checkReto1Status() {
-      // Requisito 1: Tener al menos 20 contactos reales conseguidos en el
+      // Requisito 1: Tener al menos 20 contactos reales conseguidos en el simulador
+      var metaContactosCumplida = realContactsConseguidos >= TARGET;
+      
+      // Activar o desactivar botón de completar
+      completeBtn.classList.toggle('is-ready', metaContactosCumplida);
+    }
+
+    // Escuchar clicks en el checklist de la Tarjeta 1 para actualizar estado visual del botón
+    var card1Items = document.getElementById('cardReto1').querySelectorAll('.check-item');
+    card1Items.forEach(function(el) {
+      el.addEventListener('click', checkReto1Status);
+    });
+
+    completeBtn.addEventListener('click', function () {
+      if (!completeBtn.classList.contains('is-ready')) return;
+      toast.classList.add('is-visible');
+      setTimeout(function () { toast.classList.remove('is-visible'); }, 3200);
+      
+      // Desbloquear Reto 2 visualmente en el frontend
+      var card2 = document.getElementById('cardReto2');
+      if (card2) card2.classList.remove('is-locked');
+    });
+
+    // ---------- Copiar link de página de captura ----------
+    var copyLinkBtn = document.getElementById('copyLinkBtn');
+    if (copyLinkBtn) {
+      copyLinkBtn.addEventListener('click', function () {
+        var linkValue = 'https://backerss.com/captura.html?ref=TU-NOMBRE';
+        navigator.clipboard.writeText(linkValue).then(function () {
+          copyLinkBtn.classList.add('is-copied');
+          copyLinkBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg> Copiado';
+          setTimeout(function () {
+            copyLinkBtn.classList.remove('is-copied');
+            copyLinkBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copiar';
+          }, 2000);
+        });
+      });
+    }
+
+    // ---------- Constelación: Llenado interactivo real ----------
+    var addBackerBtn = document.getElementById('addBackerBtn');
+    var constellationField = document.getElementById('constellationField');
+    var constellationCount = document.getElementById('constellationCount');
+
+    if (addBackerBtn) {
+      addBackerBtn.addEventListener('click', function () {
+        realContactsConseguidos++;
+        
+        // Crear estrella/nodo visual brillante
+        var node = document.createElement('div');
+        node.className = 'backer-node';
+        node.innerHTML = '<span class="dot"></span><span class="tag mono">B' + realContactsConseguidos + '</span>';
+        constellationField.insertBefore(node, addBackerBtn);
+        
+        // Actualizar etiqueta del contador de la constelación
+        constellationCount.textContent = realContactsConseguidos + (realContactsConseguidos === 1 ? ' Backer' : ' Backers');
+        
+        // El contador del Reto 1 incrementa
+        var capped = Math.min(realContactsConseguidos, TARGET);
+        contactCount.textContent = capped + ' / ' + TARGET;
+        
+        // Simulación financiera: cada registro inyecta $12 directos del Ciclo 1 a la Bóveda
+        vaultAmount.textContent = '$' + (realContactsConseguidos * 12).toFixed(0);
+        
+        checkReto1Status();
+      });
+    }
+  })();
+  </script>
+</body>
+</html>
