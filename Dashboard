@@ -1,0 +1,13 @@
+<div class="check-item custom-diagnostic" id="diagnosticItem">
+  <div class="check-box" id="diagnosticCheckBox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
+  <div class="check-text" style="width: 100%;">
+    <div class="check-label">Registré el resultado de mi primera interacción o conversación con el mercado</div>
+    <div class="check-meta mono" style="margin-bottom: 10px;">APRENDIZAJE REAL — SELECCIONA EL ESCENARIO QUE VIVISTE:</div>
+    
+    <div class="diagnostic-options" onclick="event.stopPropagation();">
+      <button type="button" class="diag-btn" data-type="incov">A) Incómoda / Objeciones</button>
+      <button type="button" class="diag-btn" data-type="exito">B) Exitosa / Fluida</button>
+      <button type="button" class="diag-btn" data-type="no-obj">C) Sin Objeciones</button>
+    </div>
+  </div>
+</div>
