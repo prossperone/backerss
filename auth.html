@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Backerss — Activar Ciclo 1</title>
-<link rel="icon" type="image/png" href="favicon.png.png">
+<link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -99,7 +99,7 @@
   /* ---------- LAYOUT GRID ---------- */
   .auth-grid {
     display: grid;
-    grid-template-columns: 1fr 320px;
+    grid-template-columns: 1fr 340px;
     gap: 28px;
     align-items: start;
   }
@@ -296,6 +296,7 @@
     margin-top: 2px;
   }
   .si-text { font-size: 0.86rem; color: var(--ink-dim); line-height: 1.5; }
+  .si-text strong { color: var(--ink); font-weight: 600; }
 
   .summary-divider { margin: 20px 0; border-top: 1px dashed var(--line); }
 
@@ -305,7 +306,7 @@
     justify-content: space-between;
   }
   .sp-label { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--ink-dim); text-transform: uppercase; }
-  .sp-amount { font-family: 'Archivo Black', sans-serif; font-size: 1.6rem; color: var(--gold-bright); }
+  .sp-amount { font-family: 'Archivo Black', sans-serif; font-size: 1.8rem; color: var(--gold-bright); }
 
   .summary-note {
     margin-top: 14px;
@@ -342,7 +343,7 @@
 
 <nav>
   <div class="wrap">
-    <div class="logo"><img src="logo-backerss.png.png" alt="Backerss"></div>
+    <div class="logo"><span style="color: var(--gold); font-family: 'Archivo Black', sans-serif;">BACKERSS</span><span class="s"> ACADEMY</span></div>
     <a href="presentacion.html" class="nav-back">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       Volver a la presentación
@@ -398,21 +399,6 @@
         </div>
       </div>
 
-      <!--
-        INSTRUCCIONES PARA CONECTAR PASARELA DE PAGO REAL:
-
-        Cuando elijas tu proveedor (Stripe, PayPal, etc.), reemplaza el div
-        .pay-placeholder de abajo por el widget/checkout embebido correspondiente.
-
-        Ejemplo con Stripe Elements (requiere stripe.js cargado):
-        <div id="card-element"></div>
-
-        Ejemplo con PayPal Buttons SDK:
-        <div id="paypal-button-container"></div>
-
-        El monto a cobrar es el de .sp-amount en el panel lateral — mantenlo
-        sincronizado con lo que configures en tu proveedor de pago.
-      -->
       <div class="pay-placeholder" id="payPlaceholder">
         <span class="pp-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
@@ -437,19 +423,32 @@
       <div class="summary-list">
         <div class="summary-item">
           <svg class="si-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>
-          <span class="si-text">Acceso inmediato a tu Academia</span>
+          <span class="si-text">Acceso inmediato a la <strong>Academia Backerss</strong></span>
         </div>
+        
         <div class="summary-item">
           <svg class="si-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>
-          <span class="si-text">Video de bienvenida al Ciclo 1</span>
+          <span class="si-text">📚 Ebook: <strong>"Primero organiza tu vida"</strong> (Manual de orden interno)</span>
         </div>
+
         <div class="summary-item">
           <svg class="si-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>
-          <span class="si-text">3 misiones con guiones, libretos y materiales</span>
+          <span class="si-text">🗺️ Mapa de Transformación <strong>Punto A a Punto B</strong></span>
         </div>
+
         <div class="summary-item">
           <svg class="si-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>
-          <span class="si-text">Tu Bóveda activa desde el primer contacto</span>
+          <span class="si-text">🖨️ <strong>Checklist Imprimible</strong> de tareas diarias para tu pared</span>
+        </div>
+
+        <div class="summary-item">
+          <svg class="si-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>
+          <span class="si-text">3 Retos prácticos con guiones y libretos de venta</span>
+        </div>
+
+        <div class="summary-item">
+          <svg class="si-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>
+          <span class="si-text">Activación de tu <strong>Bóveda Colectiva</strong></span>
         </div>
       </div>
 
@@ -457,9 +456,9 @@
 
       <div class="summary-price-row">
         <span class="sp-label">Total a pagar</span>
-        <span class="sp-amount mono">$20</span>
+        <span class="sp-amount mono">$12</span>
       </div>
-      <p class="summary-note">Pago único de entrada al protocolo. El Ciclo 2 y 3 se desbloquean con tus propios resultados — sin pagos adicionales.</p>
+      <p class="summary-note">Pago único de entrada al protocolo. El Ciclo 2 y 3 se desbloquean orgánicamente con tus propios resultados, sin pagos adicionales de tu bolsillo.</p>
     </aside>
   </form>
 </main>
@@ -476,7 +475,7 @@
   var mismatchHint = document.getElementById('passwordMismatchHint');
   var payOptions = document.querySelectorAll('.pay-option');
 
-  // Payment method selector (visual only for now)
+  // Payment method selector
   payOptions.forEach(function (opt) {
     opt.addEventListener('click', function () {
       payOptions.forEach(function (o) { o.classList.remove('is-selected'); });
@@ -500,23 +499,10 @@
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-
     if (!checkPasswordsMatch()) {
       passwordConfirm.focus();
       return;
     }
-
-    /*
-      INTEGRACIÓN PENDIENTE:
-      Aquí es donde, una vez conectado el backend (Supabase Auth + pasarela
-      de pago), se debe:
-        1. Crear el usuario (correo + contraseña) en Supabase.
-        2. Procesar el pago a través del proveedor elegido.
-        3. Solo si el pago es exitoso, redirigir a dashboard.html.
-
-      Por ahora, mientras se construye esa integración, el formulario
-      simplemente simula el registro y avanza directo al dashboard.
-    */
     window.location.href = 'dashboard.html';
   });
 })();
