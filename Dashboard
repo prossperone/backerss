@@ -1,81 +1,138 @@
-<div class="mission-card">
-        <div class="mission-head">
-          <div class="mission-tag">Misión activa · Reto 1</div>
-          <div class="mission-days mono">Días 1–3 · Meta mínima</div>
-        </div>
-        <div class="mission-body">
-          <h2 class="mission-title">El Baño de Realidad</h2>
-          <p class="mission-desc">Tu única meta: conseguir al menos 20 contactos reales desde tu página de captura. No estás cazando un “no” ni un “sí” — estás cazando el contacto número 20 como tu primera victoria. Lo que pase en el camino es información, no juicio. Y si llegan más, mejor: cada contacto adicional es práctica y confianza extra.</p>
+```html
+<script>
+(function () {
+  var items = document.querySelectorAll('.check-item');
+  var contactCount = document.getElementById('contactCount');
+  var checklistCount = document.getElementById('checklistCount');
+  var vaultAmount = document.getElementById('vaultAmount');
+  var completeBtn = document.getElementById('completeBtn');
+  var toast = document.getElementById('toast');
 
-          <button type="button" class="mission-video-link" id="openVideoModal">
-            <span class="mvl-icon"><svg viewBox="0 0 24 24" fill="#0B0B0A"><path d="M8 5v14l11-7z"/></svg></span>
-            <span>
-              <span class="mvl-text">Ver Video Briefing — Misión 1</span><br>
-              <span class="mvl-sub">60 SEG · CONTEXTO, OBJETIVO Y POR QUÉ</span>
-            </span>
-          </button>
+  var TARGET = 20;
+  var totalItems = items.length;
+  
+  // Variable global de simulación para los contactos reales conseguidos
+  var realContactsConseguidos = 0; 
 
-          <div class="capture-card">
-            <div class="capture-card-head">
-              <span class="cc-title">Tu página de captura</span>
-              <span class="cc-badge">Lista para usar</span>
-            </div>
-            <div class="capture-link-row">
-              <div class="capture-link-box mono" id="captureLinkText">backerss.com/captura.html?ref=<span class="ref-part">TU-NOMBRE</span></div>
-              <button type="button" class="copy-link-btn" id="copyLinkBtn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                Copiar
-              </button>
-            </div>
-            <p class="cc-hint">Comparte este link con tu tráfico frío. Cuando alguien deja sus datos ahí, entra directo a tu Constelación.</p>
-          </div>
+  function recalc() {
+    var checkedCount = 0;
+    items.forEach(function (item) {
+      if (item.classList.contains('checked')) {
+        checkedCount++;
+      }
+    });
+    
+    // El checklist muestra su propio progreso
+    checklistCount.textContent = checkedCount + ' / ' + totalItems;
+    
+    // Evaluamos si el usuario alcanzó la meta mínima de 20 contactos en su constelación
+    var ready = realContactsConseguidos >= TARGET;
+    completeBtn.classList.toggle('is-ready', ready);
+  }
 
-          <div class="goal-strip">
-            <div class="goal-cell">
-              <div class="goal-num mono" id="contactCount">0 / 20</div>
-              <div class="goal-label">Contactos reales · mínimo</div>
-            </div>
-            <div class="goal-cell">
-              <div class="goal-num mono" id="dayCount">Día 1</div>
-              <div class="goal-label">De 3 (techo máximo)</div>
-            </div>
-          </div>
+  items.forEach(function (item) {
+    item.addEventListener('click', function () {
+      item.classList.toggle('checked');
+      recalc();
+    });
+    item.setAttribute('role', 'checkbox');
+    item.setAttribute('tabindex', '0');
+    item.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        item.click();
+      }
+    });
+  });
 
-          <div class="checklist">
-            <div class="checklist-head">
-              <span class="checklist-title">Compromiso de ejecución</span>
-              <span class="checklist-count" id="checklistCount">0 / 4</span>
-            </div>
+  completeBtn.addEventListener('click', function () {
+    if (!completeBtn.classList.contains('is-ready')) return;
+    toast.classList.add('is-visible');
+    setTimeout(function () { toast.classList.remove('is-visible'); }, 3200);
+  });
 
-            <div class="check-item" data-value="0">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-              <div class="check-text">
-                <div class="check-label">Personalicé mi mini página con mi nombre, foto y verifiqué mi enlace único</div>
-                <div class="check-meta mono">INFRAESTRUCTURA LISTA — CONFIGURACIÓN INICIAL</div>
-              </div>
-            </div>
+  // ---------- Copiar link de página de captura ----------
+  var copyLinkBtn = document.getElementById('copyLinkBtn');
+  if (copyLinkBtn) {
+    copyLinkBtn.addEventListener('click', function () {
+      var linkValue = 'https://backerss.com/captura.html?ref=TU-NOMBRE';
+      navigator.clipboard.writeText(linkValue).then(function () {
+        copyLinkBtn.classList.add('is-copied');
+        copyLinkBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg> Copiado';
+        setTimeout(function () {
+          copyLinkBtn.classList.remove('is-copied');
+          copyLinkBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copiar';
+        }, 2000);
+      });
+    });
+  }
 
-            <div class="check-item" data-value="0">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-              <div class="check-text">
-                <div class="check-label">Publiqué mi enlace en al menos 2 canales activos usando el texto sugerido</div>
-                <div class="check-meta mono">ROMPER LA INERCIA — LANZAMIENTO INICIAL ACTIVADO</div>
-              </div>
-            </div>
+  // ---------- Constelación: Llenado interactivo real ----------
+  var addBackerBtn = document.getElementById('addBackerBtn');
+  var constellationField = document.getElementById('constellationField');
+  var constellationCount = document.getElementById('constellationCount');
 
-            <div class="check-item" data-value="0">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-              <div class="check-text">
-                <div class="check-label">Comprendo el marco teórico: mi éxito es acumular volumen de datos, no buscar aprobación</div>
-                <div class="check-meta mono">BLINDAJE MENTAL — ADQUISICIÓN DE PERSPECTIVA COMERCIAL</div>
-              </div>
-            </div>
+  if (addBackerBtn) {
+    addBackerBtn.addEventListener('click', function () {
+      realContactsConseguidos++;
+      
+      // Crear nodo visual brillante en la constelación
+      var node = document.createElement('div');
+      node.className = 'backer-node';
+      node.innerHTML = '<span class="dot"></span><span class="tag mono">B' + realContactsConseguidos + '</span>';
+      constellationField.insertBefore(node, addBackerBtn);
+      
+      // Actualizar contadores interactivos
+      constellationCount.textContent = realContactsConseguidos + (realContactsConseguidos === 1 ? ' Backer' : ' Backers');
+      
+      // El contador de la misión sube orgánicamente
+      var capped = Math.min(realContactsConseguidos, TARGET);
+      contactCount.textContent = capped + ' / ' + TARGET;
+      
+      // Cada contacto real en el simulador se visualiza en la Bóveda ($12 por registro de Ciclo 1)
+      vaultAmount.textContent = '$' + (realContactsConseguidos * 12).toFixed(0);
+      
+      recalc();
+    });
+  }
 
-            <div class="check-item" data-value="0">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-              <div class="check-text">
-                <div class="check-label">Registré conscientemente mi primera conversación incómoda o pregunta inesperada del mercado</div>
-                <div class="check-meta mono">APRENDIZAJE REAL — ESTA INFORMACIÓN VALE ORO</div>
-              </div>
-            </div>
-          </div>
+  // ---------- Video modal ----------
+  var openBtn = document.getElementById('openVideoModal');
+  var overlay = document.getElementById('videoModalOverlay');
+  var closeBtn = document.getElementById('vmCloseBtn');
+  var placeholder = document.getElementById('vmPlaceholder');
+
+  function openModal() {
+    overlay.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    overlay.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  if (openBtn) openBtn.addEventListener('click', openModal);
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+  if (overlay) {
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) closeModal();
+    });
+  }
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
+  });
+
+  if (placeholder) {
+    placeholder.addEventListener('click', function () {
+      placeholder.querySelector('.vm-ph-label').textContent = 'Conecta tu video real aquí';
+    });
+  }
+
+  recalc();
+})();
+</script>
+</body>
+</html>
