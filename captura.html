@@ -254,6 +254,100 @@
   }
 
   :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  /* ---------- POST-SUBMIT ACTIONS ---------- */
+  .success-actions {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+  .btn-watch-now {
+    width: 100%;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.86rem; letter-spacing: 0.04em; text-transform: uppercase;
+    background: var(--gold);
+    color: #0B0B0A;
+    font-weight: 600;
+    padding: 16px 0;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: all 0.2s ease;
+  }
+  .btn-watch-now:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(212,175,55,0.25); }
+  .btn-watch-now svg { width: 14px; height: 14px; }
+  .success-note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-faint);
+  }
+
+  /* ---------- VIDEO MODAL (same pattern as presentacion.html / dashboard.html) ---------- */
+  .lead-video-modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(5,5,4,0.86);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s ease;
+  }
+  .lead-video-modal-overlay.is-open { opacity: 1; pointer-events: auto; }
+  .lead-video-modal {
+    width: 100%; max-width: 760px;
+    background: var(--bg-card);
+    border: 1px solid var(--gold-dim);
+    border-radius: 8px;
+    overflow: hidden;
+    transform: scale(0.96) translateY(10px);
+    transition: transform 0.25s ease;
+    box-shadow: 0 40px 100px -20px rgba(0,0,0,0.7);
+  }
+  .lead-video-modal-overlay.is-open .lead-video-modal { transform: scale(1) translateY(0); }
+  .lvm-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--line);
+  }
+  .lvm-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem; color: var(--gold);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .lvm-close {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--bg-raised);
+    border: 1px solid var(--line-bright);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-dim);
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .lvm-close:hover { border-color: var(--gold); color: var(--gold); }
+  .lvm-close svg { width: 13px; height: 13px; }
+  .lvm-body {
+    position: relative; width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+  }
+  .lvm-body iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+  .lvm-placeholder {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+    background: radial-gradient(ellipse 60% 60% at 50% 40%, rgba(212,175,55,0.08), transparent), var(--bg-raised);
+  }
+  .lvm-play {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .lvm-play svg { width: 22px; height: 22px; margin-left: 2px; }
+  .lvm-ph-label { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--ink-dim); }
 </style>
 </head>
 <body>
@@ -339,11 +433,49 @@
       <span class="success-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
       </span>
-      <h3>Listo. Ya casi.</h3>
-      <p>Te escribimos pronto con el acceso a la presentación completa del protocolo.</p>
+      <h3>¡Listo! Tu acceso ya está disponible.</h3>
+      <p>Puedes ver la presentación completa ahora mismo, o más tarde desde tu correo — la decisión es tuya.</p>
+
+      <div class="success-actions">
+        <button type="button" class="btn-watch-now" id="watchNowBtn">
+          Ver la presentación ahora
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+        <span class="success-note">También te enviamos el link a tu correo, por si lo prefieres.</span>
+      </div>
     </div>
   </div>
 </main>
+
+<div class="lead-video-modal-overlay" id="leadVideoModalOverlay">
+  <div class="lead-video-modal" role="dialog" aria-modal="true" aria-labelledby="lvmTitle">
+    <div class="lvm-head">
+      <span class="lvm-title" id="lvmTitle">La Presentación — Protocolo Backerss</span>
+      <button type="button" class="lvm-close" id="lvmCloseBtn" aria-label="Cerrar video">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="lvm-body">
+      <!--
+        INSTRUCCIONES PARA CONECTAR EL VIDEO REAL (mismo patrón que presentacion.html):
+
+        YouTube (no listado):
+        <iframe src="https://www.youtube.com/embed/TU_ID?rel=0&modestbranding=1"
+          title="Presentación Backerss" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+        Vimeo (privado/unlisted):
+        <iframe src="https://player.vimeo.com/video/TU_ID?title=0&byline=0&portrait=0"
+          title="Presentación Backerss" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+
+        Reemplaza el div .lvm-placeholder de abajo por el iframe elegido.
+      -->
+      <div class="lvm-placeholder" id="lvmPlaceholder">
+        <span class="lvm-play"><svg viewBox="0 0 24 24" fill="#0B0B0A"><path d="M8 5v14l11-7z"/></svg></span>
+        <span class="lvm-ph-label">Video pendiente de conectar &nbsp;·&nbsp; 8 min</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <footer>
   <span class="mono">BACKERSS · PROTOCOLO 90 DÍAS</span>
@@ -380,6 +512,31 @@
 
     form.style.display = 'none';
     successState.classList.add('is-visible');
+  });
+
+  // ---------- Modal: Ver la presentación ahora ----------
+  var watchNowBtn = document.getElementById('watchNowBtn');
+  var leadOverlay = document.getElementById('leadVideoModalOverlay');
+  var lvmCloseBtn = document.getElementById('lvmCloseBtn');
+
+  function openLeadVideoModal() {
+    leadOverlay.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLeadVideoModal() {
+    leadOverlay.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  if (watchNowBtn) watchNowBtn.addEventListener('click', openLeadVideoModal);
+  if (lvmCloseBtn) lvmCloseBtn.addEventListener('click', closeLeadVideoModal);
+  if (leadOverlay) {
+    leadOverlay.addEventListener('click', function (e) {
+      if (e.target === leadOverlay) closeLeadVideoModal();
+    });
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && leadOverlay.classList.contains('is-open')) closeLeadVideoModal();
   });
 })();
 </script>
