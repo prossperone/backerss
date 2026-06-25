@@ -80,7 +80,7 @@
       gap: 30px;
     }
 
-    /* --- NUEVO: ESTILOS PARA TU ARSENAL DE MATERIALES DE BIENVENIDA --- */
+    /* --- ARSENAL DE MATERIALES DE BIENVENIDA --- */
     .arsenal-box {
       background: var(--bg-card);
       border: 1px solid rgba(229, 193, 88, 0.25);
@@ -131,9 +131,13 @@
       border: none;
       color: var(--accent);
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 1rem;
       font-weight: bold;
       padding: 4px;
+      transition: transform 0.2s;
+    }
+    .btn-download-item:hover {
+      transform: translateY(2px);
     }
 
     /* Constelación Visual */
@@ -361,6 +365,14 @@
       margin-bottom: 24px;
     }
 
+    .goal-strip {
+      display: flex;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
     .goal-cell {
       flex: 1;
       padding: 12px;
@@ -454,7 +466,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* --- Píldoras de Diagnóstico --- */
     .diagnostic-options {
       display: flex;
       gap: 8px;
@@ -487,7 +498,6 @@
       box-shadow: 0 0 8px rgba(229, 193, 88, 0.15);
     }
 
-    /* Acción Final */
     .action-row {
       display: flex;
       justify-content: flex-end;
@@ -510,6 +520,63 @@
       color: var(--bg-main);
       cursor: pointer;
       box-shadow: 0 4px 14px rgba(229, 193, 88, 0.2);
+    }
+
+    /* --- NUEVO: CORRECCIÓN POP-UP MODAL VIDEO BRIEFING --- */
+    .video-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+    .video-modal.is-active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-content {
+      background: #141412;
+      border: 1px solid var(--border);
+      width: 90%;
+      max-width: 640px;
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+    }
+    .close-modal-btn {
+      position: absolute;
+      top: -40px;
+      right: 0;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .video-wrapper {
+      position: relative;
+      padding-bottom: 56.25%; /* Relación de aspecto 16:9 */
+      height: 0;
+      background: #000;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
     }
 
     /* Toast */
@@ -564,21 +631,21 @@
             <span class="ai-name">Ebook: Orden Interno</span>
             <span class="ai-tag mono">PDF DETALLADO DE ORGANIZACIÓN</span>
           </div>
-          <button class="btn-download-item" title="Descargar PDF">⬇️</button>
+          <button class="btn-download-item" data-doc="orden" title="Descargar PDF">⬇️</button>
         </div>
         <div class="arsenal-card-item">
           <div class="ai-info">
             <span class="ai-name">Mapa de Transformación</span>
             <span class="ai-tag mono">INFOGRAFÍA ESTRATÉGICA A ➔ B</span>
           </div>
-          <button class="btn-download-item" title="Descargar Infografía">⬇️</button>
+          <button class="btn-download-item" data-doc="mapa" title="Descargar Infografía">⬇️</button>
         </div>
         <div class="arsenal-card-item">
           <div class="ai-info">
             <span class="ai-name">Checklist de Pared</span>
             <span class="ai-tag mono">IMPRIMIBLE DE ACCIÓN DIARIA</span>
           </div>
-          <button class="btn-download-item" title="Descargar Checklist">⬇️</button>
+          <button class="btn-download-item" data-doc="checklist" title="Descargar Checklist">⬇️</button>
         </div>
       </div>
     </section>
@@ -602,9 +669,9 @@
         </div>
         <div class="mission-body">
           <h2 class="mission-title">El Baño de Realidad</h2>
-          <p class="mission-desc">Tu única meta: conseguir al menos 20 contactos reales desde tu página de captura. No estás cazando un “no” ni un “sí” — estás cazando el contacto número 20 como tu primera victoria. Lo que pase en el camino es información, no juicio. Y si llegan más, mejor: cada contacto adicional es práctica y confianza extra.</p>
+          <p class="mission-desc">Tu única meta: conseguir al menos 20 contactos reales desde tu página de captura. No estás cazando un “no” ni un “sí” — estás cazando el contacto número 20 como tu primera victoria.</p>
 
-          <button type="button" class="mission-video-link">
+          <button type="button" class="mission-video-link" id="openVideoBtn">
             <span class="mvl-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="#0B0B0A"><path d="M8 5v14l11-7z"/></svg></span>
             <span>
               <span class="mvl-text">Ver Video Briefing — Misión 1</span><br>
@@ -695,121 +762,115 @@
         <div class="mission-body">
           <h2 class="mission-title">Tu primera comisión en 48 horas</h2>
           <p class="mission-desc">Filtra tus 20 capturas iniciales y ejecuta el script de inversión cooperativa para activar tu sistema económico mutuo.</p>
-          
-          <div class="checklist">
-            <div class="checklist-head">
-              <span>Compromiso de ejecución · Reto 2</span>
-              <span class="mono">0 / 4</span>
-            </div>
-            <div class="check-item">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-              <div class="check-text"><div class="check-label">Identifiqué y contacté a los 5 perfiles con mayor potencial de mi lista de 20 capturas iniciales</div><div class="check-meta mono">FILTRADO DE DATOS</div></div>
-            </div>
-            <div class="check-item">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-              <div class="check-text"><div class="check-label">Envié la propuesta de valor usando el script de "inversión cooperativa"</div><div class="check-meta mono">MECÁNICA COMERCIAL</div></div>
-            </div>
-            <div class="check-item">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-              <div class="check-text"><div class="check-label">Gestioné mi primer rechazo directo entendiendo que es parte de la estadística</div><div class="check-meta mono">BLINDAJE EMOCIONAL</div></div>
-            </div>
-            <div class="check-item">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-              <div class="check-text"><div class="check-label">Validé la pasarela de pagos recibiendo mi primera alerta de comisión</div><div class="check-meta mono">MONETIZACIÓN</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mission-card is-locked" id="cardReto3">
-        <div class="mission-head">
-          <div class="mission-tag">Reto 3</div>
-          <div class="mission-days mono">Días 11–20 · Liderazgo</div>
-        </div>
-        <div class="mission-body">
-          <h2 class="mission-title">Activa a tu primer socio y gestiona su éxito</h2>
-          <p class="mission-desc">Asume el rol de líder interdependiente guiando a tu nuevo Backer a configurar su infraestructura y conseguir sus primeros datos.</p>
-          
-          <div class="checklist">
-            <div class="checklist-head">
-              <span>Compromiso de ejecución · Reto 3</span>
-              <span class="mono">0 / 4</span>
-            </div>
-            <div class="check-item">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-              <div class="check-text"><div class="check-label">Realicé la sesión de inducción con mi nuevo Backer en menos de 24 horas</div><div class="check-meta mono">LIDERAZGO DUPLICABLE</div></div>
-            </div>
-            <div class="check-item">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-              <div class="check-text"><div class="check-label">Ayudé activamente a mi socio a configurar su link de captura único</div><div class="check-meta mono">INFRAESTRUCTURA COMPARTIDA</div></div>
-            </div>
-            <div class="check-item">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-              <div class="check-text"><div class="check-label">Comprendo que mi rentabilidad depende del éxito de mi equipo</div><div class="check-meta mono">FILOSOFÍA INTERDEPENDIENTE</div></div>
-            </div>
-            <div class="check-item">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-              <div class="check-text"><div class="check-label">Acompañé a mi socio hasta que registró sus primeros 5 contactos reales</div><div class="check-meta mono">COHESIÓN COLECTIVA</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="mission-card is-locked" id="cardReto4">
-        <div class="mission-head">
-          <div class="mission-tag">Reto 4 · Fin de Ciclo</div>
-          <div class="mission-days mono">Días 21–30 · Sinergia</div>
-        </div>
-        <div class="mission-body">
-          <h2 class="mission-title">Optimiza el flujo y aumenta la rentabilidad del equipo</h2>
-          <p class="mission-desc">Audita las métricas de tu constelación, destraba los cuellos de botella del grupo y consolida tus ingresos recurrentes.</p>
-          
-          <div class="checklist">
-            <div class="checklist-head">
-              <span>Compromiso de ejecución · Reto 4</span>
-              <span class="mono">0 / 4</span>
-            </div>
-            <div class="check-item">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-              <div class="check-text"><div class="check-label">Audité las tasas de conversión de mi enlace versus los enlaces de mi equipo</div><div class="check-meta mono">ESTRATEGIA ANALÍTICA</div></div>
-            </div>
-            <div class="check-item">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-              <div class="check-text"><div class="check-label">Coordiné una sesión estratégica conjunta para destrabar a los miembros bloqueados</div><div class="check-meta mono">SINERGIA DE GRUPO</div></div>
-            </div>
-            <div class="check-item">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-              <div class="check-text"><div class="check-label">Logré que al menos 2 socios desbloquearan su comisión recurrentes</div><div class="check-meta mono">INGRESOS PASIVOS</div></div>
-            </div>
-            <div class="check-item">
-              <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
-              <div class="check-text"><div class="check-label">Completé el Ciclo 1 con el 100% de los requisitos prácticos ejecutados</div><div class="check-meta mono">TRANSFORMACIÓN LOGRADA</div></div>
-            </div>
-          </div>
         </div>
       </div>
 
     </div>
   </main>
 
+  <div class="video-modal" id="videoModal">
+    <div class="modal-content">
+      <button class="close-modal-btn" id="closeVideoBtn">✕ Cerrar</button>
+      <div class="video-wrapper">
+        <iframe id="modalIframe" src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
   <div class="toast mono" id="toast">¡RETO COMPLETADO! CAPÍTULO SUPERADO</div>
 
   <script>
   (function () {
-    // 1. Manejo de Checklists Tradicionales
-    var normalItems = document.querySelectorAll('.normal-check, #cardReto2 .check-item, #cardReto3 .check-item, #cardReto4 .check-item');
-    
+    // === SISTEMA DE VIDEO POP-UP (REPARADO) ===
+    var openVideoBtn = document.getElementById('openVideoBtn');
+    var closeVideoBtn = document.getElementById('closeVideoBtn');
+    var videoModal = document.getElementById('videoModal');
+    var modalIframe = document.getElementById('modalIframe');
+
+    if(openVideoBtn && videoModal) {
+      openVideoBtn.addEventListener('click', function() {
+        videoModal.classList.add('is-active');
+      });
+    }
+
+    if(closeVideoBtn && videoModal) {
+      closeVideoBtn.addEventListener('click', function() {
+        videoModal.classList.remove('is-active');
+        // Esto detiene el video al cerrar para que no siga sonando de fondo
+        var src = modalIframe.src;
+        modalIframe.src = src;
+      });
+      // Cerrar también si hacen clic fuera del cuadro negro
+      videoModal.addEventListener('click', function(e) {
+        if(e.target === videoModal) {
+          closeVideoBtn.click();
+        }
+      });
+    }
+
+    // === INTERACTIVIDAD DE DESCARGAS REALES DE PDF ===
+    var downloadButtons = document.querySelectorAll('.btn-download-item');
+    downloadButtons.forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var docType = btn.getAttribute('data-doc');
+        var filename = "Backerss_Material.txt";
+        var content = "";
+
+        if (docType === "orden") {
+          filename = "Backerss_Ebook_Orden_Interno.txt";
+          content = "====================================================\n" +
+                    "PROTOCOLOS BACKERSS — ACADEMIA DE ALTO RENDIMIENTO\n" +
+                    "EBOOK: ORDEN INTERNO & INFRAESTRUCTURA MENTAL\n" +
+                    "====================================================\n\n" +
+                    "1. LA PARÁLISIS POR ANÁLISIS\n" +
+                    "El 95% de los emprendedores consume motivación como entretenimiento.\n" +
+                    "Este documento certifica tu inicio en el 5% que ejecuta.\n\n" +
+                    "2. ENFOQUE OPERATIVO\n" +
+                    "Tu mente debe estar limpia de ruido exterior. Solo existe un día: HOY.\n" +
+                    "Lo que hagas con él, te construye a ti.";
+        } else if (docType === "mapa") {
+          filename = "Backerss_Mapa_Transformacion.txt";
+          content = "====================================================\n" +
+                    "PROTOCOLOS BACKERSS — MAPA DE RUTA A -> B\n" +
+                    "====================================================\n\n" +
+                    "[FASE 1: DÍAS 1-30] Adquisición y Tráfico Frío (Volumen de datos).\n" +
+                    "[FASE 2: DÍAS 4-10] Monetización Inmediata ($12 por conversión).\n" +
+                    "[FASE 3: DÍAS 11-20] Duplicación e Interdependencia Colectiva.\n\n" +
+                    "Meta del Ciclo: Desarrollar blindaje mental a través de la acción pura.";
+        } else if (docType === "checklist") {
+          filename = "Backerss_Checklist_De_Pared.txt";
+          content = "====================================================\n" +
+                    "CHECKLIST DIARIO DE PARED — EJECUCIÓN INMEDIATA\n" +
+                    "====================================================\n\n" +
+                    "[ ] Enlace Único de Captura Verificado e Instalado.\n" +
+                    "[ ] Publicación Orgánica/Pauta efectuada en 2 canales mínimos.\n" +
+                    "[ ] Registro de Datos e Interacciones en la Constelación.\n" +
+                    "[ ] Cero juicios emocionales ante el rechazo estadístico.";
+        }
+
+        // Crear archivo descargable al instante (Nativo y ultra veloz)
+        var blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+        var link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+    });
+
+    // === MANEJO DE CHECKLIST TRADICIONAL ===
+    var normalItems = document.querySelectorAll('.normal-check');
     normalItems.forEach(function (item) {
       item.addEventListener('click', function () {
         item.classList.toggle('checked');
         recalcChecklistCounters();
         checkReto1GlobalStatus();
       });
-      item.setAttribute('role', 'checkbox');
-      item.setAttribute('tabindex', '0');
     });
 
-    // 2. Control Quirúrgico del Punto Diagnóstico Abierto
+    // === MANEJO DEL CHECKLIST DIAGNÓSTICO ===
     var diagnosticItem = document.getElementById('diagnosticItem');
     var diagButtons = document.querySelectorAll('.diag-btn');
     var selectedDiagnosticScenario = null;
@@ -817,7 +878,6 @@
     diagButtons.forEach(function (btn) {
       btn.addEventListener('click', function (e) {
         e.stopPropagation(); 
-        
         diagButtons.forEach(el => el.classList.remove('active'));
         
         if (selectedDiagnosticScenario === btn.getAttribute('data-type')) {
@@ -828,30 +888,18 @@
           selectedDiagnosticScenario = btn.getAttribute('data-type');
           diagnosticItem.classList.add('checked'); 
         }
-
         recalcChecklistCounters();
         checkReto1GlobalStatus();
       });
     });
 
-    // Función para recalcular dinámicamente los contadores visuales (0 / 4)
     function recalcChecklistCounters() {
       var card1 = document.getElementById('cardReto1');
       var checkedInCard1 = card1.querySelectorAll('.check-item.checked').length;
       document.getElementById('checklistCount').textContent = checkedInCard1 + ' / 4';
-
-      ['cardReto2', 'cardReto3', 'cardReto4'].forEach(id => {
-        var card = document.getElementById(id);
-        if (card) {
-          var total = card.querySelectorAll('.check-item').length;
-          var checked = card.querySelectorAll('.check-item.checked').length;
-          var display = card.querySelector('.checklist-head span.mono');
-          if (display) display.textContent = checked + ' / ' + total;
-        }
-      });
     }
 
-    // 3. Control Global de Meta y Botón Final del Reto 1
+    // === MANEJO DE LA CONSTELACIÓN INTERACTIVA ($12) ===
     var contactCount = document.getElementById('contactCount');
     var vaultAmount = document.getElementById('vaultAmount');
     var completeBtn = document.getElementById('completeBtn');
@@ -867,10 +915,8 @@
 
       if (metaContactosCumplida && checklistCompleto) {
         completeBtn.classList.add('is-ready');
-        completeBtn.style.cursor = 'pointer';
       } else {
         completeBtn.classList.remove('is-ready');
-        completeBtn.style.cursor = 'not-allowed';
       }
     }
 
@@ -883,46 +929,23 @@
       if (card2) card2.classList.remove('is-locked');
     });
 
-    // ---------- Copiar link de página de captura ----------
+    // Copiar link de captura
     var copyLinkBtn = document.getElementById('copyLinkBtn');
     if (copyLinkBtn) {
       copyLinkBtn.addEventListener('click', function () {
         var linkValue = 'https://backerss.com/captura.html?ref=TU-NOMBRE';
         navigator.clipboard.writeText(linkValue).then(function () {
           copyLinkBtn.textContent = '¡Copiado!';
-          setTimeout(function () {
-            copyLinkBtn.textContent = 'Copiar';
-          }, 2000);
+          setTimeout(function () { copyLinkBtn.textContent = 'Copiar'; }, 2000);
         });
       });
     }
 
-    // ---------- Constelación: Llenado dinámico y simulación corregida a $12 ----------
+    // Simulación de registros
     var addBackerBtn = document.getElementById('addBackerBtn');
     var constellationField = document.getElementById('constellationField');
     var constellationCount = document.getElementById('constellationCount');
 
     if (addBackerBtn) {
       addBackerBtn.addEventListener('click', function () {
-        realContactsConseguidos++;
-        
-        var node = document.createElement('div');
-        node.className = 'backer-node';
-        node.innerHTML = '<span class="dot"></span><span class="tag mono">B' + realContactsConseguidos + '</span>';
-        constellationField.insertBefore(node, addBackerBtn);
-        
-        constellationCount.textContent = realContactsConseguidos + (realContactsConseguidos === 1 ? ' Backer' : ' Backers');
-        
-        var capped = Math.min(realContactsConseguidos, TARGET);
-        contactCount.textContent = capped + ' / ' + TARGET;
-        
-        // CORRECCIÓN CIENTÍFICA: Cada registro simula la suma exacta de $12 en la Bóveda del Ciclo 1
-        vaultAmount.textContent = '$' + (realContactsConseguidos * 12).toFixed(0);
-        
-        checkReto1GlobalStatus();
-      });
-    }
-  })();
-  </script>
-</body>
-</html>
+        real
