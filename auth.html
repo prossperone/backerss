@@ -302,12 +302,12 @@
 
   .summary-price-row {
     display: flex;
-    align-items: baseline;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
   }
-  .sp-label { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--ink-dim); text-transform: uppercase; }
-  .sp-amount { font-family: 'Archivo Black', sans-serif; font-size: 1.8rem; color: var(--gold-bright); }
-
+  .sp-label { align-self: flex-start; font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--ink-dim); text-transform: uppercase; }
+  
   .summary-note {
     margin-top: 14px;
     font-family: 'JetBrains Mono', monospace;
@@ -456,7 +456,10 @@
 
       <div class="summary-price-row">
         <span class="sp-label">Total a pagar</span>
-        <span class="sp-amount mono">$12</span>
+        <div>
+          <span style="text-decoration: line-through; color: var(--ink-faint); font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; margin-right: 8px;">$95</span>
+          <span class="sp-amount mono" style="font-size: 1.9rem; color: var(--gold-bright); font-weight: 800;">$12</span>
+        </div>
       </div>
       <p class="summary-note">Pago único de entrada al protocolo. El Ciclo 2 y 3 se desbloquean orgánicamente con tus propios resultados, sin pagos adicionales de tu bolsillo.</p>
     </aside>
