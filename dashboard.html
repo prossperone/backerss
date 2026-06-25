@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Backerss — Dashboard Academia</title>
-  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="icon" type="image/png" href="favicon.png.png">
   
   <style>
     :root {
@@ -640,7 +640,7 @@
         <span class="mono" id="constellationCount" style="color: var(--accent); font-size: 0.9rem;">0 Backers</span>
       </div>
       <div class="constellation-field" id="constellationField">
-        <button type="button" class="add-backer-btn mono" id="addBackerBtn">+ Simular Registro Externo ($12)</button>
+        <button type="button" class="add-backer-btn mono" id="addBackerBtn">+ Registrar nuevo Backer</button>
       </div>
     </div>
 
@@ -653,7 +653,7 @@
         </div>
         <div class="mission-body">
           <h2 class="mission-title">El Baño de Realidad</h2>
-          <p class="mission-desc">Tu única meta: conseguir al menos 20 contactos reales desde tu página de captura. No estás cazando aprobación, estás cazando el volumen de datos estadísticos.</p>
+          <p class="mission-desc">Tu meta mínima: conseguir al menos 20 contactos reales desde tu página de captura. No estás cazando un "no" ni un "sí" — estás cazando el contacto número 20 como tu primera victoria. Lo que pase en el camino es información, no juicio. Y si llegan más, mejor: cada contacto adicional es práctica y confianza extra.</p>
 
           <button type="button" class="mission-video-link" id="openVideoBtn">
             <span class="mvl-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="#0B0B0A"><path d="M8 5v14l11-7z"/></svg></span>
@@ -710,7 +710,7 @@
             <div class="check-item normal-check">
               <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
               <div class="check-text">
-                <div class="check-label">Comprendo el marco teórico: mi éxito es acumular volumen de datos, no buscar aprobación</div>
+                <div class="check-label">Entendí que mi avance se mide en contactos reales hechos, no en si me dijeron sí o no</div>
                 <div class="check-meta mono">BLINDAJE MENTAL</div>
               </div>
             </div>
@@ -743,7 +743,7 @@
         </div>
         <div class="mission-body">
           <h2 class="mission-title">Tu primera comisión en 48 horas</h2>
-          <p class="mission-desc">Filtra tus 20 capturas iniciales y ejecuta el script de inversión cooperativa para activar tu sistema económico mutuo.</p>
+          <p class="mission-desc">Revisa tus primeros 20 contactos y aplica el guion de cierre para conseguir tu primera venta — y tu primera comisión real.</p>
         </div>
       </div>
 
@@ -754,7 +754,15 @@
     <div class="modal-content">
       <button class="close-modal-btn" id="closeVideoBtn">✕ Cerrar Ventana</button>
       <div class="video-wrapper">
-        <iframe id="modalIframe" src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <!--
+          VIDEO PLACEHOLDER — reemplazar con el Video Briefing real de la Misión 1.
+          Hasta entonces, este iframe queda intencionalmente vacío para no
+          mostrar contenido de prueba en producción.
+
+          YouTube (no listado): https://www.youtube.com/embed/TU_ID_AQUI?rel=0
+          Vimeo (privado): https://player.vimeo.com/video/TU_ID_AQUI
+        -->
+        <iframe id="modalIframe" src="about:blank" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
       </div>
     </div>
   </div>
@@ -804,34 +812,53 @@
       checkGlobalRetoStatus();
     }
 
-    // 3. SIMULADOR DE REGISTROS DE LA CONSTELACIÓN ($12)
+    // 3. REGISTRO DE BACKERS EN LA CONSTELACIÓN
+    //
+    // NOTA IMPORTANTE SOBRE LA BÓVEDA:
+    // La Bóveda debe reflejar la COMISIÓN real del usuario, no el precio
+    // completo del producto. Con el plan de comisiones vigente (Nivel 1 = 50%),
+    // cada Backer que compra el Ciclo 1 ($12) genera $6 de comisión real —
+    // por eso el cálculo abajo usa COMISION_NIVEL_1, no el precio completo.
+    //
+    // AUTOMATIZACIÓN FUTURA (cuando Supabase esté conectado):
+    // Este botón "+ Registrar nuevo Backer" es un registro MANUAL temporal.
+    // Cuando el backend esté listo, este clic debe eliminarse y, en su lugar,
+    // el frontend debe escuchar un evento/webhook real de "nuevo registro
+    // confirmado vía captura.html con este ?ref=", y disparar automáticamente
+    // la misma función addBackerNode() de abajo, sin que el usuario tenga
+    // que hacer clic manualmente.
     var addBackerBtn = document.getElementById('addBackerBtn');
     var constellationField = document.getElementById('constellationField');
     var constellationCount = document.getElementById('constellationCount');
     var contactCount = document.getElementById('contactCount');
     var vaultAmount = document.getElementById('vaultAmount');
-    
+
     var TARGET_CONTACTS = 20;
+    var COMISION_NIVEL_1 = 6; // 50% del precio del Ciclo 1 ($12), no el precio completo
     var totalBackersSimulados = 0;
+
+    function addBackerNode() {
+      totalBackersSimulados++;
+
+      var node = document.createElement('div');
+      node.className = 'backer-node';
+      node.innerHTML = '<span class="dot"></span><span class="tag mono">B' + totalBackersSimulados + '</span>';
+      constellationField.insertBefore(node, addBackerBtn);
+
+      constellationCount.textContent = totalBackersSimulados + (totalBackersSimulados === 1 ? ' Backer' : ' Backers');
+
+      var cappedContacts = Math.min(totalBackersSimulados, TARGET_CONTACTS);
+      contactCount.textContent = cappedContacts + ' / ' + TARGET_CONTACTS;
+
+      vaultAmount.textContent = '$' + (totalBackersSimulados * COMISION_NIVEL_1);
+
+      checkGlobalRetoStatus();
+    }
 
     if (addBackerBtn) {
       addBackerBtn.addEventListener('click', function (e) {
         e.preventDefault();
-        totalBackersSimulados++;
-        
-        var node = document.createElement('div');
-        node.className = 'backer-node';
-        node.innerHTML = '<span class="dot"></span><span class="tag mono">B' + totalBackersSimulados + '</span>';
-        constellationField.insertBefore(node, addBackerBtn);
-        
-        constellationCount.textContent = totalBackersSimulados + (totalBackersSimulados === 1 ? ' Backer' : ' Backers');
-        
-        var cappedContacts = Math.min(totalBackersSimulados, TARGET_CONTACTS);
-        contactCount.textContent = cappedContacts + ' / ' + TARGET_CONTACTS;
-        
-        vaultAmount.textContent = '$' + (totalBackersSimulados * 12);
-        
-        checkGlobalRetoStatus();
+        addBackerNode();
       });
     }
 
@@ -904,10 +931,10 @@
 
         if (doc === "orden") {
           filename = "Backerss_Ebook_Orden_Interno.html";
-          htmlContent = `<html><head><meta charset='UTF-8'><title>Ebook Backerss</title><style>body{background:#0B0B0A;color:#F5F5F3;font-family:sans-serif;padding:40px;line-height:1.6;}h1{color:#E5C158;border-bottom:1px solid #262622;padding-bottom:10px;}</style></head><body><h1>EBOOK: ORDEN INTERNO & INFRAESTRUCTURA MENTAL</h1><p><b>Sección 1: Parálisis por análisis</b><br>El 95% de los emprendedores consume motivación como entretenimiento. Este documento certifica que entraste al 5% que ejecuta.</p></body></html>`;
+          htmlContent = `<html><head><meta charset='UTF-8'><title>Ebook Backerss</title><style>body{background:#0B0B0A;color:#F5F5F3;font-family:sans-serif;padding:40px;line-height:1.6;}h1{color:#E5C158;border-bottom:1px solid #262622;padding-bottom:10px;}</style></head><body><h1>EBOOK: ORDEN INTERNO & INFRAESTRUCTURA MENTAL</h1><p><b>Sección 1: Parálisis por análisis</b><br>La mayoría de quienes quieren emprender se quedan atrapados consumiendo motivación en lugar de actuar. Este documento certifica que tú decidiste ejecutar en lugar de solo planear.</p></body></html>`;
         } else if (doc === "mapa") {
           filename = "Backerss_Mapa_Transformacion.html";
-          htmlContent = `<html><head><meta charset='UTF-8'><title>Mapa Estratégico</title><style>body{background:#0B0B0A;color:#F5F5F3;font-family:sans-serif;padding:40px;}h1{color:#E5C158;}.step{background:#141412;border:1px solid #262622;padding:15px;margin:10px 0;border-radius:6px;}</style></head><body><h1>MAPA DE TRANSFORMACIÓN COLECTIVA A ➔ B</h1><div class='step'><b>Fase 1 (Días 1-30):</b> Adquisición y tráfico frío (Volumen masivo de datos).</div><div class='step'><b>Fase 2 (Días 31-60):</b> Inversión mutua cooperativa y primera comisión en 48h.</div></body></html>`;
+          htmlContent = `<html><head><meta charset='UTF-8'><title>Mapa Estratégico</title><style>body{background:#0B0B0A;color:#F5F5F3;font-family:sans-serif;padding:40px;}h1{color:#E5C158;}.step{background:#141412;border:1px solid #262622;padding:15px;margin:10px 0;border-radius:6px;}</style></head><body><h1>MAPA DE TRANSFORMACIÓN A ➔ B</h1><div class='step'><b>Fase 1 (Días 1-30):</b> Prospección y primeros contactos reales con tu página de captura.</div><div class='step'><b>Fase 2 (Días 31-60):</b> Gestión de tu equipo y primeras comisiones por ventas directas y de tu red.</div></body></html>`;
         } else if (doc === "checklist") {
           filename = "Backerss_Checklist_De_Pared.html";
           htmlContent = `<html><head><meta charset='UTF-8'><title>Checklist Diario</title><style>body{background:#0B0B0A;color:#F5F5F3;font-family:sans-serif;padding:40px;}h1{color:#E5C158;}li{margin:15px 0;font-size:1.1rem;}</style></head><body><h1>CHECKLIST IMPRIMIBLE DE PARED</h1><ul><li>[ ] Enlace único de captura verificado e instalado en perfiles.</li><li>[ ] Publicación diaria activa en un mínimo de 2 canales orgánicos.</li></ul></body></html>`;
