@@ -11,10 +11,12 @@
       --bg-main: #0B0B0A;
       --bg-card: #141412;
       --accent: #E5C158;
+      --accent-bright: #F0CC5B;
       --text-primary: #F5F5F3;
       --text-muted: #8A8A85;
       --border: #262622;
       --success: #3EE587;
+      --bg-raised: #1A1A16;
     }
 
     * {
@@ -27,7 +29,7 @@
       background-color: var(--bg-main);
       color: var(--text-primary);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      line-height: 1.25;
+      line-height: 1.35;
       padding: 20px;
     }
 
@@ -37,7 +39,7 @@
 
     header {
       max-width: 800px;
-      margin: 0 auto 30px auto;
+      margin: 0 auto 25px auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -77,10 +79,82 @@
       margin: 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 30px;
+      gap: 25px;
     }
 
-    /* Constelación Visual */
+    /* ---------- SECCIÓN ARSENAL DE INICIO (VALUE STACK) ---------- */
+    .arsenal-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(229, 193, 88, 0.2);
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+    }
+
+    .arsenal-title {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      margin-bottom: 12px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .arsenal-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .arsenal-item {
+      background: #0F0F0E;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+
+    .arsenal-item:hover {
+      border-color: var(--accent);
+      background: #161614;
+    }
+
+    .ai-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .ai-name {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .ai-tag {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .btn-download {
+      background: transparent;
+      border: none;
+      color: var(--accent);
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      transition: color 0.2s;
+    }
+    .btn-download:hover { color: var(--text-primary); }
+
+    /* ---------- CONSTELACIÓN COLECTIVA ---------- */
     .constellation-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
@@ -98,11 +172,11 @@
       background: #0F0F0E;
       border: 1px dashed var(--border);
       border-radius: 8px;
-      min-height: 140px;
+      min-height: 120px;
       padding: 16px;
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
       align-items: center;
     }
 
@@ -145,27 +219,27 @@
       background: #262620;
     }
 
-    /* Tarjetas de Misiones */
+    /* ---------- TARJETAS DE MISIONES ---------- */
     .mission-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: 12px;
       padding: 24px;
+      position: relative;
       transition: opacity 0.3s;
     }
 
     .mission-card.is-locked {
-      opacity: 0.4;
+      opacity: 0.35;
       pointer-events: none;
-      position: relative;
     }
 
     .mission-card.is-locked::after {
-      content: "🔒 Bloqueado — Completa el reto anterior";
+      content: "🔒 Bloqueado — Completa la misión anterior";
       position: absolute;
       top: 15px;
       right: 20px;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-muted);
       background: #1A1A16;
       padding: 4px 10px;
@@ -202,7 +276,7 @@
     .mission-desc {
       color: var(--text-muted);
       font-size: 0.95rem;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .mission-video-link {
@@ -217,7 +291,7 @@
       cursor: pointer;
       color: var(--text-primary);
       text-align: left;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .mvl-icon {
@@ -240,13 +314,13 @@
       color: var(--text-muted);
     }
 
-    /* Enlace de Captura */
+    /* ---------- ENLACE DE CAPTURA ---------- */
     .capture-card {
       background: #0F0F0E;
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 16px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .capture-card-head {
@@ -292,11 +366,6 @@
       font-size: 0.9rem;
     }
 
-    .copy-link-btn svg {
-      width: 16px;
-      height: 16px;
-    }
-
     .cc-hint {
       font-size: 0.8rem;
       color: var(--text-muted);
@@ -307,7 +376,7 @@
       border: 1px solid var(--border);
       border-radius: 8px;
       overflow: hidden;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .goal-cell {
@@ -333,17 +402,17 @@
       margin-top: 2px;
     }
 
-    /* Checklists */
+    /* ---------- CHECKLISTS SYSTEM ---------- */
     .checklist {
       border-top: 1px solid var(--border);
-      padding-top: 20px;
+      padding-top: 18px;
     }
 
     .checklist-head {
       display: flex;
       justify-content: space-between;
       font-size: 0.9rem;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       font-weight: bold;
     }
 
@@ -403,7 +472,7 @@
       letter-spacing: 0.5px;
     }
 
-    /* --- Píldoras de Diagnóstico --- */
+    /* ---------- DIAGNÓSTICO ABIERTO ---------- */
     .diagnostic-options {
       display: flex;
       gap: 8px;
@@ -436,7 +505,6 @@
       box-shadow: 0 0 8px rgba(229, 193, 88, 0.15);
     }
 
-    /* Acción Final */
     .action-row {
       display: flex;
       justify-content: flex-end;
@@ -461,7 +529,7 @@
       box-shadow: 0 4px 14px rgba(229, 193, 88, 0.2);
     }
 
-    /* Toast */
+    /* ---------- TOAST ALERTS ---------- */
     .toast {
       position: fixed;
       bottom: -60px;
@@ -502,13 +570,49 @@
 
   <main class="dashboard-layout">
 
+    <section class="arsenal-card">
+      <div class="arsenal-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        Tu Arsenal de Inicio — Material Incluido
+      </div>
+      <div class="arsenal-grid">
+        <div class="arsenal-item">
+          <div class="ai-info">
+            <span class="ai-name">Manual: Organiza Tu Vida</span>
+            <span class="ai-tag mono">PDF EBOOK DETALLADO</span>
+          </div>
+          <button class="btn-download" title="Descargar material">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4M7 10l5 5 5-5M12 15V3"/></svg>
+          </button>
+        </div>
+        <div class="arsenal-item">
+          <div class="ai-info">
+            <span class="ai-name">Mapa de Transformación</span>
+            <span class="ai-tag mono">INFOGRAFÍA PUNTO A -> B</span>
+          </div>
+          <button class="btn-download" title="Descargar material">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4M7 10l5 5 5-5M12 15V3"/></svg>
+          </button>
+        </div>
+        <div class="arsenal-item">
+          <div class="ai-info">
+            <span class="ai-name">Checklist de Pared</span>
+            <span class="ai-tag mono">IMPRIMIBLE DE ACCIÓN DIARIA</span>
+          </div>
+          <button class="btn-download" title="Descargar material">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4M7 10l5 5 5-5M12 15V3"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
     <div class="constellation-card">
       <div class="constellation-head">
         <h3 class="mono">Tu Constelación Colectiva</h3>
         <span class="mono" id="constellationCount" style="color: var(--accent); font-size: 0.9rem;">0 Backers</span>
       </div>
       <div class="constellation-field" id="constellationField">
-        <button type="button" class="add-backer-btn mono" id="addBackerBtn">+ Simular Registro Externo</button>
+        <button type="button" class="add-backer-btn mono" id="addBackerBtn">+ Simular Registro Externo ($12)</button>
       </div>
     </div>
 
@@ -521,7 +625,7 @@
         </div>
         <div class="mission-body">
           <h2 class="mission-title">El Baño de Realidad</h2>
-          <p class="mission-desc">Tu única meta: conseguir al menos 20 contactos reales desde tu página de captura. No estás cazando un “no” ni un “sí” — estás cazando el contacto número 20 como tu primera victoria. Lo que pase en el camino es información, no juicio. Y si llegan más, mejor: cada contacto adicional es práctica y confianza extra.</p>
+          <p class="mission-desc">Tu única meta: conseguir al menos 20 contactos reales desde tu página de captura. No estás cazando un “no” ni un “sí” — estás cazando el contacto número 20 como tu primera victoria. Cada contacto adicional es práctica y confianza extra en tu ecosistema.</p>
 
           <button type="button" class="mission-video-link">
             <span class="mvl-icon"><svg viewBox="0 0 24 24" width="16" height="16" fill="#0B0B0A"><path d="M8 5v14l11-7z"/></svg></span>
@@ -538,12 +642,9 @@
             </div>
             <div class="capture-link-row">
               <div class="capture-link-box mono" id="captureLinkText">backerss.com/captura.html?ref=<span style="color: #fff;">TU-NOMBRE</span></div>
-              <button type="button" class="copy-link-btn" id="copyLinkBtn">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                Copiar
-              </button>
+              <button type="button" class="copy-link-btn" id="copyLinkBtn">Copiar</button>
             </div>
-            <p class="cc-hint">Comparte este link con tu tráfico frío. Cuando alguien deja sus datos ahí, entra directo a tu Constelación.</p>
+            <p class="cc-hint">Comparte este link con tu tráfico frío. Cuando alguien deje sus datos ahí, entra directo a tu Constelación.</p>
           </div>
 
           <div class="goal-strip">
@@ -600,7 +701,6 @@
                 </div>
               </div>
             </div>
-
           </div>
 
           <div class="action-row">
@@ -731,28 +831,24 @@
       item.setAttribute('tabindex', '0');
     });
 
-    // 2. Control Quirúrgico del Punto Diagnóstico Abierto (Punto 4 del Reto 1)
+    // 2. Control del Diagnóstico Abierto (Punto 4 del Reto 1)
     var diagnosticItem = document.getElementById('diagnosticItem');
-    var diagnosticCheckBox = document.getElementById('diagnosticCheckBox');
     var diagButtons = document.querySelectorAll('.diag-btn');
     var selectedDiagnosticScenario = null;
 
     diagButtons.forEach(function (btn) {
       btn.addEventListener('click', function (e) {
-        e.stopPropagation(); // Evita clicks accidentales en el contenedor grande
+        e.stopPropagation();
         
-        // Quitar estado activo previo
         diagButtons.forEach(el => el.classList.remove('active'));
         
-        // Si hace click en el que ya estaba activo, se desmarca
         if (selectedDiagnosticScenario === btn.getAttribute('data-type')) {
           selectedDiagnosticScenario = null;
           diagnosticItem.classList.remove('checked');
         } else {
-          // Activar el nuevo escenario seleccionado
           btn.classList.add('active');
           selectedDiagnosticScenario = btn.getAttribute('data-type');
-          diagnosticItem.classList.add('checked'); // Enciende el check verde principal
+          diagnosticItem.classList.add('checked');
         }
 
         recalcChecklistCounters();
@@ -760,14 +856,12 @@
       });
     });
 
-    // Función para recalcular dinámicamente los contadores visuales (0 / 4)
+    // Recalcular dinámicamente los contadores visuales (0 / 4)
     function recalcChecklistCounters() {
-      // Manejo específico para el Reto 1
       var card1 = document.getElementById('cardReto1');
       var checkedInCard1 = card1.querySelectorAll('.check-item.checked').length;
       document.getElementById('checklistCount').textContent = checkedInCard1 + ' / 4';
 
-      // Manejo para retos bloqueados 2, 3 y 4
       ['cardReto2', 'cardReto3', 'cardReto4'].forEach(id => {
         var card = document.getElementById(id);
         if (card) {
@@ -790,12 +884,9 @@
 
     function checkReto1GlobalStatus() {
       var metaContactosCumplida = realContactsConseguidos >= TARGET;
-      
-      // El Reto 1 exige que los 20 contactos estén listos Y que las 4 casillas estén seleccionadas (incluyendo el diagnóstico)
       var checkedInCard1 = document.getElementById('cardReto1').querySelectorAll('.check-item.checked').length;
       var checklistCompleto = checkedInCard1 === 4;
 
-      // El botón solo se ilumina si ambas condiciones científicas se cumplen
       if (metaContactosCumplida && checklistCompleto) {
         completeBtn.classList.add('is-ready');
         completeBtn.style.cursor = 'pointer';
@@ -810,28 +901,25 @@
       toast.classList.add('is-visible');
       setTimeout(function () { toast.classList.remove('is-visible'); }, 3200);
       
-      // Desbloquear Reto 2 en el frontend de inmediato
       var card2 = document.getElementById('cardReto2');
       if (card2) card2.classList.remove('is-locked');
     });
 
-    // ---------- Copiar link de página de captura ----------
+    // Copiar link de página de captura
     var copyLinkBtn = document.getElementById('copyLinkBtn');
     if (copyLinkBtn) {
       copyLinkBtn.addEventListener('click', function () {
         var linkValue = 'https://backerss.com/captura.html?ref=TU-NOMBRE';
         navigator.clipboard.writeText(linkValue).then(function () {
-          copyLinkBtn.classList.add('is-copied');
-          copyLinkBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg> Copiado';
+          copyLinkBtn.innerHTML = 'Copiado ✓';
           setTimeout(function () {
-            copyLinkBtn.classList.remove('is-copied');
-            copyLinkBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copiar';
+            copyLinkBtn.innerHTML = 'Copiar';
           }, 2000);
         });
       });
     }
 
-    // ---------- Constelación: Llenado dinámico y simulación ----------
+    // ---------- Constelación: Simulación corregida a $12 por registro ----------
     var addBackerBtn = document.getElementById('addBackerBtn');
     var constellationField = document.getElementById('constellationField');
     var constellationCount = document.getElementById('constellationCount');
@@ -840,19 +928,17 @@
       addBackerBtn.addEventListener('click', function () {
         realContactsConseguidos++;
         
-        // Crear nodo brillante en la red
         var node = document.createElement('div');
         node.className = 'backer-node';
         node.innerHTML = '<span class="dot"></span><span class="tag mono">B' + realContactsConseguidos + '</span>';
         constellationField.insertBefore(node, addBackerBtn);
         
-        // Actualizar UI de contadores
         constellationCount.textContent = realContactsConseguidos + (realContactsConseguidos === 1 ? ' Backer' : ' Backers');
         
         var capped = Math.min(realContactsConseguidos, TARGET);
         contactCount.textContent = capped + ' / ' + TARGET;
         
-        // Cada registro suma $12 en la Bóveda ficticia de simulación del Ciclo 1
+        // CORRECCIÓN CLAVE: Multiplicador actualizado científicamente a $12 por registro
         vaultAmount.textContent = '$' + (realContactsConseguidos * 12).toFixed(0);
         
         checkReto1GlobalStatus();
