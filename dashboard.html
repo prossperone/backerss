@@ -315,6 +315,63 @@
       margin-bottom: 10px;
     }
 
+    .cc-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+    }
+
+    .cc-info-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1px solid var(--text-muted);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.68rem;
+      font-family: monospace;
+      cursor: help;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
+    }
+
+    .cc-info-icon:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .cc-tooltip {
+      position: absolute;
+      top: 24px;
+      left: 0;
+      width: 260px;
+      background: #1A1A16;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 0.76rem;
+      line-height: 1.5;
+      color: var(--text-muted);
+      z-index: 20;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-4px);
+      transition: all 0.15s ease;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .cc-info-icon:hover + .cc-tooltip,
+    .cc-tooltip:hover {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .cc-tooltip strong { color: var(--accent); }
+
     .cc-badge {
       color: var(--success);
     }
@@ -665,7 +722,13 @@
 
           <div class="capture-card">
             <div class="capture-card-head">
-              <span class="cc-title font-weight-bold">Tu página de captura</span>
+              <span class="cc-title-wrap">
+                <span class="cc-title font-weight-bold">Tu página de captura</span>
+                <span class="cc-info-icon" tabindex="0">?</span>
+                <div class="cc-tooltip">
+                  Una <strong>página de captura</strong> (o landing page) es la herramienta que usas para atraer interesados. A cada persona interesada se le llama un <strong>lead</strong> — y a cada lead luego le presentas tu oferta completa, ya sea ahora mismo o por mensaje.
+                </div>
+              </span>
               <span class="cc-badge mono">Lista para usar</span>
             </div>
             <div class="capture-link-row">
