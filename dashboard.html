@@ -420,6 +420,69 @@
       font-size: 0.9rem;
     }
 
+    /* --- GUION DE PROSPECCIÓN --- */
+    .script-card {
+      background: #0F0F0E;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    .script-card-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+    }
+
+    .script-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .script-tab {
+      background: #1C1C18;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: monospace;
+      transition: all 0.2s;
+    }
+
+    .script-tab:hover {
+      border-color: #444;
+      color: var(--text-primary);
+    }
+
+    .script-tab.active {
+      background: #2E2714;
+      border-color: var(--accent);
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .script-text-box {
+      background: #141412;
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      line-height: 1.55;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+      min-height: 70px;
+    }
+
+    .script-copy-row {
+      display: flex;
+      justify-content: flex-end;
+    }
+
     .goal-strip {
       display: flex;
       border: 1px solid var(--border);
@@ -755,6 +818,30 @@
             </div>
           </div>
 
+          <div class="script-card">
+            <div class="script-card-head">
+              <span class="cc-title-wrap">
+                <span class="cc-title font-weight-bold">Guion de Prospección</span>
+                <span class="cc-info-icon" tabindex="0">?</span>
+                <div class="cc-tooltip">
+                  Un <strong>guion de prospección</strong> es el mensaje listo que copias y pegas cuando compartes tu link — para que no tengas que inventar qué decir cada vez. Elige el que mejor encaje con el canal donde lo vas a usar.
+                </div>
+              </span>
+              <span class="cc-badge mono">Listo para copiar</span>
+            </div>
+
+            <div class="script-tabs">
+              <button type="button" class="script-tab active" data-script="whatsapp">WhatsApp / Directo</button>
+              <button type="button" class="script-tab" data-script="redes">Post en Redes</button>
+            </div>
+
+            <div class="script-text-box" id="scriptTextBox">Oye, ¿tienes 90 días para perder el miedo a emprender? Estoy en algo llamado Backerss — es un entrenamiento real, con capital mínimo de entrada. Te dejo mi link para que veas cómo funciona: backerss.com/captura.html?ref=COMPAÑERO</div>
+
+            <div class="script-copy-row">
+              <button type="button" class="copy-link-btn" id="copyScriptBtn">Copiar guion</button>
+            </div>
+          </div>
+
           <div class="goal-strip">
             <div class="goal-cell">
               <div class="goal-num mono" id="contactCount">0 / 20</div>
@@ -790,17 +877,10 @@
               </div>
             </div>
 
-            <!--
-              NOTA: este ítem mencionaba "el texto sugerido", pero ese recurso
-              (un Guion de Prospección listo para copiar) todavía no existe en
-              el dashboard. Por ahora el texto queda genérico — cuando se
-              construya ese bloque (al lado de la tarjeta de captura), este
-              ítem puede volver a mencionarlo explícitamente.
-            -->
             <div class="check-item normal-check">
               <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
               <div class="check-text">
-                <div class="check-label">Compartí mi enlace en al menos 2 canales donde tienes contactos reales</div>
+                <div class="check-label">Compartí mi enlace en al menos 2 canales usando el Guion de Prospección</div>
                 <div class="check-meta mono">ROMPER LA INERCIA</div>
               </div>
             </div>
@@ -841,11 +921,11 @@
       <div class="mission-card is-locked" id="cardReto2">
         <div class="mission-head">
           <div class="mission-tag">Reto 2</div>
-          <div class="mission-days mono">Días 4–10 · Comisiones</div>
+          <div class="mission-days mono">Techo máximo · sin piso mínimo</div>
         </div>
         <div class="mission-body">
-          <h2 class="mission-title">Tu primera comisión en 48 horas</h2>
-          <p class="mission-desc">Revisa tus primeros 20 contactos y aplica el guion de cierre para conseguir tu primera venta — y tu primera comisión real.</p>
+          <h2 class="mission-title">Tu primera comisión real</h2>
+          <p class="mission-desc">Revisa tus primeros contactos y aplica el guion de cierre para conseguir tu primera venta — y tu primera comisión real. Algunos la consiguen en un día, otros en una semana. Lo que importa es que sigas aplicando el método.</p>
         </div>
       </div>
 
@@ -1019,6 +1099,34 @@
         navigator.clipboard.writeText('https://backerss.com/captura.html?ref=COMPAÑERO').then(function () {
           copyLinkBtn.textContent = '¡Hecho!';
           setTimeout(function () { copyLinkBtn.textContent = 'Copiar'; }, 2000);
+        });
+      });
+    }
+
+    // GUION DE PROSPECCIÓN — tabs y copiar
+    var scriptTexts = {
+      whatsapp: 'Oye, ¿tienes 90 días para perder el miedo a emprender? Estoy en algo llamado Backerss — es un entrenamiento real, con capital mínimo de entrada. Te dejo mi link para que veas cómo funciona: backerss.com/captura.html?ref=COMPAÑERO',
+      redes: 'Si solo tuvieras 90 días para perder el miedo a emprender, ¿qué harías? Yo ya empecé — Backerss es un simulador real, con capital mínimo de entrada. Link en mi perfil / aquí: backerss.com/captura.html?ref=COMPAÑERO'
+    };
+
+    var scriptTabs = document.querySelectorAll('.script-tab');
+    var scriptTextBox = document.getElementById('scriptTextBox');
+
+    scriptTabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        scriptTabs.forEach(function (t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+        var key = tab.getAttribute('data-script');
+        scriptTextBox.textContent = scriptTexts[key];
+      });
+    });
+
+    var copyScriptBtn = document.getElementById('copyScriptBtn');
+    if (copyScriptBtn) {
+      copyScriptBtn.addEventListener('click', function () {
+        navigator.clipboard.writeText(scriptTextBox.textContent).then(function () {
+          copyScriptBtn.textContent = '¡Hecho!';
+          setTimeout(function () { copyScriptBtn.textContent = 'Copiar guion'; }, 2000);
         });
       });
     }
