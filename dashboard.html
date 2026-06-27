@@ -58,6 +58,13 @@
       display: flex;
       flex-direction: column;
       align-items: flex-end;
+      position: relative;
+    }
+
+    .vault-label-wrap {
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
 
     .vault-label {
@@ -372,6 +379,11 @@
 
     .cc-tooltip strong { color: var(--accent); }
 
+    .cc-tooltip.align-right {
+      left: auto;
+      right: 0;
+    }
+
     .cc-badge {
       color: var(--success);
     }
@@ -654,7 +666,13 @@
       <p style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Simulador de negocios de éxito</p>
     </div>
     <div class="vault-chip">
-      <span class="vault-label mono">Mi Bóveda</span>
+      <span class="vault-label-wrap">
+        <span class="vault-label mono">Mi Bóveda</span>
+        <span class="cc-info-icon" tabindex="0">?</span>
+        <div class="cc-tooltip align-right">
+          Tu <strong>Bóveda</strong> es el lugar donde se acumulan tus comisiones reales — el dinero que vas ganando por cada venta directa (50%) y por las ventas de tu equipo (20%). Aquí ves tu progreso en tiempo real.
+        </div>
+      </span>
       <span class="vault-amount mono" id="vaultAmount">$0</span>
     </div>
   </header>
@@ -754,18 +772,35 @@
               <span class="mono" id="checklistCount">0 / 4</span>
             </div>
 
+            <!--
+              NOTA SOBRE ESTE ÍTEM (personalización automática futura):
+              Hoy, sin cuentas reales conectadas a Supabase, el usuario no
+              puede "personalizar" su página con nombre/foto — por eso este
+              ítem pide solo verificar que el link funciona, no personalizarlo.
+              Cuando exista el perfil de usuario real (nombre + foto al
+              registrarse en auth.html), esta personalización debe ocurrir
+              SOLA, y este checklist debe reemplazarse por un estado fijo
+              (ej. un badge "Personalizada ✓"), no un checkbox manual.
+            -->
             <div class="check-item normal-check">
               <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
               <div class="check-text">
-                <div class="check-label">Personalicé mi mini página con mi nombre, foto y verifiqué mi enlace único</div>
+                <div class="check-label">Revisé mi enlace único y confirmé que abre mi página de captura correctamente</div>
                 <div class="check-meta mono">INFRAESTRUCTURA LISTA</div>
               </div>
             </div>
 
+            <!--
+              NOTA: este ítem mencionaba "el texto sugerido", pero ese recurso
+              (un Guion de Prospección listo para copiar) todavía no existe en
+              el dashboard. Por ahora el texto queda genérico — cuando se
+              construya ese bloque (al lado de la tarjeta de captura), este
+              ítem puede volver a mencionarlo explícitamente.
+            -->
             <div class="check-item normal-check">
               <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
               <div class="check-text">
-                <div class="check-label">Publiqué mi enlace en al menos 2 canales activos usando el texto sugerido</div>
+                <div class="check-label">Compartí mi enlace en al menos 2 canales donde tienes contactos reales</div>
                 <div class="check-meta mono">ROMPER LA INERCIA</div>
               </div>
             </div>
@@ -773,7 +808,7 @@
             <div class="check-item normal-check">
               <div class="check-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg></div>
               <div class="check-text">
-                <div class="check-label">Entendí que mi avance se mide en contactos reales hechos, no en si me dijeron sí o no</div>
+                <div class="check-label">Hice mi primer contacto del día, sin esperar a sentirme 100% listo</div>
                 <div class="check-meta mono">BLINDAJE MENTAL</div>
               </div>
             </div>
