@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Backerss — Activar Ciclo 1</title>
-<link rel="icon" type="image/png" href="favicon.png">
+<link rel="icon" type="image/png" href="favicon.png.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -99,7 +99,7 @@
   /* ---------- LAYOUT GRID ---------- */
   .auth-grid {
     display: grid;
-    grid-template-columns: 1fr 340px;
+    grid-template-columns: 1fr 320px;
     gap: 28px;
     align-items: start;
   }
@@ -296,18 +296,17 @@
     margin-top: 2px;
   }
   .si-text { font-size: 0.86rem; color: var(--ink-dim); line-height: 1.5; }
-  .si-text strong { color: var(--ink); font-weight: 600; }
 
   .summary-divider { margin: 20px 0; border-top: 1px dashed var(--line); }
 
   .summary-price-row {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 4px;
+    align-items: baseline;
+    justify-content: space-between;
   }
-  .sp-label { align-self: flex-start; font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--ink-dim); text-transform: uppercase; }
-  
+  .sp-label { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--ink-dim); text-transform: uppercase; }
+  .sp-amount { font-family: 'Archivo Black', sans-serif; font-size: 1.6rem; color: var(--gold-bright); }
+
   .summary-note {
     margin-top: 14px;
     font-family: 'JetBrains Mono', monospace;
@@ -343,7 +342,7 @@
 
 <nav>
   <div class="wrap">
-    <div class="logo"><span style="color: var(--gold); font-family: 'Archivo Black', sans-serif;">BACKERSS</span><span class="s"> ACADEMY</span></div>
+    <div class="logo"><img src="logo-backerss.png.png" alt="Backerss"></div>
     <a href="presentacion.html" class="nav-back">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
       Volver a la presentación
@@ -388,23 +387,24 @@
 
       <div class="step-label"><span class="num">2</span> CONFIRMAR PAGO</div>
 
-      <div class="pay-options">
-        <div class="pay-option is-selected" data-method="card">
-          <span class="po-dot"></span>
-          <span class="po-label">Tarjeta</span>
-        </div>
-        <div class="pay-option" data-method="paypal">
-          <span class="po-dot"></span>
-          <span class="po-label">PayPal</span>
-        </div>
-      </div>
+      <!--
+        INSTRUCCIONES PARA CONECTAR STRIPE (cuando la cuenta esté lista):
 
+        Reemplaza el div .pay-placeholder de abajo por Stripe Elements,
+        cargando primero stripe.js:
+
+        <script src="https://js.stripe.com/v3/"></script>
+        <div id="card-element"></div>
+
+        El monto a cobrar es el de .sp-amount en el panel lateral — mantenlo
+        sincronizado con el Price ID configurado en tu cuenta de Stripe.
+      -->
       <div class="pay-placeholder" id="payPlaceholder">
         <span class="pp-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
         </span>
-        <div class="pp-title">Pasarela de pago pendiente de conectar</div>
-        <div class="pp-sub">Aquí se mostrará el formulario seguro de tu proveedor de pago (Stripe, PayPal, etc.)</div>
+        <div class="pp-title">Pago seguro vía Stripe — pendiente de conectar</div>
+        <div class="pp-sub">Aquí se mostrará el formulario seguro de Stripe para tarjeta de crédito o débito</div>
       </div>
 
       <div class="form-foot">
@@ -423,32 +423,31 @@
       <div class="summary-list">
         <div class="summary-item">
           <svg class="si-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>
-          <span class="si-text">Acceso inmediato a la <strong>Academia Backerss</strong></span>
+          <span class="si-text">Acceso inmediato a la Academia Backerss</span>
         </div>
-        
         <div class="summary-item">
           <svg class="si-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>
-          <span class="si-text">📚 Ebook: <strong>"Primero organiza tu vida"</strong> (Manual de orden interno)</span>
+          <span class="si-text">Video de bienvenida al Ciclo 1</span>
         </div>
-
         <div class="summary-item">
           <svg class="si-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>
-          <span class="si-text">🗺️ Mapa de Transformación <strong>Punto A a Punto B</strong></span>
+          <span class="si-text">Ebook: "Primero Ordena Tu Vida" (manual de orden interno)</span>
         </div>
-
         <div class="summary-item">
           <svg class="si-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>
-          <span class="si-text">🖨️ <strong>Checklist Imprimible</strong> de tareas diarias para tu pared</span>
+          <span class="si-text">Mapa de Transformación: de Punto A a Punto B</span>
         </div>
-
+        <div class="summary-item">
+          <svg class="si-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>
+          <span class="si-text">Checklist imprimible de tareas diarias para tu pared</span>
+        </div>
         <div class="summary-item">
           <svg class="si-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>
           <span class="si-text">3 Retos prácticos con guiones y libretos de venta</span>
         </div>
-
         <div class="summary-item">
           <svg class="si-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>
-          <span class="si-text">Activación de tu <strong>Bóveda Colectiva</strong></span>
+          <span class="si-text">Activación de tu Bóveda Colectiva</span>
         </div>
       </div>
 
@@ -456,12 +455,9 @@
 
       <div class="summary-price-row">
         <span class="sp-label">Total a pagar</span>
-        <div>
-          <span style="text-decoration: line-through; color: var(--ink-faint); font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; margin-right: 8px;">$95</span>
-          <span class="sp-amount mono" style="font-size: 1.9rem; color: var(--gold-bright); font-weight: 800;">$12</span>
-        </div>
+        <span class="sp-amount mono">$12</span>
       </div>
-      <p class="summary-note">Pago único de entrada al protocolo. El Ciclo 2 y 3 se desbloquean orgánicamente con tus propios resultados, sin pagos adicionales de tu bolsillo.</p>
+      <p class="summary-note">Pago único de entrada al protocolo. El Ciclo 2 y 3 se desbloquean con tus propios resultados — sin pagos adicionales.</p>
     </aside>
   </form>
 </main>
@@ -476,15 +472,6 @@
   var password = document.getElementById('password');
   var passwordConfirm = document.getElementById('passwordConfirm');
   var mismatchHint = document.getElementById('passwordMismatchHint');
-  var payOptions = document.querySelectorAll('.pay-option');
-
-  // Payment method selector
-  payOptions.forEach(function (opt) {
-    opt.addEventListener('click', function () {
-      payOptions.forEach(function (o) { o.classList.remove('is-selected'); });
-      opt.classList.add('is-selected');
-    });
-  });
 
   function checkPasswordsMatch() {
     if (passwordConfirm.value && password.value !== passwordConfirm.value) {
@@ -502,10 +489,23 @@
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+
     if (!checkPasswordsMatch()) {
       passwordConfirm.focus();
       return;
     }
+
+    /*
+      INTEGRACIÓN PENDIENTE:
+      Aquí es donde, una vez conectado el backend (Supabase Auth + pasarela
+      de pago), se debe:
+        1. Crear el usuario (correo + contraseña) en Supabase.
+        2. Procesar el pago a través del proveedor elegido.
+        3. Solo si el pago es exitoso, redirigir a dashboard.html.
+
+      Por ahora, mientras se construye esa integración, el formulario
+      simplemente simula el registro y avanza directo al dashboard.
+    */
     window.location.href = 'dashboard.html';
   });
 })();
