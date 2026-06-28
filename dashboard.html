@@ -79,6 +79,92 @@
       font-weight: bold;
     }
 
+    .vault-withdraw-row {
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+    }
+
+    .withdraw-trigger {
+      background: #1F1F1A;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 5px;
+      font-size: 0.68rem;
+      font-weight: bold;
+      cursor: not-allowed;
+      transition: all 0.3s;
+      font-family: "SFMono-Regular", Consolas, monospace;
+    }
+
+    .withdraw-trigger.is-ready {
+      background: var(--accent);
+      color: var(--bg-main);
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(229, 193, 88, 0.2);
+    }
+
+    .decision-panel {
+      position: absolute;
+      top: 30px;
+      right: 0;
+      width: 280px;
+      background: #1A1A16;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 14px;
+      z-index: 30;
+      display: none;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .decision-panel.is-open {
+      display: block;
+    }
+
+    .decision-question {
+      font-size: 0.78rem;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      line-height: 1.4;
+      text-align: left;
+    }
+
+    .decision-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .decision-btn {
+      width: 100%;
+      text-align: left;
+      background: #0F0F0E;
+      border: 1px solid var(--border);
+      color: var(--text-primary);
+      padding: 10px 12px;
+      border-radius: 6px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .decision-btn:hover {
+      border-color: var(--accent);
+      background: #201F1A;
+    }
+
+    .decision-btn strong {
+      color: var(--accent);
+      display: block;
+      font-size: 0.82rem;
+      margin-bottom: 2px;
+    }
+
     .dashboard-layout {
       max-width: 800px;
       margin: 0 auto;
@@ -737,6 +823,27 @@
         </div>
       </span>
       <span class="vault-amount mono" id="vaultAmount">$0</span>
+      <div class="vault-withdraw-row">
+        <button type="button" class="withdraw-trigger" id="withdrawTrigger">¿Qué hago con mi saldo?</button>
+        <span class="cc-info-icon" tabindex="0">?</span>
+        <div class="cc-tooltip align-right" style="top: 22px;">
+          Ya puedes hacer algo con este saldo si lo deseas — es tuyo. Pero en el mundo de los negocios, una práctica común y inteligente es reinvertir las ganancias antes de tocar el capital: primero recuperas lo que invertiste, y con las ganancias siguientes financias tu próximo paso. Así nunca arriesgas más de lo que ya generaste.
+        </div>
+
+        <div class="decision-panel" id="decisionPanel">
+          <p class="decision-question">Tienes saldo disponible. ¿Qué prefieres hacer?</p>
+          <div class="decision-options">
+            <button type="button" class="decision-btn" id="optWithdraw">
+              <strong>Retirar mis fondos</strong>
+              Transfiero mi saldo a mi cuenta. Es mi dinero, lo necesito ahora.
+            </button>
+            <button type="button" class="decision-btn" id="optReinvest">
+              <strong>Reinvertir en mi Ciclo 2</strong>
+              Uso mi saldo para avanzar al siguiente nivel sin tocar mi bolsillo.
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -753,7 +860,7 @@
             <span class="ai-name">Ebook: Primero Ordena Tu Vida</span>
             <span class="ai-tag mono">FORMATO PDF DESCARGABLE</span>
           </div>
-          <a href="ebookorden.pdf.pdf" download class="btn-download-item" title="Descargar Material">⬇️</a>
+          <a href="primeroordenatuvida.pdf" download class="btn-download-item" title="Descargar Material">⬇️</a>
         </div>
         <div class="arsenal-card-item">
           <div class="ai-info">
@@ -1040,8 +1147,57 @@
 
       vaultAmount.textContent = '$' + (totalBackersSimulados * COMISION_NIVEL_1);
 
+      checkWithdrawStatus();
       checkGlobalRetoStatus();
     }
+
+    // BOTÓN DE RETIRO DE FONDOS
+    // Mínimo: 4 ventas directas ($24 en comisión real, a $6 por venta).
+    // Sin pasarela de pago conectada todavía (PayPal/Stripe pendientes),
+    // así que cada opción solo confirma la intención por ahora.
+    var withdrawTrigger = document.getElementById('withdrawTrigger');
+    var decisionPanel = document.getElementById('decisionPanel');
+    var optWithdraw = document.getElementById('optWithdraw');
+    var optReinvest = document.getElementById('optReinvest');
+    var MIN_VENTAS_PARA_RETIRO = 4;
+
+    function checkWithdrawStatus() {
+      if (totalBackersSimulados >= MIN_VENTAS_PARA_RETIRO) {
+        withdrawTrigger.classList.add('is-ready');
+      } else {
+        withdrawTrigger.classList.remove('is-ready');
+        decisionPanel.classList.remove('is-open');
+      }
+    }
+
+    if (withdrawTrigger) {
+      withdrawTrigger.addEventListener('click', function () {
+        if (!withdrawTrigger.classList.contains('is-ready')) return;
+        decisionPanel.classList.toggle('is-open');
+      });
+    }
+
+    if (optWithdraw) {
+      optWithdraw.addEventListener('click', function () {
+        decisionPanel.classList.remove('is-open');
+        alert('Solicitud de retiro recibida. Pronto conectaremos el pago directo vía PayPal — por ahora, escríbenos para coordinar tu retiro.');
+      });
+    }
+
+    if (optReinvest) {
+      optReinvest.addEventListener('click', function () {
+        decisionPanel.classList.remove('is-open');
+        alert('¡Buena decisión! Cuando el Ciclo 2 esté disponible, tu saldo se aplicará automáticamente para desbloquearlo sin que tengas que poner dinero adicional.');
+      });
+    }
+
+    document.addEventListener('click', function (e) {
+      if (decisionPanel && decisionPanel.classList.contains('is-open')) {
+        if (!decisionPanel.contains(e.target) && e.target !== withdrawTrigger) {
+          decisionPanel.classList.remove('is-open');
+        }
+      }
+    });
 
     if (addBackerBtn) {
       addBackerBtn.addEventListener('click', function (e) {
