@@ -750,10 +750,10 @@
       <div class="arsenal-flex">
         <div class="arsenal-card-item">
           <div class="ai-info">
-            <span class="ai-name">Ebook: Orden Interno</span>
-            <span class="ai-tag mono">FORMATO DIGITAL INTERACTIVO</span>
+            <span class="ai-name">Ebook: Primero Ordena Tu Vida</span>
+            <span class="ai-tag mono">FORMATO PDF DESCARGABLE</span>
           </div>
-          <button type="button" class="btn-download-item" data-doc="orden" title="Descargar Material">⬇️</button>
+          <a href="primeroordenatuvida.pdf" download class="btn-download-item" title="Descargar Material">⬇️</a>
         </div>
         <div class="arsenal-card-item">
           <div class="ai-info">
@@ -774,7 +774,13 @@
 
     <div class="constellation-card">
       <div class="constellation-head">
-        <h3 class="mono">Tu Constelación Colectiva</h3>
+        <span class="cc-title-wrap">
+          <h3 class="mono">Tu Constelación Colectiva</h3>
+          <span class="cc-info-icon" tabindex="0">?</span>
+          <div class="cc-tooltip">
+            Tu <strong>Constelación</strong> es tu red de Backers — cada persona real que se registró usando tu link. Cada nuevo punto que ves aquí representa a alguien que ya es parte de tu equipo, y de quien recibes comisión cada vez que avanza en el protocolo.
+          </div>
+        </span>
         <span class="mono" id="constellationCount" style="color: var(--accent); font-size: 0.9rem;">0 Backers</span>
       </div>
       <div class="constellation-field" id="constellationField">
@@ -1131,8 +1137,13 @@
       });
     }
 
-    // 5. SISTEMA DE DESCARGAS REALES AVANZADAS
-    var downloadButtons = document.querySelectorAll('.btn-download-item');
+    // 5. SISTEMA DE DESCARGAS (PLACEHOLDER) — Infografía y Checklist
+    // El Ebook ya descarga el PDF real directamente vía <a href download>.
+    // Estos dos siguen generando contenido de prueba hasta que subas los
+    // archivos reales — mismo patrón: sube el PDF/imagen a GitHub y cambia
+    // el <button> correspondiente a un <a href="archivo.pdf" download>,
+    // igual como se hizo arriba con el Ebook.
+    var downloadButtons = document.querySelectorAll('.btn-download-item[data-doc]');
     downloadButtons.forEach(function (btn) {
       btn.addEventListener('click', function (e) {
         e.stopPropagation();
@@ -1140,10 +1151,7 @@
         var filename = "Material_Oficial_Backerss.html";
         var htmlContent = "";
 
-        if (doc === "orden") {
-          filename = "Backerss_Ebook_Orden_Interno.html";
-          htmlContent = `<html><head><meta charset='UTF-8'><title>Ebook Backerss</title><style>body{background:#0B0B0A;color:#F5F5F3;font-family:sans-serif;padding:40px;line-height:1.6;}h1{color:#E5C158;border-bottom:1px solid #262622;padding-bottom:10px;}</style></head><body><h1>EBOOK: ORDEN INTERNO & INFRAESTRUCTURA MENTAL</h1><p><b>Sección 1: Parálisis por análisis</b><br>La mayoría de quienes quieren emprender se quedan atrapados consumiendo motivación en lugar de actuar. Este documento certifica que tú decidiste ejecutar en lugar de solo planear.</p></body></html>`;
-        } else if (doc === "mapa") {
+        if (doc === "mapa") {
           filename = "Backerss_Mapa_Transformacion.html";
           htmlContent = `<html><head><meta charset='UTF-8'><title>Mapa Estratégico</title><style>body{background:#0B0B0A;color:#F5F5F3;font-family:sans-serif;padding:40px;}h1{color:#E5C158;}.step{background:#141412;border:1px solid #262622;padding:15px;margin:10px 0;border-radius:6px;}</style></head><body><h1>MAPA DE TRANSFORMACIÓN A ➔ B</h1><div class='step'><b>Fase 1 (Días 1-30):</b> Prospección y primeros contactos reales con tu página de captura.</div><div class='step'><b>Fase 2 (Días 31-60):</b> Gestión de tu equipo y primeras comisiones por ventas directas y de tu red.</div></body></html>`;
         } else if (doc === "checklist") {
