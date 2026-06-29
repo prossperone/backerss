@@ -867,14 +867,14 @@
             <span class="ai-name">Mapa de Transformación</span>
             <span class="ai-tag mono">INFOGRAFÍA ESTRATÉGICA A ➔ B</span>
           </div>
-          <a href="mapabackerss.pdf.pdf" download class="btn-download-item" title="Descargar Infografía">⬇️</a>
+          <button type="button" class="btn-download-item" data-doc="mapa" title="Descargar Infografía">⬇️</button>
         </div>
         <div class="arsenal-card-item">
           <div class="ai-info">
             <span class="ai-name">Checklist de Pared</span>
             <span class="ai-tag mono">ACCIÓN DIARIA IMPRIMIBLE</span>
           </div>
-          <a href="checklist.pdf.pdf" download class="btn-download-item" title="Descargar Checklist">⬇️</a>
+          <button type="button" class="btn-download-item" data-doc="checklist" title="Descargar Checklist">⬇️</button>
         </div>
       </div>
     </section>
@@ -1112,7 +1112,7 @@
     // NOTA IMPORTANTE SOBRE LA BÓVEDA:
     // La Bóveda debe reflejar la COMISIÓN real del usuario, no el precio
     // completo del producto. Con el plan de comisiones vigente (Nivel 1 = 50%),
-    // cada Backer que compra el Ciclo 1 ($12) genera $6 de comisión real —
+    // cada Backer que compra el Ciclo 1 ($20) genera $10 de comisión real —
     // por eso el cálculo abajo usa COMISION_NIVEL_1, no el precio completo.
     //
     // AUTOMATIZACIÓN FUTURA (cuando Supabase esté conectado):
@@ -1129,7 +1129,7 @@
     var vaultAmount = document.getElementById('vaultAmount');
 
     var TARGET_CONTACTS = 20;
-    var COMISION_NIVEL_1 = 6; // 50% del precio del Ciclo 1 ($12), no el precio completo
+    var COMISION_NIVEL_1 = 10; // 50% del precio del Ciclo 1 ($20), no el precio completo
     var totalBackersSimulados = 0;
 
     function addBackerNode() {
@@ -1152,8 +1152,9 @@
     }
 
     // BOTÓN DE RETIRO DE FONDOS
-    // Mínimo: 4 ventas directas ($24 en comisión real, a $6 por venta).
-    // Sin pasarela de pago conectada todavía (PayPal/Stripe pendientes),
+    // Mínimo: 4 ventas directas ($40 en comisión real, a $10 por venta).
+    // Sin pasarela de pago conectada todavía (Stripe pendiente, en proceso
+    // de registro de empresa en USA),
     // así que cada opción solo confirma la intención por ahora.
     var withdrawTrigger = document.getElementById('withdrawTrigger');
     var decisionPanel = document.getElementById('decisionPanel');
@@ -1180,7 +1181,7 @@
     if (optWithdraw) {
       optWithdraw.addEventListener('click', function () {
         decisionPanel.classList.remove('is-open');
-        alert('Solicitud de retiro recibida. Pronto conectaremos el pago directo vía PayPal — por ahora, escríbenos para coordinar tu retiro.');
+        alert('Solicitud de retiro recibida. Pronto conectaremos el pago directo vía Stripe — por ahora, escríbenos para coordinar tu retiro.');
       });
     }
 
